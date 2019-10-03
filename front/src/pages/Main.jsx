@@ -5,7 +5,7 @@ export default class home extends Component {
   render() {
     return (
       <div>
-        <SidebarNav>Все кладем сюда</SidebarNav>
+        <SidebarNav></SidebarNav>
       </div>
     );
   }
