@@ -7,6 +7,7 @@ import Registration from '../Authorization/Registration';
 import { addUser } from '../../redux/Users/actions';
 import { connect } from 'react-redux';
 import { Route, Link, Redirect } from 'react-router-dom';
+import { Container } from 'semantic-ui-react';
 
 class SidebarNav extends Component {
   state = {
@@ -26,19 +27,19 @@ class SidebarNav extends Component {
           {this.props.user ? (
             <>
               <Link to="/">
-                <Menu.Item as="a">
+                <Menu.Item>
                   <Icon name="home" />
                   Главная
                 </Menu.Item>
               </Link>
               <Link to="/profile">
-                <Menu.Item as="a">
+                <Menu.Item>
                   <Icon name="user outline" />
                   Профиль
                 </Menu.Item>
               </Link>
               <Link to="/lections">
-                <Menu.Item as="a">
+                <Menu.Item>
                   <Icon name="book" />
                   Лекции
                 </Menu.Item>
@@ -46,24 +47,24 @@ class SidebarNav extends Component {
               {/* <div>AUTH</div> */}
               <Calendar onChange={this.onChange} value={this.state.date} />
               <Link className="logoutItem" to="/logout">
-                <Menu.Item as="a">
+                <Menu.Item>
                   <Icon name="sign-out" />
                   Выйти
                 </Menu.Item>
               </Link>
             </>
           ) : (
-              <>
-                <Link to="/login">
-                  <Menu.Item as="a">
-                    <Icon name="plug" />
-                    Логин
+            <>
+              <Link to="/login">
+                <Menu.Item>
+                  <Icon name="sign-in" />
+                  Логин
                 </Menu.Item>
-                </Link>
-                <Link to="/registration">
-                  <Menu.Item as="a">
-                    <Icon name="user outline" />
-                    Регистрация
+              </Link>
+              <Link to="/registration">
+                <Menu.Item>
+                  <Icon name="user outline" />
+                  Регистрация
                 </Menu.Item>
                 </Link>
                 <div>NOT</div>
