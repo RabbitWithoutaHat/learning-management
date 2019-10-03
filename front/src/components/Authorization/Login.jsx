@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Checkbox, Form } from 'semantic-ui-react';
+import { Button, Grid, Form } from 'semantic-ui-react';
 import { delUser, addLogMsg, addUser } from '../../redux/Users/actions';
 
 class Login extends Component {
@@ -45,7 +45,7 @@ class Login extends Component {
   };
   render() {
     return (
-      <div>
+      <>
         <Form onSubmit={this.get}>
           <h3>Log in</h3>
           <Form.Field className="form-field">
@@ -54,7 +54,7 @@ class Login extends Component {
           </Form.Field>
           <Form.Field className="form-field">
             <label htmlFor="password">password</label>
-            <input value={this.state.password} type="text" name="password" required onChange={this.password} />
+            <input value={this.state.password} type="password" name="password" required onChange={this.password} />
           </Form.Field>
           <div className="form-field">
             <Button type="submit">Войти</Button>
@@ -62,7 +62,7 @@ class Login extends Component {
         </Form>
         {this.props.dataLoaded ? <></> : <></>}
         <h3>{this.props.loginMessage ? <>{this.props.loginMessage}</> : <></>}</h3>
-      </div>
+      </>
     );
   }
 }
