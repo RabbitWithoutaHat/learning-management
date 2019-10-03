@@ -12,7 +12,6 @@ export default class home extends Component {
       <div>
         <SidebarNav>
           <NavBar />
-          <Home/>
         </SidebarNav>
       </div>
     );
