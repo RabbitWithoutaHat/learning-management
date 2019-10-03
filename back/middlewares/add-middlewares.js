@@ -3,10 +3,13 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 // Usage of FileStore leads to problem of not login in from the first time?
-const FileStore = require('session-file-store')(session);
+const MongoStore = require('connect-mongo')(session);
 const bcrypt = require('bcrypt');
 const connection = require('../models/connection');
 const User = require('../models/User');
+
+const env = process.env.NODE_ENV || 'development';
+const config = require('../config/config.json')[env];
 
 function addMiddlewares(router) {
   // configure passport.js to use the local strategy
@@ -41,13 +44,23 @@ function addMiddlewares(router) {
 
   router.use(
     session({
-      store: new FileStore(),
-      secret: 'keyboard cat',
-      resave: false,
-      saveUninitialized: true,
-      cookie: { maxAge: 60 * 60 * 1000 },
+      store: new MongoStore({
+        url: config.db,
+        ttl: 14 * 24 * 60 * 60, // = 14 days. Default
+      }),
+      secret: 'rotating beaver',
     }),
   );
+
+  // router.use(
+  //   session({
+  //     store: new FileStore(),
+  //     secret: 'keyboard cat',
+  //     resave: false,
+  //     saveUninitialized: true,
+  //     cookie: { maxAge: 60 * 60 * 1000 },
+  //   }),
+  // );
 
   router.use(passport.initialize());
 

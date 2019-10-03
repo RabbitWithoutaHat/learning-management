@@ -8,7 +8,7 @@ const addMiddlewares = require('../middlewares/add-middlewares');
 const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 
-const router = express.Router();
+const   router = express.Router();
 addMiddlewares(router);
 
 // GET login form
