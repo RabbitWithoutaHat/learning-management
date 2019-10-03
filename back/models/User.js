@@ -15,9 +15,9 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  group: [
-    { type: Schema.Types.ObjectId, ref: 'Group' },
-  ],
+  group: {
+    type: Schema.Types.ObjectId, ref: 'Group',
+  },
   photo: {
     type: String,
     required: false,
@@ -27,11 +27,11 @@ const UserSchema = new Schema({
     required: false,
     default: false,
   },
-  admin: {
-    type: Boolean,
+  status: {
+    type: String,
     required: true,
   },
-  registrationDate: {
+  regDate: {
     type: Date,
     default: Date.now,
     required: false,
@@ -44,14 +44,6 @@ UserSchema.statics.getByEmail = async function (email) {
 
 UserSchema.statics.getByUserName = async function (nickname) {
   return this.find({ nickname });
-};
-
-UserSchema.statics.getPointsByUserName = async function (nickname) {
-  return this.find({ nickname }, { points: 1 });
-};
-
-UserSchema.statics.setPointsByUserName = async function (nickname) {
-  return this.findOneAndUpdate({ nickname }, { $set: { points } });
 };
 
 module.exports = model('User', UserSchema);

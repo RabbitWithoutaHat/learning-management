@@ -14,9 +14,9 @@ const TopicSchema = new Schema({
     type: String,
     required: true,
   },
-  group: [
-    { type: Schema.Types.ObjectId, ref: 'Group' },
-  ],
+  group: {
+    type: Schema.Types.ObjectId, ref: 'Group',
+  },
   phase: {
     type: String,
     required: false,
@@ -27,12 +27,16 @@ const TopicSchema = new Schema({
     default: false,
   },
   day: {
-    type: Boolean,
+    type: String,
     required: true,
   },
-  date: {
+  creationDate: {
     type: Date,
     default: Date.now,
+    required: true,
+  },
+  githubLink: {
+    type: String,
     required: false,
   },
   comments: [

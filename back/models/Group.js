@@ -7,9 +7,6 @@ const GroupSchema = new Schema({
     type: String,
     required: true,
   },
-  items: [
-    { type: Schema.Types.ObjectId, ref: 'User' },
-  ],
 });
 
 module.exports = model('Group', GroupSchema);
