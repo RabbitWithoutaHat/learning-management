@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <header align="right">
+        {{#if currentUser}}
+        <a href="#">{{currentUser}}</a>
+        <a href="/logout">Log Out</a>
+        {{else}}
+        <a href="/sign-up">Sign Up</a>
+        <a href="/login">Log In</a>
+        {{/if}}
+        <a href="/">Home</a>
+        <a href="/auth-page">Page with Auth</a>
+    </header>
+
+    <div class="logo_container">
+        {{!-- <img src="/images/logo.png" alt="" class="logo"> --}}
+    </div>
+    <div class="notification message">{{{message}}}</div>
+    <div class="notification error">{{{error}}}</div>
+    {{{body}}}
+</body>
+
+</html>
