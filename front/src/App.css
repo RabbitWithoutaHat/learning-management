@@ -20,3 +20,43 @@
 .App-link {
   color: #09d3ac;
 }
+.pushable {
+  height: 100vh;
+  border: none;
+  box-shadow: none;
+}
+
+.ui.segment {
+  border: none;
+  box-shadow: none;
+}
+
+.ui[class*='left floated'].button {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.react-calendar {
+  position: absolute;
+  bottom: 80px;
+  border: none;
+  width: 90%;
+  margin-left: 5%;
+}
+
+.logoutItem {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.ui.vertical.menu > .item:last-child {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+.ui.inverted.menu {
+  background: #4520ab;
+}
