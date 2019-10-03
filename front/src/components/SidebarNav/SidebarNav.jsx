@@ -53,31 +53,27 @@ class SidebarNav extends Component {
               </Link>
             </>
           ) : (
-            <>
-              <Link to="/login">
-                <Menu.Item as="a">
-                  <Icon name="plug" />
-                  Логин
+              <>
+                <Link to="/login">
+                  <Menu.Item as="a">
+                    <Icon name="plug" />
+                    Логин
                 </Menu.Item>
-              </Link>
-              <Link to="/registration">
-                <Menu.Item as="a">
-                  <Icon name="user outline" />
-                  Регистрация
+                </Link>
+                <Link to="/registration">
+                  <Menu.Item as="a">
+                    <Icon name="user outline" />
+                    Регистрация
                 </Menu.Item>
-              </Link>
-              <div>NOT</div>
-            </>
-          )}
+                </Link>
+                <div>NOT</div>
+              </>
+            )}
         </Sidebar>
 
         <Sidebar.Pusher>
           {this.props.children}
-          <div>
-            <Route path="/logout" component={Logout} />
-            <Route path="/login" component={Login} />
-            <Route path="/registration" component={Registration} />
-          </div>
+
         </Sidebar.Pusher>
       </Sidebar.Pushable>
     );
