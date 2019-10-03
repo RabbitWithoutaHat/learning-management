@@ -55,12 +55,12 @@ function addMiddlewares(router) {
 
   // tell passport how to serialize the user
   passport.serializeUser((user, done) => {
-    // console.log('serializeUser: user:', user);
+    console.log('serializeUser: user:', user);
     done(null, user.id);
   });
 
   passport.deserializeUser(async (id, done) => {
-    // console.log('deserializeUser: id:', id);
+    console.log('deserializeUser: id:', id);
     const user = await User.findById(id);
     done(null, user);
   });

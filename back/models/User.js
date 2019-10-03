@@ -29,7 +29,7 @@ const UserSchema = new Schema({
   },
   status: {
     type: String,
-    required: true,
+    required: false,
   },
   regDate: {
     type: Date,

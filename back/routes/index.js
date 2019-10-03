@@ -108,6 +108,8 @@ router.post('/reg', async (req, res, next) => {
         if (err) {
           return res.json({ message: err });
         }
+        console.log(thisUser.nickname );
+        
         return res.json({ user: thisUser.nickname });
       });
     })(req, res, next);
