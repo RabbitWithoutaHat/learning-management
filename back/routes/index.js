@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const User = require('./../models/users');
+const User = require('../models/User');
 const homePageWithNotification = require('../helpers/homePageWithNotification');
 const notifications = require('../constants/notification-types');
 const addMiddlewares = require('../middlewares/add-middlewares');
@@ -41,11 +41,11 @@ router.post('/log', async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   passport.authenticate('local', (err, user) => {
     if (err) {
-      return res.json({ message:err });
+      return res.json({ message: err });
     }
     req.logIn(user, (err) => {
       if (err) {
-        return res.json({ message:err });
+        return res.json({ message: err });
       }
       return res.json({ user: user.nickname });
     });
@@ -59,10 +59,9 @@ router.get('/sign-up', (req, res) => {
 
 router.get('/authcheck', (req, res) => {
   if (req.isAuthenticated()) {
-    
-    res.json({user:req.user.nickname });
+    res.json({ user: req.user.nickname });
   } else {
-    res.json({message:'You are not authinticated,please log-in or register'});
+    res.json({ message: 'You are not authinticated,please log-in or register' });
   }
 });
 // POST new user
@@ -100,20 +99,20 @@ router.post('/reg', async (req, res, next) => {
       password: hash,
       points: 0,
     });
-     return passport.authenticate('local',async (err, user) => {
-    const thisUser = await User.findOne({ email: req.body.email });
-    if (err) {
-      return res.json({ message:err });
-    }
-    req.logIn(user, (err) => {
+    return passport.authenticate('local', async (err, user) => {
+      const thisUser = await User.findOne({ email: req.body.email });
       if (err) {
-        return res.json({ message:err });
+        return res.json({ message: err });
       }
-      return res.json({ user: thisUser.nickname });
-    });
-  })(req, res, next);
+      req.logIn(user, (err) => {
+        if (err) {
+          return res.json({ message: err });
+        }
+        return res.json({ user: thisUser.nickname });
+      });
+    })(req, res, next);
   }
-  return res.json({message:'This email is already used' });
+  return res.json({ message: 'This email is already used' });
 });
 
 // GET user log out

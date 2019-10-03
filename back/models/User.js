@@ -7,7 +7,7 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  name: {
+  nickname: {
     type: String,
     required: true,
   },
@@ -37,5 +37,21 @@ const UserSchema = new Schema({
     required: false,
   },
 });
+
+UserSchema.statics.getByEmail = async function (email) {
+  return this.find({ email });
+};
+
+UserSchema.statics.getByUserName = async function (nickname) {
+  return this.find({ nickname });
+};
+
+UserSchema.statics.getPointsByUserName = async function (nickname) {
+  return this.find({ nickname }, { points: 1 });
+};
+
+UserSchema.statics.setPointsByUserName = async function (nickname) {
+  return this.findOneAndUpdate({ nickname }, { $set: { points } });
+};
 
 module.exports = model('User', UserSchema);
