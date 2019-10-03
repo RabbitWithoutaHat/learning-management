@@ -6,41 +6,48 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const bcrypt = require('bcrypt');
 const connection = require('../models/connection');
-const User = require('../models/users');
+const User = require('../models/User');
 
 function addMiddlewares(router) {
   // configure passport.js to use the local strategy
-  passport.use(new LocalStrategy(
-    { usernameField: 'email' },
-    async (email, password, done) => {
-      const foundUsers = await User.getByEmail(email);
-      if (foundUsers.length === 0) {
-        return done('Error. Email not found!');
-      }
-      const isPasswordCorrect = await bcrypt.compare(password, foundUsers[0].password);
-      if (isPasswordCorrect) {
-        const user = {
-          id: foundUsers[0].id,
-          nickname: foundUsers[0].nickname,
-          email: foundUsers[0].email,
-        };
-        return done(null, user);
-      }
-      return done('Error. Password not correct!');
-    },
-  ));
+  passport.use(
+    new LocalStrategy(
+      { usernameField: 'email' },
+      async (email, password, done) => {
+        const foundUsers = await User.getByEmail(email);
+        if (foundUsers.length === 0) {
+          return done('Error. Email not found!');
+        }
+        const isPasswordCorrect = await bcrypt.compare(
+          password,
+          foundUsers[0].password,
+        );
+        if (isPasswordCorrect) {
+          const user = {
+            id: foundUsers[0].id,
+            nickname: foundUsers[0].nickname,
+            email: foundUsers[0].email,
+          };
+          return done(null, user);
+        }
+        return done('Error. Password not correct!');
+      },
+    ),
+  );
 
   router.use(express.urlencoded({ extended: false })); // Form data
 
   router.use(express.json()); // JSON
 
-  router.use(session({
-    store: new FileStore(),
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 60 * 60 * 1000 },
-  }));
+  router.use(
+    session({
+      store: new FileStore(),
+      secret: 'keyboard cat',
+      resave: false,
+      saveUninitialized: true,
+      cookie: { maxAge: 60 * 60 * 1000 },
+    }),
+  );
 
   router.use(passport.initialize());
 
