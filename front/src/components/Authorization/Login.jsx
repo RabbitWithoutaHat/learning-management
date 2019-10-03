@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {delUser,addMsg,addUser} from '../../redux/Users/actions';
+import { Button, Checkbox, Form } from 'semantic-ui-react';
+import { delUser, addMsg, addUser } from '../../redux/Users/actions';
 
 class Login extends Component {
   state = {
@@ -18,7 +19,7 @@ class Login extends Component {
   get = async e => {
     e.preventDefault();
     console.log('tyt!');
-    
+
     let data = {
       email: this.state.email,
       password: this.state.password,
@@ -32,8 +33,10 @@ class Login extends Component {
       body: JSON.stringify(data),
     });
     let user = await resp.json();
+    console.log(user.user);
+
     if (user.user) {
-      this.setState({ dataLoaded: true })
+      this.setState({ dataLoaded: true });
       this.props.add(user.user);
     } else {
       this.props.addMsg(user.message);
@@ -44,9 +47,9 @@ class Login extends Component {
       <div>
         <h3>Log in</h3>
 
-        <form onSubmit={this.get}>
-          <div className="form-field">
-            <label for="email">email</label>
+        <Form onSubmit={this.get}>
+          <Form.Field className="form-field">
+            <label htmlFor="email">email</label>
             <input
               value={this.state.email}
               type="text"
@@ -55,9 +58,9 @@ class Login extends Component {
               required
               onChange={this.email}
             />
-          </div>
-          <div className="form-field">
-            <label for="password">password</label>
+          </Form.Field>
+          <Form.Field className="form-field">
+            <label htmlFor="password">password</label>
             <input
               value={this.state.password}
               type="text"
@@ -66,24 +69,13 @@ class Login extends Component {
               required
               onChange={this.password}
             />
-          </div>
+          </Form.Field>
           <div className="form-field">
-            <input type="submit" />
+            <Button type="submit">Отправить</Button>
           </div>
-        </form>
-        {this.props.dataLoaded ?
-          <></>
-          :
-          <>
-          </>
-        }
-        {this.props.message ?
-          <>
-            {this.props.message}
-          </>
-          :
-          <></>
-        }
+        </Form>
+        {this.props.dataLoaded ? <></> : <></>}
+        {this.props.message ? <>{this.props.message}</> : <></>}
       </div>
     );
   }
@@ -99,4 +91,7 @@ function mapDispatchToProps(dispatch) {
     addMsg: message => dispatch(addMsg(message)),
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Login);
