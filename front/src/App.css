@@ -40,13 +40,15 @@
   position: absolute;
   bottom: 80px;
   border: none;
-  max-width: 90%;
-  left: 5%;
+  width: 90%;
+  margin-left: 5%;
 }
 
 .logoutItem {
   position: absolute;
   bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
 .ui.vertical.menu > .item:last-child {
