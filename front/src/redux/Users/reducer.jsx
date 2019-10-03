@@ -1,13 +1,14 @@
-import { ADD_USER, DEL_USER, ADD_MSG } from './types';
+import { ADD_USER, DEL_USER, ADD_MSG, ADD_LOGMSG } from './types';
 
 const initialState = {
   user: {
     login: '',
     status: false,
     message: '',
+    loginMessage: '',
   },
 };
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case ADD_USER: {
       return {
@@ -19,6 +20,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         user: { message: action.message },
+      };
+    }
+    case ADD_LOGMSG: {
+      return {
+        ...state,
+        user: { loginMessage: action.loginMessage },
       };
     }
     case DEL_USER: {
