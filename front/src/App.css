@@ -64,11 +64,8 @@
 .pushable > .pusher {
   width: calc(100% - 350px);
 }
-.container {
+.ui.grid {
   margin-top: 60px;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
 }
 form {
   padding-left: 300px;

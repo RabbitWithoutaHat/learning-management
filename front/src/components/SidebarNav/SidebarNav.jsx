@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Header, Icon, Image, Menu, Segment, Sidebar, Button } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import Login from '../Authorization/Login';
 import Logout from '../Authorization/Logout';
@@ -66,15 +67,13 @@ class SidebarNav extends Component {
                   <Icon name="user outline" />
                   Регистрация
                 </Menu.Item>
-                </Link>
-                <div>NOT</div>
-              </>
-            )}
+              </Link>
+              <div>NOT</div>
+            </>
+          )}
         </Sidebar>
-
         <Sidebar.Pusher>
-          {this.props.children}
-
+          <Grid className="container">{this.props.children}</Grid>
         </Sidebar.Pusher>
       </Sidebar.Pushable>
     );
