@@ -1,0 +1,11 @@
+{
+  "development": {
+    "db": "mongodb://localhost/mygame"
+  },
+  "test": {
+    "db": "mongodb://localhost/passport-test"
+  },
+  "production": {
+    "db": "mongodb://localhost/passport-prod"
+  }
+}
