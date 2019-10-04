@@ -1,11 +1,17 @@
 const path = require('path');
 const mongoose = require('mongoose');
 
-const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config.json')[env];
+const config = require('../config/config.json')[process.env.NODE_ENV];
 
 // const basename = path.basename(__filename);
-
-mongoose.connect(config.db, { useNewUrlParser: true, useUnifiedTopology: true });
+// console.log(config.db)
+mongoose.connect(config.db, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+})
+  .then(() => console.log('DB Connected!'))
+  .catch((err) => {
+    console.log(err);
+  });
 
 module.exports = mongoose.connection;

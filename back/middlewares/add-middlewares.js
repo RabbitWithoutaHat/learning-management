@@ -8,8 +8,7 @@ const bcrypt = require('bcrypt');
 const connection = require('../models/connection');
 const User = require('../models/User');
 
-const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config.json')[env];
+const config = require('../config/config.json')[process.env.NODE_ENV];
 
 function addMiddlewares(router) {
   // configure passport.js to use the local strategy
@@ -49,6 +48,8 @@ function addMiddlewares(router) {
         ttl: 14 * 24 * 60 * 60, // = 14 days. Default
       }),
       secret: 'rotating beaver',
+      resave: false,
+      saveUninitialized: true,
     }),
   );
 
