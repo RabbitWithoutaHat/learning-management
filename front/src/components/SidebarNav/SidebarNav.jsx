@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Header, Icon, Image, Menu, Segment, Sidebar, Button } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import Login from '../Authorization/Login';
 import Logout from '../Authorization/Logout';
@@ -66,15 +67,13 @@ class SidebarNav extends Component {
                   <Icon name="user outline" />
                   Регистрация
                 </Menu.Item>
-                </Link>
-                <div>NOT</div>
-              </>
-            )}
+              </Link>
+              <div>NOT</div>
+            </>
+          )}
         </Sidebar>
-
         <Sidebar.Pusher>
-          {this.props.children}
-
+          <Grid className="container">{this.props.children}</Grid>
         </Sidebar.Pusher>
       </Sidebar.Pushable>
     );
@@ -83,9 +82,9 @@ class SidebarNav extends Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user.login,
-    status: state.user.status,
-    justregister: state.user.justregister,
+    user: state.User.user.login,
+    status: state.User.user.status,
+    justregister: state.User.user.justregister,
   };
 }
 function mapDispatchToProps(dispatch) {

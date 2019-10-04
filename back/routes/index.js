@@ -7,8 +7,10 @@ const notifications = require('../constants/notification-types');
 const addMiddlewares = require('../middlewares/add-middlewares');
 const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
-
+const News = require('../models/News');
+const fileUpload = require('express-fileupload');
 const router = express.Router();
+
 addMiddlewares(router);
 
 // GET login form
@@ -108,8 +110,8 @@ router.post('/reg', async (req, res, next) => {
         if (err) {
           return res.json({ message: err });
         }
-        console.log(thisUser.nickname );
-        
+        console.log(thisUser.nickname);
+
         return res.json({ user: thisUser.nickname });
       });
     })(req, res, next);
@@ -117,6 +119,35 @@ router.post('/reg', async (req, res, next) => {
   return res.json({ message: 'This email is already used' });
 });
 
+//Get NEws from BD
+router.get('/getnews', async (req, res) => {
+
+  const news = await News.findOne();
+  console.log('BACKKK', news.name);
+
+  res.json({ news: news.name });
+});
+
+//Upload some File
+router.post('/upload', async (req, res) => {
+  // const data = await JSON.parse(req.body);
+  // console.log(data);
+
+  console.log(req);
+
+  // if (req.files === null) {
+  //   return res.status(400).json({message:'No file uploaded'})
+  // }
+  // const file = req.files.file;
+  // file.mv(`${__dirname}/client/public/upload/${file.name}`,err => {
+  //   if(err) {
+  //     console.log(err);
+  //     return res.status(500).send(err);
+  //   }
+  //   res.json({fileName:file.name, filePath : `/uploads/${file.name}`})
+  // });
+  //   console.log('Upload');
+});
 // GET user log out
 router.get('/logout', (req, res) => {
   req.logout();

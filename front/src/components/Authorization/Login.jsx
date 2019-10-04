@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Checkbox, Form } from 'semantic-ui-react';
-import { delUser, addMsg, addUser } from '../../redux/Users/actions';
+import { delUser, addLogMsg, addUser } from '../../redux/Users/actions';
 
 class Login extends Component {
   state = {
@@ -38,57 +38,45 @@ class Login extends Component {
     if (user.user) {
       this.setState({ dataLoaded: true });
       this.props.add(user.user);
+      this.props.history.push('/');
     } else {
-      this.props.addMsg(user.message);
+      this.props.addLogMsg(user.message);
     }
   };
   render() {
     return (
       <div>
-        <h3>Log in</h3>
-
         <Form onSubmit={this.get}>
+          <h3>Log in</h3>
           <Form.Field className="form-field">
             <label htmlFor="email">email</label>
-            <input
-              value={this.state.email}
-              type="text"
-              name="email"
-              placeholder="email"
-              required
-              onChange={this.email}
-            />
+            <input value={this.state.email} type="text" name="email" required onChange={this.email} />
           </Form.Field>
           <Form.Field className="form-field">
             <label htmlFor="password">password</label>
-            <input
-              value={this.state.password}
-              type="text"
-              name="password"
-              placeholder="name"
-              required
-              onChange={this.password}
-            />
+            <input value={this.state.password} type="text" name="password" required onChange={this.password} />
           </Form.Field>
           <div className="form-field">
-            <Button type="submit">Отправить</Button>
+            <Button type="submit">Войти</Button>
           </div>
         </Form>
         {this.props.dataLoaded ? <></> : <></>}
-        {this.props.message ? <>{this.props.message}</> : <></>}
+        <h3>{this.props.loginMessage ? <>{this.props.loginMessage}</> : <></>}</h3>
       </div>
     );
   }
 }
 function mapStateToProps(state) {
+  console.log(state);
+
   return {
-    message: state.user.message,
+    loginMessage: state.User.user.loginMessage,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
     add: user => dispatch(addUser(user)),
-    addMsg: message => dispatch(addMsg(message)),
+    addLogMsg: loginMessage => dispatch(addLogMsg(loginMessage)),
   };
 }
 export default connect(

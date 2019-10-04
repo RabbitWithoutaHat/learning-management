@@ -16,7 +16,8 @@ const UserSchema = new Schema({
     required: true,
   },
   group: {
-    type: Schema.Types.ObjectId, ref: 'Group',
+    type: Schema.Types.ObjectId,
+    ref: 'Group',
   },
   photo: {
     type: String,

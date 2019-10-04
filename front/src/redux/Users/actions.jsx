@@ -1,4 +1,4 @@
-import {ADD_USER, DEL_USER, ADD_MSG} from './types';
+import { ADD_USER, DEL_USER, ADD_MSG, ADD_LOGMSG } from './types';
 
 export const addUser = login => {
   return {
@@ -6,10 +6,16 @@ export const addUser = login => {
     login: login,
   };
 };
-export const addMsg = (message) => {
+export const addMsg = message => {
   return {
     type: ADD_MSG,
     message: message,
+  };
+};
+export const addLogMsg = loginMessage => {
+  return {
+    type: ADD_LOGMSG,
+    loginMessage: loginMessage,
   };
 };
 export const delUser = () => {
