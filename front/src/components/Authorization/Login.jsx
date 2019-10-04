@@ -46,7 +46,7 @@ class Login extends Component {
   render() {
     return (
       <>
-        <Form onSubmit={this.get}>
+        <Form className="regForm" onSubmit={this.get}>
           <h3>Log in</h3>
           <Form.Field className="form-field">
             <label htmlFor="email">email</label>
