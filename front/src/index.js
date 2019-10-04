@@ -5,12 +5,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from 'react-redux'
-import {createStore} from 'redux'
-import reducer from './redux/Users/reducer';
+import {createStore,combineReducers} from 'redux'
+import reducerUser from './redux/Users/reducer';
+import reducerNews from './redux/News/reducer';
 
-const store = createStore(reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+// This would produce the following state object
 
+
+// thunk!
+import { applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
+
+// //combinereducer!!!
+const rootReducer = combineReducers({User:reducerUser,News:reducerNews})
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(rootReducer,
+  composeEnhancers(applyMiddleware(thunk))
+);
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>

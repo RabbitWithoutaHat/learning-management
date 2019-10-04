@@ -70,7 +70,7 @@ function mapStateToProps(state) {
   console.log(state);
 
   return {
-    loginMessage: state.user.loginMessage,
+    loginMessage: state.User.user.loginMessage,
   };
 }
 function mapDispatchToProps(dispatch) {

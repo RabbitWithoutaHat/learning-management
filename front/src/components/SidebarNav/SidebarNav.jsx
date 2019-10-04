@@ -82,9 +82,9 @@ class SidebarNav extends Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user.login,
-    status: state.user.status,
-    justregister: state.user.justregister,
+    user: state.User.user.login,
+    status: state.User.user.status,
+    justregister: state.User.user.justregister,
   };
 }
 function mapDispatchToProps(dispatch) {
