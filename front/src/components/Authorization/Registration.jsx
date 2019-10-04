@@ -46,8 +46,8 @@ class Registration extends Component {
 
   render() {
     return (
-      <div className="center">
-        <Form onSubmit={this.get}>
+      <>
+        <Form className="regForm" onSubmit={this.get}>
           <h3>Registration</h3>
           <Form.Field>
             <label htmlFor="nickname">nickname</label>
@@ -66,7 +66,7 @@ class Registration extends Component {
           </div>
         </Form>
         <h3>{this.props.message ? <>{this.props.message}</> : <></>}</h3>
-      </div>
+      </>
     );
   }
 }

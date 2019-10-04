@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Label, Image, Form } from 'semantic-ui-react';
-import Avatar from '../components/Avatar/Avatar';
+// import Avatar from '../components/Avatar/Avatar';
 
 export default class Profile extends Component {
   state = {
@@ -15,7 +15,7 @@ export default class Profile extends Component {
   render() {
     return (
       <>
-        <Form className="col-6">
+        <Form className="col-8">
           <Label className="groupLabel" as="a" color="blue" ribbon>
             Группа{this.state.group}
           </Label>
@@ -36,8 +36,9 @@ export default class Profile extends Component {
             <input value={this.state.phone} type="text" name="phone" required onChange={this.phone} />
           </Form.Field>
         </Form>
-        <div className="col-6">
+        <div className="col-4">
           <Image src="https://react.semantic-ui.com/images/wireframe/square-image.png" size="small" circular />
+          <input type="file" name="" id="" accept="image/*" />
         </div>
       </>
     );

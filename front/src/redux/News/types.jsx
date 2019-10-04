@@ -1,0 +1,5 @@
+export const REQUESTED_NEWS = 'REQUESTED_NEWS';
+export const ADD_NEWS = 'ADD_NEWS';
+export const REQUESTED_ERROR = 'ADD_MSG';
+// export const REQUESTED_ERROR = 'ADD_MSG';
+
