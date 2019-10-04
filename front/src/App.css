@@ -71,13 +71,28 @@
   margin-right: auto;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .col-6 {
   flex-basis: 40%;
   margin-right: 5%;
   margin-left: 5%;
 }
+.col-8 {
+  flex-basis: 60%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+.col-4 {
+  flex-basis: 20%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
 
 .ui.ribbon.label {
   margin-bottom: 20px;
+}
+
+.regForm {
+  width: 50%;
 }
