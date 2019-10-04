@@ -64,10 +64,20 @@
 .pushable > .pusher {
   width: calc(100% - 350px);
 }
-.ui.grid {
+.container {
   margin-top: 60px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap;
 }
-form {
-  padding-left: 300px;
-  padding-right: 300px;
+.col-6 {
+  flex-basis: 40%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+.ui.ribbon.label {
+  margin-bottom: 20px;
 }
