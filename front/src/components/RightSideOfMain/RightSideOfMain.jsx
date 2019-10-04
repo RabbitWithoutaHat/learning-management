@@ -9,13 +9,13 @@ import Home from '../../pages/Home';
 export default class NavBar extends Component {
   render() {
     return (
-      <div>
+      <>
         <Route exact path="/" component={Home} />
         <Route path="/logout" component={Logout} />
         <Route path="/login" component={Login} />
         <Route path="/registration" component={Registration} />
         <Route path="/profile" component={Profile} />
-      </div>
+      </>
     );
   }
 }

@@ -7,10 +7,15 @@ const notifications = require('../constants/notification-types');
 const addMiddlewares = require('../middlewares/add-middlewares');
 const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
+<<<<<<< HEAD
 const News = require('../models/News');
 const fileUpload = require('express-fileupload');
 const router = express.Router();
 
+=======
+
+const   router = express.Router();
+>>>>>>> dev
 addMiddlewares(router);
 
 // GET login form

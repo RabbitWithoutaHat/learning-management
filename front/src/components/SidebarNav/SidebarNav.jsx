@@ -73,7 +73,7 @@ class SidebarNav extends Component {
           )}
         </Sidebar>
         <Sidebar.Pusher>
-          <Grid className="container">{this.props.children}</Grid>
+          <div className="container">{this.props.children}</div>
         </Sidebar.Pusher>
       </Sidebar.Pushable>
     );
