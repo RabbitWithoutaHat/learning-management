@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Grid, Form } from 'semantic-ui-react';
-import { delUser, addLogMsg, addUser } from '../../redux/Users/actions';
+import { Button, Form } from 'semantic-ui-react';
+import { addLogMsg, addUser } from '../../redux/Users/actions';
 
 class Login extends Component {
   state = {
@@ -18,7 +18,6 @@ class Login extends Component {
   };
   get = async e => {
     e.preventDefault();
-    console.log('tyt!');
 
     let data = {
       email: this.state.email,
@@ -33,11 +32,10 @@ class Login extends Component {
       body: JSON.stringify(data),
     });
     let user = await resp.json();
-    console.log(user.user);
 
     if (user.user) {
       this.setState({ dataLoaded: true });
-      this.props.add(user.user);
+      this.props.add(user.user, user.email);
       this.props.history.push('/');
     } else {
       this.props.addLogMsg(user.message);
@@ -67,15 +65,13 @@ class Login extends Component {
   }
 }
 function mapStateToProps(state) {
-  console.log(state);
-
   return {
     loginMessage: state.User.user.loginMessage,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: user => dispatch(addUser(user)),
+    add: (user, email) => dispatch(addUser(user, email)),
     addLogMsg: loginMessage => dispatch(addLogMsg(loginMessage)),
   };
 }

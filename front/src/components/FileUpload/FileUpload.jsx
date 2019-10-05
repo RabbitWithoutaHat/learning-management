@@ -1,23 +1,23 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react';
 
 const FileUpload = () => {
   const [file, setFile] = useState('');
   const [filename, setFilename] = useState('Choose File');
-  const [uploadedFile, setUploadedFile] = useState({});
+  // const [uploadedFile, setUploadedFile] = useState({});
   const grabFile = e => {
     setFile(e.target.files[0]);
-    setFilename(e.target.files[0].name)
-  }
+    setFilename(e.target.files[0].name);
+  };
   const onSubmit = async e => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', file);
     // console.log(file.arrayBuffer);
     // console.log(filename);
-    
+
     // console.log(formData);
-    
-    let resp = await fetch('/upload', {
+
+    await fetch('/upload', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -34,10 +34,10 @@ const FileUpload = () => {
     //     console.log('The was a problem with the server');
     //   } else {
     //     console.log(err.response.data.message);
-        
+
     //   }
     // }
-  }
+  };
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -50,6 +50,6 @@ const FileUpload = () => {
         <input type="submit" value="Upload" className="btn btn-primary btn-block mt-4"></input>
       </form>
     </div>
-  )
-}
+  );
+};
 export default FileUpload;
