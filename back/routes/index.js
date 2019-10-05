@@ -8,6 +8,7 @@ const addMiddlewares = require('../middlewares/add-middlewares');
 const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
+const Topic = require('../models/Topic');
 const fileUpload = require('express-fileupload');
 const router = express.Router();
 
@@ -126,6 +127,15 @@ router.get('/getnews', async (req, res) => {
   console.log('BACKKK', news.name);
 
   res.json({ news: news.name });
+});
+
+//Get Topics from BD
+router.get('/gettopics', async (req, res) => {
+
+  const topic = await Topic.findOne();
+  console.log('BACKKK', topic.name);
+
+  res.json({ topic: topic.name });
 });
 
 //Upload some File

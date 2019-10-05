@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { getNewsData } from '../../redux/News/action';
 import { connect } from "react-redux";
 import { Route, Link, Redirect } from 'react-router-dom';
-class News extends Component {
+class PhaseBar extends Component {
   componentDidMount() {
-    this.props.getNews();
+    // this.props.getNews();
   }
   render() {
     return (
       <div>
-        {this.props.news}
+        {/* {this.props.news} */}
       </div>
     )
   }
@@ -17,13 +17,13 @@ class News extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    news: state.News.news,
+    // news: state.News.news,
   }
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getNews: () => dispatch(getNewsData())
+    // getNews: () => dispatch(getNewsData())
 
   }
 };
-export default connect(mapStateToProps, mapDispatchToProps)(News)
+export default connect(mapStateToProps, mapDispatchToProps)(PhaseBar)
