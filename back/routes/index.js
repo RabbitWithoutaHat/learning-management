@@ -8,7 +8,6 @@ const notifications = require('../constants/notification-types');
 const addMiddlewares = require('../middlewares/add-middlewares');
 const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
-
 const News = require('../models/News');
 
 const router = express.Router();
@@ -28,7 +27,7 @@ router.post('/login', (req, res, next) => {
       console.log('Login POST  auth ER 1');
       return res.render('login', { [notifications.error]: err });
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, err => {
       if (err) {
         console.log('Login POST LOGIN ER 1');
         return res.render('login', { [notifications.error]: err });
@@ -47,7 +46,7 @@ router.post('/log', async (req, res, next) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, err => {
       if (err) {
         return res.json({ message: err });
       }
@@ -108,7 +107,7 @@ router.post('/reg', async (req, res, next) => {
       if (err) {
         return res.json({ message: err });
       }
-      req.logIn(user, (err) => {
+      req.logIn(user, err => {
         if (err) {
           return res.json({ message: err });
         }
@@ -218,9 +217,7 @@ router.post('/upload-avatar', async (req, res) => {
 });
 
 router.post('/update-profile', async (req, res) => {
-  let {
- email, password, nickname, phone, photo 
-} = req.body;
+  let { email, password, nickname, phone, photo } = req.body;
   const { id } = req.user;
   let hash = req.user.password;
   if (password) {
