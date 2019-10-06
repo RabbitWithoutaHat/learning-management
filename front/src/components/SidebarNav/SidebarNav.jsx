@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import { Header, Icon, Image, Menu, Segment, Sidebar, Button } from 'semantic-ui-react';
-import { Grid } from 'semantic-ui-react';
+import { Icon, Menu, Segment, Sidebar } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
-import Login from '../Authorization/Login';
-import Logout from '../Authorization/Logout';
-import Registration from '../Authorization/Registration';
 import { addUser } from '../../redux/Users/actions';
 import { connect } from 'react-redux';
-import { Route, Link, Redirect } from 'react-router-dom';
-import { Container } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 class SidebarNav extends Component {
   state = {

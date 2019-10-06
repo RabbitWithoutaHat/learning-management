@@ -79,7 +79,7 @@
   margin-left: 5%;
 }
 .col-8 {
-  flex-basis: 60%;
+  flex-basis: 50%;
   margin-right: 5%;
   margin-left: 5%;
 }
@@ -87,6 +87,9 @@
   flex-basis: 20%;
   margin-right: 5%;
   margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .ui.ribbon.label {
@@ -95,4 +98,7 @@
 
 .regForm {
   width: 50%;
+}
+.avatar > .ui.button {
+  margin-top: 10px;
 }

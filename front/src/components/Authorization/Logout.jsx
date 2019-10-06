@@ -3,7 +3,7 @@ import { delUser } from '../../redux/Users/actions';
 import { connect } from 'react-redux';
 class Logout extends Component {
   async componentDidMount() {
-    let resp = await fetch('/logoout');
+    await fetch('/logoout');
     this.props.del();
     this.props.history.push('/login');
   }
