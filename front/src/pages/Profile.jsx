@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Label, Image, Form } from 'semantic-ui-react';
-import Avatar from '../components/Avatar/Avatar';
 
 export default class Profile extends Component {
   state = {

@@ -14,29 +14,28 @@ const FileUpload = () => {
     formData.append('file', file);
     // console.log(file.arrayBuffer);
     // console.log(filename);
-    
     // console.log(formData);
     
     let resp = await fetch('/upload', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
+        
       },
       body: formData,
     });
-    // try {
+    try {
 
-    //   let { fileName, filePath } = await resp.data.json();
-    //   setUploadedFile({ fileName, filePath });
-    // } catch (err) {
-    //   if (err.response.status === 500) {
-    //     console.log('The was a problem with the server');
-    //   } else {
-    //     console.log(err.response.data.message);
+      let { fileName, filePath } = await resp.json();
+      setUploadedFile({ fileName, filePath });
+      console.log('sssss',fileName,filePath);
+      
+    } catch (err) {
+      console.log(err);
+      
         
-    //   }
-    // }
+      
+    }
   }
   return (
     <div>
@@ -49,6 +48,12 @@ const FileUpload = () => {
         </div>
         <input type="submit" value="Upload" className="btn btn-primary btn-block mt-4"></input>
       </form>
+      <div>
+    DownLoad The FIle 
+    <a href='./images/lenin.svg' download="lenin.svg" target="_blank">Click to download</a>
+    
+
+      </div>
     </div>
   )
 }
