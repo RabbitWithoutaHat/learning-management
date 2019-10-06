@@ -128,7 +128,6 @@ router.get('/getnews', async (req, res) => {
   res.json({ news: news.name });
 });
 
-<<<<<<< HEAD
 //Get Topics from BD
 router.get('/gettopics', async (req, res) => {
 
@@ -139,9 +138,6 @@ router.get('/gettopics', async (req, res) => {
 });
 
 //Upload some File
-=======
-// Upload some File
->>>>>>> dev
 router.post('/upload', async (req, res) => {
   // const data = await JSON.parse(req.body);
   // console.log(data);
