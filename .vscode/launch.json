@@ -7,8 +7,8 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/seed/seedTopic.js"
+      "name": "Запустить программу",
+      "program": "${workspaceFolder}/back/app.js"
     }
   ]
 }
