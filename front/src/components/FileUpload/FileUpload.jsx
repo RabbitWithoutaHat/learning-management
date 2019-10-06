@@ -1,42 +1,67 @@
-import React, { Component, useState } from 'react'
-
+import React, { useState } from 'react';
+import { Label, Image, Form, Button } from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 const FileUpload = () => {
   const [file, setFile] = useState('');
   const [filename, setFilename] = useState('Choose File');
-  const [uploadedFile, setUploadedFile] = useState({});
+  const [FilePath, setUploadedFilePath] = useState('String');
+
+  // const downloadRandomImage = () => {
+  //   fetch('/download')
+  //     .then(response => {
+  //       const filename =  response.headers.get('Content-Disposition').split('filename=')[1];
+  //       response.blob().then(blob => {
+  //         let url = window.URL.createObjectURL(blob);
+  //         let a = document.createElement('a');
+  //         a.href = url;
+  //         a.download = filename;
+  //         a.click();
+  //     });
+  //  });
+  // }
   const grabFile = e => {
     setFile(e.target.files[0]);
-    setFilename(e.target.files[0].name)
+    setFilename(e.target.files[0].name);
+  };
+  const but = async e => {
+    e.preventDefault();
+    const resp = await fetch('/download');
+    const data = await resp;
+    console.log(data.body);
+
   }
   const onSubmit = async e => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', file);
-    // console.log(file.arrayBuffer);
-    // console.log(filename);
-    // console.log(formData);
-    
     let resp = await fetch('/upload', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        
+
       },
       body: formData,
     });
     try {
+    let { fileName, filePath } = await resp.json();
+    setUploadedFilePath({ filePath });
+    console.log('sssss', FilePath);
 
-      let { fileName, filePath } = await resp.json();
-      setUploadedFile({ fileName, filePath });
-      console.log('sssss',fileName,filePath);
-      
     } catch (err) {
-      console.log(err);
-      
-        
-      
+    console.log(err);
     }
   }
+  //   let { fileName, filePath } = await resp.data.json();
+  //   setUploadedFile({ fileName, filePath });
+  // } catch (err) {
+  //   if (err.response.status === 500) {
+  //     console.log('The was a problem with the server');
+  //   } else {
+  //     console.log(err.response.data.message);
+
+  //   }
+  // }
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -48,13 +73,30 @@ const FileUpload = () => {
         </div>
         <input type="submit" value="Upload" className="btn btn-primary btn-block mt-4"></input>
       </form>
+      {/* {uploadedFile} */}
+      <Image
+        src={FilePath.filePath}
+        size="small"
+        circular
+      />
       <div>
-    DownLoad The FIle 
-    <a href='./images/lenin.svg' download="lenin.svg" target="_blank">Click to download</a>
-    
+      
+        {/* <a src='/images/lenin.svg' download="lenin.svg" target="_blank"> </a> */}
+      <Link
+      to={FilePath.filePath}
+      // to="./images/IMG_7778.jpg"
+      download
+      target="_blank"
+        >download</Link>
+        {/* <a href= '/home/oleg-lasttry/Final Project/learning-management/back/public/images/lenin.svg' download> Click */}
+        {/* <img src='/images/lenin.svg' alt='xx' /> */}
+        {/* </a> */}
+
+
+
 
       </div>
     </div>
-  )
-}
+  );
+};
 export default FileUpload;

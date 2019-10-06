@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addMsg, addUser } from '../../redux/Users/actions';
-import { Button, Checkbox, Form } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
 
 class Registration extends Component {
   state = {
@@ -46,8 +46,8 @@ class Registration extends Component {
 
   render() {
     return (
-      <div className="center">
-        <Form onSubmit={this.get}>
+      <>
+        <Form className="regForm" onSubmit={this.get}>
           <h3>Registration</h3>
           <Form.Field>
             <label htmlFor="nickname">nickname</label>
@@ -66,13 +66,13 @@ class Registration extends Component {
           </div>
         </Form>
         <h3>{this.props.message ? <>{this.props.message}</> : <></>}</h3>
-      </div>
+      </>
     );
   }
 }
 function mapStateToProps(state) {
   return {
-    message: state.user.message,
+    message: state.User.user.message,
   };
 }
 

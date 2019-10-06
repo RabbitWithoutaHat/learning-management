@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "nodemon --ignore 'sessions/' app.js",
+    "start": "NODE_ENV=development nodemon --ignore 'sessions/' app.js",
     "db:migrate": "sequelize db:migrate"
   },
   "dependencies": {
