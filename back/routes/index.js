@@ -156,20 +156,7 @@ router.get('/gettopics', async (req, res) => {
     result.push(phase)
   }
  //На всякий пожарный структура для плана "B"
-  // const state = {
-  //   Phase: [{
-  //     name: '',
-  //     weeks: [{
-  //       name: '',
-  //       days: [{
-  //         topicName: '',
-  //         video: '',
-  //         githubLink: '',
-  //         comments: '',
-  //       }]
-  //     }]
-  //   }]
-  // }
+ 
   res.json(result);
 });
 
