@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Icon, Menu, Segment, Sidebar } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import { addUser } from '../../redux/Users/actions';
+import { getTopicsData } from '../../redux/Lections/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -85,6 +86,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     add: login => dispatch(addUser(login)),
+    // getTopics: () => dispatch(getTopicsData()),
   };
 }
 export default connect(
