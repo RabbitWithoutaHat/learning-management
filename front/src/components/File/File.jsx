@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import FileUpload from '../FileUpload/FileUpload';
+import FileDownload from '../FileDownload/FileDownload';
 export default class File extends Component {
   
   render() {
@@ -9,7 +10,8 @@ export default class File extends Component {
       <div className="display-4 text center mb-4">
           <i className='fab fa-react' />
       </div>
-        <FileUpload />
+        {/* <FileUpload /> */}
+        <FileDownload/>
        </div>
       
     )

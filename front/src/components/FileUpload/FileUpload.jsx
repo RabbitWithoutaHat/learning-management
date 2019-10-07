@@ -25,7 +25,7 @@ const FileUpload = () => {
   };
   const but = async e => {
     e.preventDefault();
-    const resp = await fetch('/download');
+    const resp = await fetch('/downloadtest');
     const data = await resp;
     console.log(data.body);
 

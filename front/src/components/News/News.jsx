@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { getNewsData } from '../../redux/News/action';
 import { connect } from "react-redux";
 import { Route, Link, Redirect } from 'react-router-dom';
+
 class News extends Component {
   componentDidMount() {
     this.props.getNews();
