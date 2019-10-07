@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAllUsers } from '../../redux/Users/actions';
-import { Image, List } from 'semantic-ui-react';
+import { Image, List, Header } from 'semantic-ui-react';
 
 
 class UsersList extends Component {
@@ -14,16 +14,20 @@ class UsersList extends Component {
 
     return (
       <List className="ui massive relaxed animated list usersList">
-          {this.props.users ? this.props.users.map((e, i) =>
-            <List.Item key={`${i}user`} className="item">
-              <Image className="ui avatar image" src={`/images/${e.photo}`} />
-              <List.Content className="content">
-                <List.Header className="header">{e.nickname}</List.Header>
-                <List.Header className="header" color='gray'>{e.group}</List.Header>
-              </List.Content>
-            </List.Item>
-          ) : <></>}
-        </List>
+        {this.props.users ? this.props.users.map((e, i) =>
+          <List.Item key={`${i}user`} className="item">
+            <List.Content className="content">
+              <Header as='a'>
+                <Image className="ui avatar image" src={`/images/${e.photo}`} />
+                <Header.Content>
+                  {e.nickname}
+                  <Header.Subheader >{e.group}</Header.Subheader>
+                </Header.Content>
+              </Header>
+            </List.Content>
+          </List.Item>
+        ) : <></>}
+      </List>
 
     )
 
