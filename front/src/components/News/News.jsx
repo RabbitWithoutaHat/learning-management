@@ -7,23 +7,22 @@ class News extends Component {
     this.props.getNews();
   }
   render() {
-    return (
-      <div>
-        {this.props.news}
-      </div>
-    )
+    return <div>{this.props.news}</div>;
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     news: state.News.news,
-  }
+  };
 };
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     getNews: () => dispatch(getNewsData())
 
   }
 };
-export default connect(mapStateToProps, mapDispatchToProps)(News)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(News);

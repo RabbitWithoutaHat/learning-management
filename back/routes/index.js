@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const fileUpload = require('express-fileupload');
 const User = require('../models/User');
 const Group = require('../models/Group');
 const homePageWithNotification = require('../helpers/homePageWithNotification');
@@ -28,7 +29,7 @@ router.post('/login', (req, res, next) => {
       console.log('Login POST  auth ER 1');
       return res.render('login', { [notifications.error]: err });
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, err => {
       if (err) {
         console.log('Login POST LOGIN ER 1');
         return res.render('login', { [notifications.error]: err });
@@ -47,11 +48,11 @@ router.post('/log', async (req, res, next) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, err => {
       if (err) {
         return res.json({ message: err });
       }
-      return res.json({ user: user.nickname });
+      return res.json({ user: user.nickname, email: user.email });
     });
   })(req, res, next);
 });
@@ -65,7 +66,9 @@ router.get('/authcheck', (req, res) => {
   if (req.isAuthenticated()) {
     res.json({ user: req.user.nickname });
   } else {
-    res.json({ message: 'You are not authinticated,please log-in or register' });
+    res.json({
+      message: 'You are not authinticated,please log-in or register',
+    });
   }
 });
 // POST new user
@@ -78,7 +81,6 @@ router.post('/sign-up', async (req, res) => {
       nickname,
       email,
       password: hash,
-      points: 0,
     });
     return res.redirect(
       homePageWithNotification(
@@ -101,14 +103,13 @@ router.post('/reg', async (req, res, next) => {
       nickname,
       email,
       password: hash,
-      points: 0,
     });
     return passport.authenticate('local', async (err, user) => {
       const thisUser = await User.findOne({ email: req.body.email });
       if (err) {
         return res.json({ message: err });
       }
-      req.logIn(user, (err) => {
+      req.logIn(user, err => {
         if (err) {
           return res.json({ message: err });
         }
@@ -121,9 +122,8 @@ router.post('/reg', async (req, res, next) => {
   return res.json({ message: 'This email is already used' });
 });
 
-//Get NEws from BD
+// Get NEws from BD
 router.get('/getnews', async (req, res) => {
-
   const news = await News.findOne();
   console.log('BACKKK', news.name);
 
@@ -197,7 +197,7 @@ router.get('/gettopics', async (req, res) => {
 });
 
 
-//Upload some File
+// Upload some File
 router.post('/upload', async (req, res) => {
   // const data = await JSON.parse(req.body);
   // console.log(data);
@@ -253,6 +253,76 @@ router.get('/auth-page', async (req, res) => {
       homePageWithNotification(notifications.error, 'Not Authenticated!'),
     );
   }
+});
+
+router.post('/upload-avatar', async (req, res) => {
+  const id = req.user._id;
+  await User.updateOne({ _id: id }, { $set: { photo: req.files.photo.name } });
+
+  try {
+    if (!req.files.photo) {
+      res.send({
+        status: false,
+        message: 'No file uploaded',
+      });
+    } else {
+      const { photo } = req.files;
+      photo.mv(`./public/images/${photo.name}`);
+
+      // send response
+      res.send({
+        status: true,
+        message: 'File is uploaded',
+        data: {
+          name: photo.name,
+          mimetype: photo.mimetype,
+          size: photo.size,
+        },
+      });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+router.post('/update-profile', async (req, res) => {
+  let { email, password, nickname, phone, photo } = req.body;
+  const { id } = req.user;
+  let hash = req.user.password;
+  if (password) {
+    hash = await bcrypt.hash(password, 10);
+  }
+  if (!photo) {
+    photo = req.user.photo;
+  }
+  if (!email) {
+    email = req.user.email;
+  }
+  if (!nickname) {
+    nickname = req.user.nickname;
+  }
+  if (!phone) {
+    phone = req.user.phone;
+  }
+  await User.updateOne(
+    { _id: id },
+    {
+      $set: {
+        email,
+        password: hash,
+        nickname,
+        phone,
+      },
+    },
+  );
+
+  res.json({
+    email: req.user.email,
+    login: req.user.nickname,
+    photo: req.user.photo,
+    phone: req.user.phone,
+    group: req.user.group,
+  });
 });
 
 module.exports = router;
