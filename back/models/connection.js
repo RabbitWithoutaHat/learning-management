@@ -1,10 +1,12 @@
 const path = require('path');
 const mongoose = require('mongoose');
 
-const config = require('../config/config.json')[process.env.NODE_ENV];
+
+const config = require('../config/config.json')[process.env.NODE_ENV || 'development'];
 
 // const basename = path.basename(__filename);
-// console.log(config.db)
+console.log(process.env.NODE_ENV);
+
 mongoose.connect(config.db, {
   useUnifiedTopology: true,
   useNewUrlParser: true,

@@ -1,0 +1,3 @@
+export const REQUESTED_TOPICS = 'REQUESTED_TOPICS';
+export const ADD_TOPICS = 'ADD_TOPICS';
+export const REQUESTED_ERROR = 'REQUESTED_ERROR';
