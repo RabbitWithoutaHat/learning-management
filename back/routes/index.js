@@ -11,7 +11,7 @@ const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
 const Topic = require('../models/Topic');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 const router = express.Router();
 
 addMiddlewares(router);
@@ -29,7 +29,7 @@ router.post('/login', (req, res, next) => {
       console.log('Login POST  auth ER 1');
       return res.render('login', { [notifications.error]: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         console.log('Login POST LOGIN ER 1');
         return res.render('login', { [notifications.error]: err });
@@ -48,7 +48,7 @@ router.post('/log', async (req, res, next) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         return res.json({ message: err });
       }
@@ -109,7 +109,7 @@ router.post('/reg', async (req, res, next) => {
       if (err) {
         return res.json({ message: err });
       }
-      req.logIn(user, err => {
+      req.logIn(user, (err) => {
         if (err) {
           return res.json({ message: err });
         }
@@ -129,18 +129,21 @@ router.get('/getnews', async (req, res) => {
 
   res.json({ news: news.name });
 });
-//Get TOpics from BD for users exact group!
+// Get TOpics from BD for users exact group!
 router.get('/gettopics', async (req, res) => {
   // console.log("user===",req.user);
   // const news = await News.findOne();
   // console.log('BACKKK', req.body.userName);
-  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d9a34fc667f67101277dfce" });
+  const user = await User.findOneAndUpdate(
+    { nickname: req.user.nickname },
+    { group: '5d9a34fc667f67101277dfce' },
+  );
   // const group = await Group.findOne({_id:user.group});
   // console.log(group.name);
   console.log(user.group);
 
   // const topics = await Topic.find({ group: user.group });
-  const topics = await Topic.find({ group: user.group })
+  const topics = await Topic.find({ group: user.group });
   console.log(topics.length);
   let Phase = 0;
   let Week = 0;
@@ -153,17 +156,23 @@ router.get('/gettopics', async (req, res) => {
 
   for (let p = 1; p < Phase + 1; p++) {
     for (let w = 1; w < Week + 1; w++) {
-      let week = topics.filter(el=>el.phase===`${p}`).filter(el=>el.week===`${w}`).sort((el)=>(el.day)?-1:1);
-      if(week===0) {
+      const week = topics
+        .filter((el) => el.phase === `${p}`)
+        .filter((el) => el.week === `${w}`)
+        .sort((el) => (el.day ? -1 : 1));
+      if (week === 0) {
         continue;
       } else {
         result.push(week);
       }
     }
   }
-// console.log(result);
+  // console.log(result);
 
-  const P1W1 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
+  const P1W1 = topics
+    .filter((el) => el.phase === '1')
+    .filter((el) => el.week === '1')
+    .sort((el) => (el.day ? -1 : 1));
   // const P1W2 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
   // const P1W3 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
   // const P1W4 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
@@ -176,27 +185,30 @@ router.get('/gettopics', async (req, res) => {
   console.log(P1W1);
 
   const state = {
-    Phase: [{
-      name: '',
-      weeks: [{
+    Phase: [
+      {
         name: '',
-        days: [{
-          topicName: '',
-          video: '',
-          githubLink: '',
-          comments: '',
-        }]
-      }]
-    }]
-  }
-
-
-
+        weeks: [
+          {
+            name: '',
+            days: [
+              {
+                topicName: '',
+                video: '',
+                githubLink: '',
+                comments: '',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
 
   res.json(topics);
 });
 
-//Upload some File
+// Upload some File
 router.post('/upload', async (req, res) => {
   // const data = await JSON.parse(req.body);
   // console.log(data);
@@ -285,7 +297,9 @@ router.post('/upload-avatar', async (req, res) => {
 });
 
 router.post('/update-profile', async (req, res) => {
-  let { email, password, nickname, phone, photo } = req.body;
+  let {
+ email, password, nickname, phone, photo 
+} = req.body;
   const { id } = req.user;
   let hash = req.user.password;
   if (password) {
