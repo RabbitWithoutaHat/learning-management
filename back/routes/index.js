@@ -131,10 +131,12 @@ router.get('/getnews', async (req, res) => {
 //Get TOpics from BD for users exact group!
 router.get('/gettopics', async (req, res) => {
   //Добавляю хардкодом группу т.к при реге её нет
-  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d9a34fc667f67101277dfce" });
+  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d95f85bd93180d422d24895" });
 
   // Все топики
   const topics = await Topic.find({ group: user.group })
+  console.log(topics.length);
+  
   //Максимальное кол-во фаз и недель!
   let Phase = 0;
   let Week = 0;
@@ -147,7 +149,7 @@ router.get('/gettopics', async (req, res) => {
     let phase = [];
     for (let w = 1; w < Week + 1; w++) {
       let week = topics.filter(el => el.phase === `${p}`).filter(el => el.week === `${w}`).sort((el) => (el.day) ? -1 : 1);
-      if (week === 0) {
+      if (week.length === 0) {
         continue;
       } else {
         phase.push(week);
@@ -160,14 +162,45 @@ router.get('/gettopics', async (req, res) => {
   res.json(result);
 });
 
-//Download File
-router.get('/download', function (req, res, next) {
+
+
+//Download File тестовая ручка.Не стрирайте.
+router.get('/downloadtest', function (req, res, next) {
   var filePath = "/home/oleg-lasttry/Final Project/learning-management/back/public/images/..."; // Or format the path using the `id` rest param
   var fileName = "lenin.svg"; // The default name the browser will use
 
   // res.download(filePath, fileName); 
   res.json({ message: 'Something good happened' });   
   // res.json({user:"hi"})
+});
+
+router.get('/getDayData', async function (req, res, next) {
+
+    //Добавляю хардкодом группу т.к при реге её нет
+    const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d95f85bd93180d422d24895" });
+    // Все топики
+    const topics = await Topic.find({ group: user.group })
+    // console.log('topics length',topics);
+    console.clear();
+    console.log("1--------------------------------------------");
+    
+    const mainPageTopic =topics
+    // .sort((el) => (el.phase) ? 1 : -1)
+    .sort((a,b) => {
+      return (b.phase-a.phase)&&(b.week-a.week)
+    })
+   
+
+    // .sort(function(a,b) {
+    //   return b.week-a.week;
+    // })
+    // .sort(function(a,b) {
+    //   return b.day-a.day;
+    // })
+    // .sort((el) => (el.day) ? -1 : 1);
+ console.log(mainPageTopic);
+ console.log("--------------------------------------------");
+  res.json({hi:"hi"})
 });
 // Upload some File
 router.post('/upload', async (req, res) => {
