@@ -132,10 +132,12 @@ router.get('/getnews', async (req, res) => {
 // Get TOpics from BD for users exact group!
 router.get('/gettopics', async (req, res) => {
   // Добавляю хардкодом группу т.к при реге её нет
-  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: '5d9a34fc667f67101277dfce' });
+  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: '5d95f85bd93180d422d24895' });
 
   // Все топики
   const topics = await Topic.find({ group: user.group });
+  console.log(topics.length);
+
   // Максимальное кол-во фаз и недель!
   let Phase = 0;
   let Week = 0;
@@ -161,14 +163,41 @@ router.get('/gettopics', async (req, res) => {
   res.json(result);
 });
 
-// Download File
-router.get('/download', (req, res, next) => {
+
+// Download File тестовая ручка.Не стрирайте.
+router.get('/downloadtest', (req, res, next) => {
   const filePath = '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
   const fileName = 'lenin.svg'; // The default name the browser will use
 
   // res.download(filePath, fileName);
   res.json({ message: 'Something good happened' });
   // res.json({user:"hi"})
+});
+router.post('/download', (req, res, next) => {
+  console.log('xxxxx', req.body);
+
+  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`, (err) => {
+    if (err) {
+      console.log(err);
+      // return res.status(500).send(err);
+    }
+    // res.json({fileName:file.name, filePath : `/img/${file.name}`})
+  });
+});
+router.get('/getDayData', async (req, res, next) => {
+  // Добавляю хардкодом группу т.к при реге её нет
+  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: '5d95f85bd93180d422d24895' });
+  // Все топики
+  const topics = await Topic.find({ group: user.group });
+
+  const mainPageTopic = topics
+    // .sort((el) => (el.phase) ? 1 : -1)
+    .sort((a, b) => (b.phase - a.phase) || (b.week - a.week) || (b.day - a.day));
+  if (mainPageTopic.length === null) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+
+  res.json(mainPageTopic[0]);
 });
 // Upload some File
 router.post('/upload', async (req, res) => {
