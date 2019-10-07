@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { getNewsData } from '../../redux/News/action';
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+import { Route, Link, Redirect } from 'react-router-dom';
 class News extends Component {
   componentDidMount() {
     this.props.getNews();
@@ -17,8 +18,9 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getNews: () => dispatch(getNewsData()),
-  };
+    getNews: () => dispatch(getNewsData())
+
+  }
 };
 export default connect(
   mapStateToProps,

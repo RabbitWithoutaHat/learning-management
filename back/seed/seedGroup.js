@@ -4,7 +4,7 @@ const Group = require('../models/Group');
 
 const groups = [
   {
-    name: 'Bears',
+    name: 'Beaver',
   },
 ];
 
