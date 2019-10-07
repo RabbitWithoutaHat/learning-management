@@ -173,34 +173,35 @@ router.get('/downloadtest', function (req, res, next) {
   res.json({ message: 'Something good happened' });   
   // res.json({user:"hi"})
 });
-
+router.post('/download', function (req, res, next) {
+  console.log("xxxxx",req.body);
+  
+  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,err => {
+    if(err) {
+      console.log(err);
+      // return res.status(500).send(err);
+    }
+    // res.json({fileName:file.name, filePath : `/img/${file.name}`})
+  });
+  
+});
 router.get('/getDayData', async function (req, res, next) {
 
     //Добавляю хардкодом группу т.к при реге её нет
     const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d95f85bd93180d422d24895" });
     // Все топики
     const topics = await Topic.find({ group: user.group })
-    // console.log('topics length',topics);
-    console.clear();
-    console.log("1--------------------------------------------");
-    
+   
     const mainPageTopic =topics
     // .sort((el) => (el.phase) ? 1 : -1)
     .sort((a,b) => {
-      return (b.phase-a.phase)&&(b.week-a.week)
-    })
-   
-
-    // .sort(function(a,b) {
-    //   return b.week-a.week;
-    // })
-    // .sort(function(a,b) {
-    //   return b.day-a.day;
-    // })
-    // .sort((el) => (el.day) ? -1 : 1);
- console.log(mainPageTopic);
- console.log("--------------------------------------------");
-  res.json({hi:"hi"})
+      return (b.phase-a.phase)||(b.week-a.week)||(b.day-a.day)
+    });
+    if (mainPageTopic.length === null) {
+      return res.status(400).json({message:'No file uploaded'})
+    } 
+  
+  res.json(mainPageTopic[0]);
 });
 // Upload some File
 router.post('/upload', async (req, res) => {
