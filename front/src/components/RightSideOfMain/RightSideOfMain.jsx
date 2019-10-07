@@ -6,6 +6,7 @@ import Registration from '../Authorization/Registration';
 import Profile from '../../pages/Profile';
 import Home from '../../pages/Home';
 import Lections from '../../pages/Lections';
+import Video from '../Video/Video';
 export default class NavBar extends Component {
   render() {
     return (
@@ -15,7 +16,8 @@ export default class NavBar extends Component {
         <Route path="/login" component={Login} />
         <Route path="/registration" component={Registration} />
         <Route path="/profile" component={Profile} />
-        <Route path="/lections" component={Lections} />
+        <Route exact path="/lections" component={Lections} />
+        <Route name="lection" path="/lections/:id" component={Video} />
       </>
     );
   }

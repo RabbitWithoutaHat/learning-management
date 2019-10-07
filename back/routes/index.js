@@ -11,7 +11,7 @@ const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
 const Topic = require('../models/Topic');
-// const fileUpload = require('express-fileupload');
+
 const router = express.Router();
 
 addMiddlewares(router);
@@ -131,81 +131,42 @@ router.get('/getnews', async (req, res) => {
 });
 // Get TOpics from BD for users exact group!
 router.get('/gettopics', async (req, res) => {
-  // console.log("user===",req.user);
-  // const news = await News.findOne();
-  // console.log('BACKKK', req.body.userName);
+  // Добавляю хардкодом группу т.к при реге её нет
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
-    { group: '5d9a34fc667f67101277dfce' },
+    { group: '5d95f85bd93180d422d24895' },
   );
-  // const group = await Group.findOne({_id:user.group});
-  // console.log(group.name);
-  console.log(user.group);
 
-  // const topics = await Topic.find({ group: user.group });
+  // Все топики
   const topics = await Topic.find({ group: user.group });
-  console.log(topics.length);
+  // Максимальное кол-во фаз и недель!
+
   let Phase = 0;
   let Week = 0;
   for (let i = 0; i < topics.length; i++) {
     Phase = Math.max(Phase, topics[i].phase);
     Week = Math.max(Week, topics[i].week);
   }
-  console.log(Phase, Week);
   const result = [];
-
   for (let p = 1; p < Phase + 1; p++) {
+    const phase = [];
     for (let w = 1; w < Week + 1; w++) {
       const week = topics
         .filter((el) => el.phase === `${p}`)
         .filter((el) => el.week === `${w}`)
-        .sort((el) => (el.day ? -1 : 1));
-      if (week === 0) {
+        .sort((el) => (el.day ? 1 : -1));
+      if (week.length === 0) {
         continue;
       } else {
-        result.push(week);
+        phase.push(week);
       }
     }
+
+    result.push(phase);
   }
-  // console.log(result);
-
-  const P1W1 = topics
-    .filter((el) => el.phase === '1')
-    .filter((el) => el.week === '1')
-    .sort((el) => (el.day ? -1 : 1));
-  // const P1W2 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
-  // const P1W3 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
-  // const P1W4 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
-  // const P2W1 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
-  // const P2W2 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
-  // const P2W3 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
-  // const P3W4 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
-  // const P3W1 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
-  // const P3W2 = topics.filter(el=>el.phase==='3').filter(el=>el.week==='2').sort((el)=>(el.day)?-1:1);
-  console.log(P1W1);
-
-  const state = {
-    Phase: [
-      {
-        name: '',
-        weeks: [
-          {
-            name: '',
-            days: [
-              {
-                topicName: '',
-                video: '',
-                githubLink: '',
-                comments: '',
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  };
-
-  res.json(topics);
+  // На всякий пожарный структура для плана "B"
+  console.log(result);
+  res.json({ result, topics });
 });
 
 // Download File
@@ -228,13 +189,6 @@ router.post('/upload', async (req, res) => {
     return res.status(400).json({ message: 'No file uploaded' });
   }
   const { file } = req.files;
-  // file.mv(`/home/oleg-lasttry/Final Project/learning-management/back/public/images/${file.name}`,err => {
-  //   if(err) {
-  //     console.log(err);
-  //     // return res.status(500).send(err);
-  //   }
-  //   res.json({fileName:file.name, filePath : `/images/${file.name}`})
-  // });
   file.mv(
     `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
     (err) => {

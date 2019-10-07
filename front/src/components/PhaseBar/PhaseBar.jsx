@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { getNewsData } from '../../redux/News/action';
 import { connect } from 'react-redux';
-// import { Route, Link, Redirect } from 'react-router-dom';
+import { Route, Link, Redirect } from 'react-router-dom';
 import { getTopicsData } from '../../redux/Lections/actions';
-import { Tab } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
+import { Tabs, TabList, Tab, TabPanel, CustomTab } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 // class PhaseBar extends Component {
 //   //   async componentDidUpdate(prevProps) {
@@ -16,51 +18,58 @@ import { Tab } from 'semantic-ui-react';
 //   //       console.log(data);
 //   //     }
 //   //   }
-//   // state = {
-//   //   mass: [],
-//   //   curarr: [],
-//   //   phase1: [],
-//   //   phase2: [],
-//   // };
-//   onlyUnique = (value, index, self) => {
-//     return self.indexOf(value) === index;
-//   };
-//   async componentDidMount() {
-//     await this.props.getTopics();
-//     const arr = [1, 1, 1, 2, 34, 3, 3, 5, 7];
-//     // console.log(this.props.topics);
-//     this.setState({ mass: this.props.topics });
-//     // const unique = arr.filter(onlyUnique);
-//     // console.log(this.state.mass);
 
-//     // const arr2 = this.props.topics;
-//     // console.log(arr2);
-//     const phase1 = this.state.mass.filter(el => el.phase === '1');
-//     this.setState({ phase1: phase1 });
-//     // .sort(el=>el.week);
-//     const phase2 = this.state.mass.filter(el => el.phase === '2');
-//     this.setState({ phase2: phase2 });
-//     // console.log('phase1', phase1);
-//   }
+class PhaseBar extends Component {
+  state = {};
+  componentDidMount() {
+    this.props.getTopics();
+  }
+  render() {
+    console.log(this.props.topics);
 
-//   render() {
-//     return (
-//       <div>
-//         <TabExampleBasic />
-//       </div>
-//     );
-//   }
-// }
-
-const panes = [
-  { menuItem: 'Tab 1', render: () => <Tab.Pane>Tab 1 Content</Tab.Pane> },
-  { menuItem: 'Tab 2', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
-  { menuItem: 'Tab 3', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
-];
-
-const PhaseBar = () => <Tab panes={panes} />;
+    return (
+      <Tabs className="phaseTabs">
+        <TabList>
+          {this.props.topics ? this.props.topics.map((phase, i) => <Tab key={`${i}tabs`}>Фаза {i + 1}</Tab>) : <p></p>}
+        </TabList>
+        {this.props.topics ? (
+          this.props.topics.map((phase, i) => (
+            <TabPanel forceRender key={`${i}phase`}>
+              {phase.map((week, i) => (
+                <>
+                  <h3 className="weekTitle" key={`${i}week`}>
+                    Неделя {week[0].week}
+                  </h3>
+                  <List>
+                    {week.map((day, i) => (
+                      <List.Item>
+                        <Link params={{ desc: day.description }} to={`/lections/${day._id}`}>
+                          {day.topicName}
+                        </Link>
+                      </List.Item>
+                    ))}
+                  </List>
+                </>
+              ))}
+            </TabPanel>
+          ))
+        ) : (
+          <p></p>
+        )}
+        <TabPanel>
+          <h2>Any content 1</h2>
+        </TabPanel>
+        <TabPanel>
+          <h2>Any content 2</h2>
+        </TabPanel>
+      </Tabs>
+    );
+  }
+}
 
 const mapStateToProps = state => {
+  // console.log(state);
+
   return {
     topics: state.Topics.topics,
     userName: state.User.user.login,

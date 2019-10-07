@@ -102,3 +102,20 @@
 .avatar > .ui.button {
   margin-top: 10px;
 }
+.lections {
+  width: 100%;
+}
+.lectionsTitle {
+  text-align: center;
+}
+
+h3:first-child {
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+.ui.list {
+  font-size: 1.4em;
+}
+.ui.sidebar {
+  margin-right: 20px !important;
+}
