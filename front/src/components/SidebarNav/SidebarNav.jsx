@@ -40,6 +40,12 @@ class SidebarNav extends Component {
                   Лекции
                 </Menu.Item>
               </Link>
+              <Link to="/users">
+                <Menu.Item>
+                  <Icon name="users" />
+                  Пользователи
+                </Menu.Item>
+              </Link>
               {/* <div>AUTH</div> */}
               <Calendar onChange={this.onChange} value={this.state.date} />
               <Link className="logoutItem" to="/logout">

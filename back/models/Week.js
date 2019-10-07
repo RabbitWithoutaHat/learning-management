@@ -8,11 +8,11 @@ const WeekSchema = new Schema({
     required: true,
   },
   PhaseId: {
-    type:Schema.Types.ObjectId,ref:'Phase',
-},
-day:[{
-  type:Schema.Types.ObjectId,ref:'Day',
-}]
+    type: Schema.Types.ObjectId, ref: 'Phase',
+  },
+  day: [{
+    type: Schema.Types.ObjectId, ref: 'Day',
+  }],
 });
 
 module.exports = model('Week', WeekSchema);

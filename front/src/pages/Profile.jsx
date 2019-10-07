@@ -21,7 +21,7 @@ class Profile extends Component {
     this.props.updateProfile({ data: this.state });
   }
   // componentDidUpdate() {
-  //   if (prevProps.data !== this.props.data) {
+  //   if (prevProps.data !== this.props.data) {  
 
   //   }
   // }
