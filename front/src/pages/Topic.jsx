@@ -13,19 +13,25 @@ class Topic extends Component {
     await this.props.getTopics();
     const topic = this.props.allTopics.find(el => el._id === this.props.match.params.id);
     const videoSrc = topic.video;
-    const videostr = videoSrc.replace('watch?v=', 'embed/');
+    let videostr = '';
+    if (videoSrc.includes('watch')) {
+      videostr = videoSrc.replace('watch?v=', 'embed/');
+    } else {
+      videostr = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
+    }
     this.setState({ topic: topic, videostr: videostr });
-    console.log(topic);
+    console.log(this.state.topic.topicName);
   }
 
   render() {
     return (
-      <div>
-        <div>
+      <div className="videoContainer">
+        <h1>{this.state.topic.topicName}</h1>
+        <div className="video">
           <iframe
             src={this.state.videostr}
-            width="640"
-            height="480"
+            width="900"
+            height="560"
             frameBorder="0"
             allow="autoplay; encrypted-media"
             allowFullScreen

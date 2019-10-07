@@ -1,14 +1,20 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { getNewsData } from '../../redux/News/action';
-import { connect } from "react-redux";
-import { Route, Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { Header } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 
 class News extends Component {
   componentDidMount() {
     this.props.getNews();
   }
   render() {
-    return <div>{this.props.news}</div>;
+    return (
+      <Segment>
+        <Header as="h1" icon="plug" content={this.props.news} />
+      </Segment>
+    );
   }
 }
 
@@ -19,9 +25,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getNews: () => dispatch(getNewsData())
-
-  }
+    getNews: () => dispatch(getNewsData()),
+  };
 };
 export default connect(
   mapStateToProps,

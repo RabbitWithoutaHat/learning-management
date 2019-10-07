@@ -25,8 +25,8 @@ class SidebarNav extends Component {
             <>
               <Link to="/">
                 <Menu.Item>
-                  <Icon name="home" />
-                  Главная
+                  <Icon name="play" />
+                  Актуальное
                 </Menu.Item>
               </Link>
               <Link to="/profile">

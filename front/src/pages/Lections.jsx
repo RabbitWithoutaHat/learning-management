@@ -5,7 +5,7 @@ export default class Lections extends Component {
   render() {
     return (
       <div className="lections">
-        <h2 className="lectionsTitle">Лекции</h2>
+        <h1 className="lectionsTitle">Лекции</h1>
         <PhaseBar />
       </div>
     );

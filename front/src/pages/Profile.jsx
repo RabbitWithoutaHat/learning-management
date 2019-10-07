@@ -35,19 +35,18 @@ class Profile extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
   uploadPhoto = e => {
-    console.log(e.target.files[0]);
-
     this.props.avatarToState(e.target.files[0]);
     this.setState({
       tempSrc: URL.createObjectURL(e.target.files[0]),
     });
   };
   render() {
+    console.log(this.props);
     return (
       <>
         <Form className="col-8">
           <Label className="groupLabel" as="a" color="blue" ribbon>
-            Группа{this.state.group}
+            {this.props.groupName ? this.props.groupName : <span>Группа</span>}
           </Label>
           <Form.Field>
             <label htmlFor="email">email</label>
@@ -123,7 +122,7 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state) {
-  // console.log(state);
+  console.log(state);
 
   return {
     email: state.User.user.email,
@@ -131,6 +130,7 @@ function mapStateToProps(state) {
     photo: state.User.user.photo,
     phone: state.User.user.phone,
     group: state.User.user.group,
+    groupName: state.User.user.groupName,
     photoSrc: state.User.user.photoSrc,
   };
 }

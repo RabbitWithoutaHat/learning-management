@@ -171,43 +171,44 @@ router.get('/gettopics', async (req, res) => {
 
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-  var filePath =
-    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
-  var fileName = 'lenin.svg'; // The default name the browser will use
+  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const fileName = 'lenin.svg'; // The default name the browser will use
 
   // res.download(filePath, fileName);
   res.json({ message: 'Something good happened' });
   // res.json({user:"hi"})
 });
+router.post('/download', (req, res, next) => {
+  console.log('xxxxx', req.body);
 
+  file.mv(
+    `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+        // return res.status(500).send(err);
+      }
+      // res.json({fileName:file.name, filePath : `/img/${file.name}`})
+    },
+  );
+});
 router.get('/getDayData', async (req, res, next) => {
-  //Добавляю хардкодом группу т.к при реге её нет
+  // Добавляю хардкодом группу т.к при реге её нет
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
     { group: '5d95f85bd93180d422d24895' },
   );
   // Все топики
   const topics = await Topic.find({ group: user.group });
-  // console.log('topics length',topics);
-  console.clear();
-  console.log('1--------------------------------------------');
 
   const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
-    .sort((a, b) => {
-      return b.phase - a.phase && b.week - a.week;
-    });
+    .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
+  if (mainPageTopic.length === null) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
 
-  // .sort(function(a,b) {
-  //   return b.week-a.week;
-  // })
-  // .sort(function(a,b) {
-  //   return b.day-a.day;
-  // })
-  // .sort((el) => (el.day) ? -1 : 1);
-  console.log(mainPageTopic);
-  console.log('--------------------------------------------');
-  res.json({ hi: 'hi' });
+  res.json(mainPageTopic[0]);
 });
 // Upload some File
 router.post('/upload', async (req, res) => {
@@ -305,6 +306,7 @@ router.post('/update-profile', async (req, res) => {
  email, password, nickname, phone, photo 
 } = req.body;
   const { id } = req.user;
+
   let hash = req.user.password;
   if (password) {
     hash = await bcrypt.hash(password, 10);
@@ -332,6 +334,8 @@ router.post('/update-profile', async (req, res) => {
       },
     },
   );
+  console.log(req.user);
+  console.log(req.user.groupName);
 
   res.json({
     email: req.user.email,
@@ -339,6 +343,7 @@ router.post('/update-profile', async (req, res) => {
     photo: req.user.photo,
     phone: req.user.phone,
     group: req.user.group,
+    groupName: req.user.groupName,
   });
 });
 

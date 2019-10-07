@@ -9,6 +9,7 @@ import {createStore,combineReducers} from 'redux'
 import reducerUser from './redux/Users/reducer';
 import reducerNews from './redux/News/reducer';
 import reducerTopics from './redux/Lections/reducer';
+import reducerMainPageTOpic from './redux/MainPageTopic/reducer';
 
 // This would produce the following state object
 
@@ -18,7 +19,7 @@ import { applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 
 // //combinereducer!!!
-const rootReducer = combineReducers({User:reducerUser,News:reducerNews,Topics: reducerTopics})
+const rootReducer = combineReducers({User:reducerUser,News:reducerNews,Topics: reducerTopics,MainPage:reducerMainPageTOpic})
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(rootReducer,
