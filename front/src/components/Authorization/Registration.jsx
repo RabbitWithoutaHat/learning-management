@@ -72,7 +72,7 @@ class Registration extends Component {
 }
 function mapStateToProps(state) {
   return {
-    message: state.user.message,
+    message: state.User.user.message,
   };
 }
 

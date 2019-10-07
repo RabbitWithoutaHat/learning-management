@@ -1,18 +1,9 @@
-import { REQUESTED_TOPICS } from './types';
+import { REQUESTED_TOPICS,REQUESTED_ERROR,ADD_TOPICS } from './types';
 
 const initialState = {
-  topics = {
-    topicName: '',
-    description: '',
-    video: '',
-    group: '',
-    phase: '',
-    week: '',
-    day: '',
-    githubLink: '', 
-
-  }
-
+  topics :[],
+  loading: '', //loading Topics status
+  error: '', //error Topics status
 }
 
 export default function (state = initialState, action) {
@@ -23,6 +14,22 @@ export default function (state = initialState, action) {
         topics: action.topics,
         loading: true,
         error: false,
+      };
+    }
+    case ADD_TOPICS: {
+      return {
+        ...state,
+        topics: action.topics,
+        loading: true,
+        error: false,
+      };
+    }
+    case REQUESTED_ERROR: {
+      return {
+        ...state,
+        topics: '',
+        loading: false,
+        error: true,
       };
     }
     default:
