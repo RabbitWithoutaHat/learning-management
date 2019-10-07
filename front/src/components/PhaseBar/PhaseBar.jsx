@@ -29,6 +29,7 @@ class PhaseBar extends Component {
     const arr = [1, 1, 1, 2, 34, 3, 3, 5, 7];
     // console.log(this.props.topics);
     this.setState({ mass: this.props.topics });
+    // const unique = arr.filter(onlyUnique);
     // console.log(this.state.mass);
 
     // const arr2 = this.props.topics;

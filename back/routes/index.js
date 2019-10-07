@@ -161,9 +161,9 @@ router.get('/gettopics', async (req, res) => {
       }
     }
   }
-console.log(result);
+// console.log(result);
 
-  // const P1W1 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
+  const P1W1 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
   // const P1W2 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
   // const P1W3 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
   // const P1W4 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
@@ -173,8 +173,7 @@ console.log(result);
   // const P3W4 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
   // const P3W1 = topics.filter(el=>el.phase==='1').filter(el=>el.week==='1').sort((el)=>(el.day)?-1:1);
   // const P3W2 = topics.filter(el=>el.phase==='3').filter(el=>el.week==='2').sort((el)=>(el.day)?-1:1);
-
-  // console.log(P3W2);
+  console.log(P1W1);
 
   const state = {
     Phase: [{
