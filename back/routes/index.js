@@ -208,25 +208,44 @@ router.get('/gettopics', async (req, res) => {
   res.json(topics);
 });
 
+// Download File
+router.get('/download', (req, res, next) => {
+  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const fileName = 'lenin.svg'; // The default name the browser will use
+
+  // res.download(filePath, fileName);
+  res.json({ message: 'Something good happened' });
+  // res.json({user:"hi"})
+});
 // Upload some File
 router.post('/upload', async (req, res) => {
   // const data = await JSON.parse(req.body);
   // console.log(data);
 
-  console.log(req);
+  console.log(req.files);
 
-  // if (req.files === null) {
-  //   return res.status(400).json({message:'No file uploaded'})
-  // }
-  // const file = req.files.file;
-  // file.mv(`${__dirname}/client/public/upload/${file.name}`,err => {
+  if (req.files === null) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+  const { file } = req.files;
+  // file.mv(`/home/oleg-lasttry/Final Project/learning-management/back/public/images/${file.name}`,err => {
   //   if(err) {
   //     console.log(err);
-  //     return res.status(500).send(err);
+  //     // return res.status(500).send(err);
   //   }
-  //   res.json({fileName:file.name, filePath : `/uploads/${file.name}`})
+  //   res.json({fileName:file.name, filePath : `/images/${file.name}`})
   // });
-  //   console.log('Upload');
+  file.mv(
+    `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+        // return res.status(500).send(err);
+      }
+      res.json({ fileName: file.name, filePath: `/img/${file.name}` });
+    },
+  );
+  console.log('Upload');
 });
 // GET user log out
 router.get('/logout', (req, res) => {
@@ -241,16 +260,16 @@ router.get('/logoout', (req, res) => {
   res.json({ user: '' });
 });
 // GET home page
-router.get('/', async (req, res) => {
-  const { error, message } = req.query;
-  console.log('GET HOME PAGE');
-  res.render('index', {
-    title: 'Home',
-    currentUser: getUserNickname(req),
-    error,
-    message,
-  });
-});
+// router.get('/', async (req, res) => {
+//   const { error, message } = req.query;
+//   console.log('GET HOME PAGE');
+//   res.render('index', {
+//     title: 'Home',
+//     currentUser: getUserNickname(req),
+//     error,
+//     message,
+//   });
+// });
 // GET Page with Authentication
 router.get('/auth-page', async (req, res) => {
   if (req.isAuthenticated()) {
