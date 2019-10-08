@@ -132,13 +132,15 @@ router.get('/getnews', async (req, res) => {
 // Get TOpics from BD for users exact group!
 router.get('/gettopics', async (req, res) => {
   // Добавляю хардкодом группу т.к при реге её нет
-  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: '5d95f85bd93180d422d24895' });
+  const user = await User.findOneAndUpdate(
+    { nickname: req.user.nickname },
+    { group: '5d95f85bd93180d422d24895' },
+  );
 
   // Все топики
   const topics = await Topic.find({ group: user.group });
-  console.log(topics.length);
-
   // Максимальное кол-во фаз и недель!
+
   let Phase = 0;
   let Week = 0;
   for (let i = 0; i < topics.length; i++) {
@@ -149,24 +151,27 @@ router.get('/gettopics', async (req, res) => {
   for (let p = 1; p < Phase + 1; p++) {
     const phase = [];
     for (let w = 1; w < Week + 1; w++) {
-      const week = topics.filter((el) => el.phase === `${p}`).filter((el) => el.week === `${w}`).sort((el) => ((el.day) ? -1 : 1));
-      if (week === 0) {
+      const week = topics
+        .filter((el) => el.phase === `${p}`)
+        .filter((el) => el.week === `${w}`)
+        .sort((el) => (el.day ? 1 : -1));
+      if (week.length === 0) {
         continue;
       } else {
         phase.push(week);
       }
     }
+
     result.push(phase);
   }
   // На всякий пожарный структура для плана "B"
-
-  res.json(result);
+  console.log(result);
+  res.json({ result, topics });
 });
-
 
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-  const filePath = '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
   const fileName = 'lenin.svg'; // The default name the browser will use
 
   // res.download(filePath, fileName);
@@ -304,6 +309,7 @@ router.post('/update-profile', async (req, res) => {
     email, password, nickname, phone, photo,
   } = req.body;
   const { id } = req.user;
+
   let hash = req.user.password;
   if (password) {
     hash = await bcrypt.hash(password, 10);
@@ -331,6 +337,8 @@ router.post('/update-profile', async (req, res) => {
       },
     },
   );
+  console.log(req.user);
+  console.log(req.user.groupName);
 
   res.json({
     email: req.user.email,
@@ -338,6 +346,7 @@ router.post('/update-profile', async (req, res) => {
     photo: req.user.photo,
     phone: req.user.phone,
     group: req.user.group,
+    groupName: req.user.groupName,
   });
 });
 

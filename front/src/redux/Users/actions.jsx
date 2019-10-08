@@ -55,6 +55,7 @@ const requestProfileSuccessAC = data => {
     phone: data.phone,
     photo: data.photo,
     group: data.group,
+    groupName: data.groupName,
   };
 };
 const requestErrorAC = () => {
@@ -81,6 +82,7 @@ const updateProfile = data => async dispatch => {
       },
       { withCredentials: true },
     );
+
     dispatch(requestProfileSuccessAC(resp.data));
   } catch (error) {
     dispatch(requestErrorAC());
