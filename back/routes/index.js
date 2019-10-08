@@ -67,7 +67,7 @@ router.get('/authcheck', (req, res) => {
     res.json({ user: req.user.nickname });
   } else {
     res.json({
-      message: 'You are not authinticated,please log-in or register',
+      message: 'You are not authenticated, please log-in or register',
     });
   }
 });
@@ -181,6 +181,17 @@ router.get('/downloadtest', (req, res, next) => {
 router.post('/download', (req, res, next) => {
   console.log('xxxxx', req.body);
 
+  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`, (err) => {
+    if (err) {
+      console.log(err);
+      // return res.status(500).send(err);
+    }
+    // res.json({fileName:file.name, filePath : `/img/${file.name}`})
+  });
+});
+router.get('/getDayData', async (req, res, next) => {
+  // Добавляю хардкодом группу т.к при реге её нет
+  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: '5d95f85bd93180d422d24895' });
   file.mv(
     `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
     (err) => {
@@ -203,7 +214,7 @@ router.get('/getDayData', async (req, res, next) => {
 
   const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
-    .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
+    .sort((a, b) => (b.phase - a.phase) || (b.week - a.week) || (b.day - a.day));
   if (mainPageTopic.length === null) {
     return res.status(400).json({ message: 'No file uploaded' });
   }
@@ -221,16 +232,20 @@ router.post('/upload', async (req, res) => {
     return res.status(400).json({ message: 'No file uploaded' });
   }
   const { file } = req.files;
-  file.mv(
-    `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
-    (err) => {
-      if (err) {
-        console.log(err);
-        // return res.status(500).send(err);
-      }
-      res.json({ fileName: file.name, filePath: `/img/${file.name}` });
-    },
-  );
+  // file.mv(`/home/oleg-lasttry/Final Project/learning-management/back/public/images/${file.name}`,err => {
+  //   if(err) {
+  //     console.log(err);
+  //     // return res.status(500).send(err);
+  //   }
+  //   res.json({fileName:file.name, filePath : `/images/${file.name}`})
+  // });
+  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`, (err) => {
+    if (err) {
+      console.log(err);
+      // return res.status(500).send(err);
+    }
+    res.json({ fileName: file.name, filePath: `/img/${file.name}` });
+  });
   console.log('Upload');
 });
 // GET user log out
@@ -301,10 +316,15 @@ router.post('/upload-avatar', async (req, res) => {
   }
 });
 
+router.get('/get-users', async (req, res) => {
+  const users = await User.find();
+  res.json(users);
+});
+
 router.post('/update-profile', async (req, res) => {
   let {
- email, password, nickname, phone, photo 
-} = req.body;
+    email, password, nickname, phone, photo,
+  } = req.body;
   const { id } = req.user;
 
   let hash = req.user.password;
