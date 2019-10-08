@@ -11,6 +11,7 @@ const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
 const Topic = require('../models/Topic');
+
 const router = express.Router();
 
 addMiddlewares(router);
@@ -28,7 +29,7 @@ router.post('/login', (req, res, next) => {
       console.log('Login POST  auth ER 1');
       return res.render('login', { [notifications.error]: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         console.log('Login POST LOGIN ER 1');
         return res.render('login', { [notifications.error]: err });
@@ -47,7 +48,7 @@ router.post('/log', async (req, res, next) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         return res.json({ message: err });
       }
@@ -108,7 +109,7 @@ router.post('/reg', async (req, res, next) => {
       if (err) {
         return res.json({ message: err });
       }
-      req.logIn(user, err => {
+      req.logIn(user, (err) => {
         if (err) {
           return res.json({ message: err });
         }
@@ -128,16 +129,18 @@ router.get('/getnews', async (req, res) => {
 
   res.json({ news: news.name });
 });
-//Get TOpics from BD for users exact group!
+// Get TOpics from BD for users exact group!
 router.get('/gettopics', async (req, res) => {
-  //Добавляю хардкодом группу т.к при реге её нет
-  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d95f85bd93180d422d24895" });
+  // Добавляю хардкодом группу т.к при реге её нет
+  const user = await User.findOneAndUpdate(
+    { nickname: req.user.nickname },
+    { group: '5d95f85bd93180d422d24895' },
+  );
 
   // Все топики
-  const topics = await Topic.find({ group: user.group })
-  console.log(topics.length);
-  
-  //Максимальное кол-во фаз и недель!
+  const topics = await Topic.find({ group: user.group });
+  // Максимальное кол-во фаз и недель!
+
   let Phase = 0;
   let Week = 0;
   for (let i = 0; i < topics.length; i++) {
@@ -146,61 +149,65 @@ router.get('/gettopics', async (req, res) => {
   }
   const result = [];
   for (let p = 1; p < Phase + 1; p++) {
-    let phase = [];
+    const phase = [];
     for (let w = 1; w < Week + 1; w++) {
-      let week = topics.filter(el => el.phase === `${p}`).filter(el => el.week === `${w}`).sort((el) => (el.day) ? -1 : 1);
+      const week = topics
+        .filter((el) => el.phase === `${p}`)
+        .filter((el) => el.week === `${w}`)
+        .sort((el) => (el.day ? 1 : -1));
       if (week.length === 0) {
         continue;
       } else {
         phase.push(week);
       }
     }
-    result.push(phase)
+
+    result.push(phase);
   }
- //На всякий пожарный структура для плана "B"
- 
-  res.json(result);
+  // На всякий пожарный структура для плана "B"
+  console.log(result);
+  res.json({ result, topics });
 });
 
+// Download File тестовая ручка.Не стрирайте.
+router.get('/downloadtest', (req, res, next) => {
+  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const fileName = 'lenin.svg'; // The default name the browser will use
 
-
-//Download File тестовая ручка.Не стрирайте.
-router.get('/downloadtest', function (req, res, next) {
-  var filePath = "/home/oleg-lasttry/Final Project/learning-management/back/public/images/..."; // Or format the path using the `id` rest param
-  var fileName = "lenin.svg"; // The default name the browser will use
-
-  // res.download(filePath, fileName); 
-  res.json({ message: 'Something good happened' });   
+  // res.download(filePath, fileName);
+  res.json({ message: 'Something good happened' });
   // res.json({user:"hi"})
 });
-router.post('/download', function (req, res, next) {
-  console.log("xxxxx",req.body);
-  
-  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,err => {
-    if(err) {
-      console.log(err);
-      // return res.status(500).send(err);
-    }
-    // res.json({fileName:file.name, filePath : `/img/${file.name}`})
-  });
-  
-});
-router.get('/getDayData', async function (req, res, next) {
+router.post('/download', (req, res, next) => {
+  console.log('xxxxx', req.body);
 
-    //Добавляю хардкодом группу т.к при реге её нет
-    const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d95f85bd93180d422d24895" });
-    // Все топики
-    const topics = await Topic.find({ group: user.group })
-   
-    const mainPageTopic =topics
+  file.mv(
+    `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+        // return res.status(500).send(err);
+      }
+      // res.json({fileName:file.name, filePath : `/img/${file.name}`})
+    },
+  );
+});
+router.get('/getDayData', async (req, res, next) => {
+  // Добавляю хардкодом группу т.к при реге её нет
+  const user = await User.findOneAndUpdate(
+    { nickname: req.user.nickname },
+    { group: '5d95f85bd93180d422d24895' },
+  );
+  // Все топики
+  const topics = await Topic.find({ group: user.group });
+
+  const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
-    .sort((a,b) => {
-      return (b.phase-a.phase)||(b.week-a.week)||(b.day-a.day)
-    });
-    if (mainPageTopic.length === null) {
-      return res.status(400).json({message:'No file uploaded'})
-    } 
-  
+    .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
+  if (mainPageTopic.length === null) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+
   res.json(mainPageTopic[0]);
 });
 // Upload some File
@@ -211,24 +218,20 @@ router.post('/upload', async (req, res) => {
   console.log(req.files);
 
   if (req.files === null) {
-    return res.status(400).json({message:'No file uploaded'})
+    return res.status(400).json({ message: 'No file uploaded' });
   }
-  const file = req.files.file;
-  // file.mv(`/home/oleg-lasttry/Final Project/learning-management/back/public/images/${file.name}`,err => {
-  //   if(err) {
-  //     console.log(err);
-  //     // return res.status(500).send(err);
-  //   }
-  //   res.json({fileName:file.name, filePath : `/images/${file.name}`})
-  // });
-  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,err => {
-    if(err) {
-      console.log(err);
-      // return res.status(500).send(err);
-    }
-    res.json({fileName:file.name, filePath : `/img/${file.name}`})
-  });
-    console.log('Upload');
+  const { file } = req.files;
+  file.mv(
+    `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+        // return res.status(500).send(err);
+      }
+      res.json({ fileName: file.name, filePath: `/img/${file.name}` });
+    },
+  );
+  console.log('Upload');
 });
 // GET user log out
 router.get('/logout', (req, res) => {
@@ -299,8 +302,11 @@ router.post('/upload-avatar', async (req, res) => {
 });
 
 router.post('/update-profile', async (req, res) => {
-  let { email, password, nickname, phone, photo } = req.body;
+  let {
+ email, password, nickname, phone, photo 
+} = req.body;
   const { id } = req.user;
+
   let hash = req.user.password;
   if (password) {
     hash = await bcrypt.hash(password, 10);
@@ -328,6 +334,8 @@ router.post('/update-profile', async (req, res) => {
       },
     },
   );
+  console.log(req.user);
+  console.log(req.user.groupName);
 
   res.json({
     email: req.user.email,
@@ -335,6 +343,7 @@ router.post('/update-profile', async (req, res) => {
     photo: req.user.photo,
     phone: req.user.phone,
     group: req.user.group,
+    groupName: req.user.groupName,
   });
 });
 

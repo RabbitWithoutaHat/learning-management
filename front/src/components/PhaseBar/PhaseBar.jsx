@@ -1,98 +1,76 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { getNewsData } from '../../redux/News/action';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { Route, Link, Redirect } from 'react-router-dom';
 import { getTopicsData } from '../../redux/Lections/actions';
+import { List } from 'semantic-ui-react';
+import { Tabs, TabList, Tab, TabPanel, CustomTab } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 class PhaseBar extends Component {
-  //   async componentDidUpdate(prevProps) {
-  //     if (prevProps !== this.props) {
-
-  //       console.log(this.props.userName);
-  //  const userName = this.props.userName;
-  //       const resp = await fetch('/gettopics')
-  //       const data = await resp.json();
-  //       console.log(data);
-  //     }
-  //   }
   state = {
-    mass: [],
-    curarr: [],
-    phase1: [],
-    phase2:[],
-  }
-  onlyUnique = (value, index, self) => {
-    return self.indexOf(value) === index;
-  }
+    tabIndex: 0,
+  };
   async componentDidMount() {
     await this.props.getTopics();
-    const arr = [1, 1, 1, 2, 34, 3, 3, 5, 7];
-    // console.log(this.props.topics);
-    this.setState({ mass: this.props.topics });
-    // const unique = arr.filter(onlyUnique);
-    // console.log(this.state.mass);
-
-    // const arr2 = this.props.topics;
-    // console.log(arr2);
-    const phase1 = this.state.mass.filter(el => el.phase === '1')
-    this.setState({ phase1: phase1 })
-    // .sort(el=>el.week);
-    const phase2 = this.state.mass.filter(el => el.phase === '2');
-    this.setState({ phase2: phase2 })
-    // console.log('phase1', phase1);
-
+    console.log(this.props.topics.length);
   }
 
   render() {
-    // console.log(this.props.userName);
+    console.log(this.props.topics);
 
     return (
-      <div>
-        {/* <div>
-          <ul>
-            Phase1
-        {this.state.phase1.map((el) => {
-
-              return <ul> Nedelia:{el.week}
-              {el.week.map((el) => {
-
-                return  <li>
-                Day :{el.day}
-              </li>
-              })}
-             
-              
-               </ul>
-            })}
-
-          </ul>
-
-
-        </div>
-        <div>
-          <ul>
-            Phase1
-        {this.state.phase2.map((el) => {
-
-              return <li>{el.week} </li>
-            })}
-
-          </ul>
-        </div> */}
-      </div>
-    )
+      <Tabs
+        selectedIndex={this.state.tabIndex}
+        onSelect={tabIndex => this.setState({ tabIndex })}
+        className="phaseTabs"
+      >
+        <TabList>
+          {this.props.topics ? this.props.topics.map((phase, i) => <Tab key={`${i}tabs`}>Фаза {i + 1}</Tab>) : <p></p>}
+        </TabList>
+        {this.props.topics ? (
+          this.props.topics.map((phase, i) => (
+            <TabPanel key={`${i}phase`}>
+              {phase.map((week, i) => (
+                <>
+                  <h3 className="weekTitle" key={`${i}week`}>
+                    Неделя {week[0].week}
+                  </h3>
+                  <List>
+                    {week.map((day, i) => (
+                      <List.Item key={`${i}day`}>
+                        <Link params={{ desc: day.description }} to={`/lections/${day._id}`}>
+                          {day.topicName}
+                        </Link>
+                      </List.Item>
+                    ))}
+                  </List>
+                </>
+              ))}
+            </TabPanel>
+          ))
+        ) : (
+          <p></p>
+        )}
+      </Tabs>
+    );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
+  // console.log(state);
+
   return {
     topics: state.Topics.topics,
     userName: state.User.user.login,
-  }
+  };
 };
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    getTopics: () => dispatch(getTopicsData())
-  }
+    getTopics: () => dispatch(getTopicsData()),
+  };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(PhaseBar)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PhaseBar);
