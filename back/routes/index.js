@@ -11,6 +11,7 @@ const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
 const Topic = require('../models/Topic');
+const fs = require("fs");
 const router = express.Router();
 
 addMiddlewares(router);
@@ -136,7 +137,7 @@ router.get('/gettopics', async (req, res) => {
   // Все топики
   const topics = await Topic.find({ group: user.group })
   console.log(topics.length);
-  
+
   //Максимальное кол-во фаз и недель!
   let Phase = 0;
   let Week = 0;
@@ -157,8 +158,8 @@ router.get('/gettopics', async (req, res) => {
     }
     result.push(phase)
   }
- //На всякий пожарный структура для плана "B"
- 
+  //На всякий пожарный структура для плана "B"
+
   res.json(result);
 });
 
@@ -170,37 +171,54 @@ router.get('/downloadtest', function (req, res, next) {
   var fileName = "lenin.svg"; // The default name the browser will use
 
   // res.download(filePath, fileName); 
-  res.json({ message: 'Something good happened' });   
+  res.json({ message: 'Something good happened' });
   // res.json({user:"hi"})
 });
 router.post('/download', function (req, res, next) {
-  console.log("xxxxx",req.body);
-  
-  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,err => {
-    if(err) {
-      console.log(err);
-      // return res.status(500).send(err);
-    }
-    // res.json({fileName:file.name, filePath : `/img/${file.name}`})
-  });
-  
+  // console.log("xxxxx",req.body);
+
+
+
+  // let fileContent = fs.readFileSync("../back/public/images/lenin.svg");
+  // console.log(fileContent);
+  let file = '/home/oleg-lasttry/FinalProject/learning-management/back/public/images/lenin.svg'
+    
+
+  // res.download('../back/public/images/lenin.svg','lenin.svg');
+  // res.download(file,'lenin.svg');
+  res.sendFile('./public/images/lenin.svg');
+
+
+
+  // req.files.file.tempFilePath('/home/oleg-lasttry/Final Project/learning-management/back/public/images/lenin.svg');
+  // console.log("fiel!!====",file);
+
+  // fileContent.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,err => {
+  //   if(err) {
+  //     console.log(err);
+  //     // return res.status(500).send(err);
+  //   }
+
+  // res.json({hi:"hi"})
+  // res.sendFile('lenin.html', { root: path.join(__dirname, '../public') });
 });
+
 router.get('/getDayData', async function (req, res, next) {
 
-    //Добавляю хардкодом группу т.к при реге её нет
-    const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d95f85bd93180d422d24895" });
-    // Все топики
-    const topics = await Topic.find({ group: user.group })
-   
-    const mainPageTopic =topics
+  //Добавляю хардкодом группу т.к при реге её нет
+  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d95f85bd93180d422d24895" });
+  // Все топики
+  const topics = await Topic.find({ group: user.group })
+
+  const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
-    .sort((a,b) => {
-      return (b.phase-a.phase)||(b.week-a.week)||(b.day-a.day)
+    .sort((a, b) => {
+      return (b.phase - a.phase) || (b.week - a.week) || (b.day - a.day)
     });
-    if (mainPageTopic.length === null) {
-      return res.status(400).json({message:'No file uploaded'})
-    } 
-  
+  if (mainPageTopic.length === null) {
+    return res.status(400).json({ message: 'No file uploaded' })
+  }
+
   res.json(mainPageTopic[0]);
 });
 // Upload some File
@@ -211,7 +229,7 @@ router.post('/upload', async (req, res) => {
   console.log(req.files);
 
   if (req.files === null) {
-    return res.status(400).json({message:'No file uploaded'})
+    return res.status(400).json({ message: 'No file uploaded' })
   }
   const file = req.files.file;
   // file.mv(`/home/oleg-lasttry/Final Project/learning-management/back/public/images/${file.name}`,err => {
@@ -221,14 +239,14 @@ router.post('/upload', async (req, res) => {
   //   }
   //   res.json({fileName:file.name, filePath : `/images/${file.name}`})
   // });
-  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,err => {
-    if(err) {
+  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`, err => {
+    if (err) {
       console.log(err);
       // return res.status(500).send(err);
     }
-    res.json({fileName:file.name, filePath : `/img/${file.name}`})
+    res.json({ fileName: file.name, filePath: `/img/${file.name}` })
   });
-    console.log('Upload');
+  console.log('Upload');
 });
 // GET user log out
 router.get('/logout', (req, res) => {

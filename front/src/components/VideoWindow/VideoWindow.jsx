@@ -5,8 +5,11 @@ import Comments from '../Comments/Comments';
 import File from '../File/File';
 import FileLink from '../FileLink/FileLink';
 import Video from '../Video/Video';
+
+import FileSaver from 'file-saver';
 import { connect } from "react-redux";
 import { getTopicData } from '../../redux/MainPageTopic/action';
+import download from 'js-file-download';
 
 
 
@@ -45,12 +48,22 @@ class VideoWindow extends Component {
       },
       body: JSON.stringify({File}),
     });
-    // const data = await resp.json();
-    // console.log(data);
-    
-    // if(data) {
-    //  await this.setState({link:true})
-    // }
+    const data = await resp.blob();
+    console.log(data);
+    FileSaver.saveAs(data, 'lenin.svg');
+  }
+  downloadEmployeeData = () => {
+		fetch('/download')
+			.then(response => {
+				response.blob().then(blob => {
+					let url = window.URL.createObjectURL(blob);
+					let a = document.createElement('a');
+					a.href = url;
+					a.download = 'lenin.svg';
+					a.click();
+				});
+				//window.location.href = response.url;
+		});
   }
   render() {
     // const videoSrc = this.props.topic ?
@@ -72,6 +85,10 @@ class VideoWindow extends Component {
       //   <Comments/>
       // </div>
       <div>
+<div className="App-intro">
+ <h3>Download a random file</h3>
+ <button onClick={this.downloadEmployeeData}>Download</button>
+</div>
         <div>
           <iframe src={this.state.videoSrc}
             width='640' height='480'

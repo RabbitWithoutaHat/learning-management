@@ -6,10 +6,12 @@ import Registration from '../Authorization/Registration';
 import Profile from '../../pages/Profile';
 import Home from '../../pages/Home';
 import Lections from '../../pages/Lections';
+import Spiner from '../Spiner/Spiner';
 export default class NavBar extends Component {
   render() {
     return (
       <>
+       <Route exact path="/spiner" component={Spiner} />
         <Route exact path="/" component={Home} />
         <Route path="/logout" component={Logout} />
         <Route path="/login" component={Login} />
