@@ -44,7 +44,7 @@ class Profile extends Component {
     console.log(this.props);
     return (
       <>
-        <Form className="col-8">
+        <Form className="col-8 profileForm">
           <Label className="groupLabel" as="a" color="blue" ribbon>
             {this.props.groupName ? this.props.groupName : <span>Группа</span>}
           </Label>
