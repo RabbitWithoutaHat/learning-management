@@ -102,6 +102,10 @@
 .avatar > .ui.button {
   margin-top: 10px;
 }
+
+.usersList {
+  width: 100%
+}
 .lections {
   width: 100%;
 }
