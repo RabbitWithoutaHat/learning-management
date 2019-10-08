@@ -14,7 +14,12 @@ class VideoWindow extends Component {
   };
   async componentDidMount() {
     await this.props.getTopic();
-    const videoSrc = this.props.topic.video.replace('watch?v=', 'embed/');
+    let videoSrc = this.props.topic.video;
+    if (videoSrc.includes('watch')) {
+      videoSrc = videoSrc.replace('watch?v=', 'embed/');
+    } else {
+      videoSrc = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
+    }
     this.setState({ videoSrc: videoSrc });
     const GhLink = this.props.topic.githubLink;
     this.setState({ GhLink: GhLink });
