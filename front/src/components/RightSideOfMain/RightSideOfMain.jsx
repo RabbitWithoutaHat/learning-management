@@ -6,7 +6,11 @@ import Registration from '../Authorization/Registration';
 import Profile from '../../pages/Profile';
 import Home from '../../pages/Home';
 import Lections from '../../pages/Lections';
+<<<<<<< HEAD
 import Users from '../../pages/Users';
+=======
+import Topic from '../../pages/Topic';
+>>>>>>> dev
 export default class NavBar extends Component {
   render() {
     return (
@@ -16,8 +20,13 @@ export default class NavBar extends Component {
         <Route path="/login" component={Login} />
         <Route path="/registration" component={Registration} />
         <Route path="/profile" component={Profile} />
+<<<<<<< HEAD
         <Route path="/lections" component={Lections} />
         <Route path="/users" component={Users} />
+=======
+        <Route exact path="/lections" component={Lections} />
+        <Route name="lection" path="/lections/:id" component={Topic} />
+>>>>>>> dev
       </>
     );
   }

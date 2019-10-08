@@ -10,6 +10,7 @@ const initialState = {
     email: '',
     phone: '',
     group: '',
+    groupName: '',
     photoSrc: '',
   },
 };
@@ -60,6 +61,7 @@ export default function(state = initialState, action) {
           login: action.login,
           phone: action.phone,
           group: action.group,
+          groupName: action.groupName,
           photoSrc: action.photo,
         },
       };

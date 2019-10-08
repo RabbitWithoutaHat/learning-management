@@ -6,7 +6,7 @@ export default class home extends Component {
     return (
       <div>
         <SidebarNav>
-          <RightSideOfMain />
+          <RightSideOfMain className="sdasds" />
         </SidebarNav>
       </div>
     );
