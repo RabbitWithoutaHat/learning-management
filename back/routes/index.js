@@ -195,6 +195,8 @@ router.post('/download', (req, res, next) => {
 });
 router.get('/getDayData', async (req, res, next) => {
   // Добавляю хардкодом группу т.к при реге её нет
+  console.log("here");
+  
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
     { group: '5d95f85bd93180d422d24895' },

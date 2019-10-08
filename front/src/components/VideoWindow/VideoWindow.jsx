@@ -5,13 +5,7 @@ import Comments from '../Comments/Comments';
 import File from '../File/File';
 import FileLink from '../FileLink/FileLink';
 import Video from '../Video/Video';
-<<<<<<< HEAD
-
-import FileSaver from 'file-saver';
-import { connect } from "react-redux";
-=======
 import { connect } from 'react-redux';
->>>>>>> dev
 import { getTopicData } from '../../redux/MainPageTopic/action';
 import download from 'js-file-download';
 
@@ -49,68 +43,20 @@ class VideoWindow extends Component {
       },
       body: JSON.stringify({ File }),
     });
-<<<<<<< HEAD
     const data = await resp.blob();
     console.log(data);
-    FileSaver.saveAs(data, 'lenin.svg');
+  
   }
-  downloadEmployeeData = () => {
-		fetch('/download')
-			.then(response => {
-				response.blob().then(blob => {
-					let url = window.URL.createObjectURL(blob);
-					let a = document.createElement('a');
-					a.href = url;
-					a.download = 'lenin.svg';
-					a.click();
-				});
-				//window.location.href = response.url;
-		});
-  }
-=======
-    // const data = await resp.json();
-    // console.log(data);
-
-    // if(data) {
-    //  await this.setState({link:true})
-    // }
-  };
->>>>>>> dev
   render() {
-    // const videoSrc = this.props.topic ?
-    //  (this.props.topic.video.replace('watch?v=','embed/'),
-    //  GhLink =  this.props.topic.GhLink,
-    //  FileLink = this.props.topic.FileLink
-    // //  File = this.props.topic.
-    //  )
-
-    //  :0;
-
+  
     return (
-      // <div>
-      //   <Video/>
-      //   <GhLink/>
-      //   <FileLink/>
-      //   <File/>
-      //   <Comments/>
-      // </div>
-<<<<<<< HEAD
-      <div>
-<div className="App-intro">
- <h3>Download a random file</h3>
- <button onClick={this.downloadEmployeeData}>Download</button>
-</div>
-        <div>
-          <iframe src={this.state.videoSrc}
-            width='640' height='480'
-=======
+   
       <p className="videoContainer">
         <div className="video">
           <iframe
             src={this.state.videoSrc}
             width="640"
             height="480"
->>>>>>> dev
             //640 480
             frameBorder="0"
             allow="autoplay; encrypted-media"
