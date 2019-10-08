@@ -192,6 +192,23 @@ router.post('/download', (req, res, next) => {
 router.get('/getDayData', async (req, res, next) => {
   // Добавляю хардкодом группу т.к при реге её нет
   const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: '5d95f85bd93180d422d24895' });
+  file.mv(
+    `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+        // return res.status(500).send(err);
+      }
+      // res.json({fileName:file.name, filePath : `/img/${file.name}`})
+    },
+  );
+});
+router.get('/getDayData', async (req, res, next) => {
+  // Добавляю хардкодом группу т.к при реге её нет
+  const user = await User.findOneAndUpdate(
+    { nickname: req.user.nickname },
+    { group: '5d95f85bd93180d422d24895' },
+  );
   // Все топики
   const topics = await Topic.find({ group: user.group });
 

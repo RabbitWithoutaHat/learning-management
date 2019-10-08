@@ -17,7 +17,7 @@ export default class NavBar extends Component {
         <Route path="/login" component={Login} />
         <Route path="/registration" component={Registration} />
         <Route path="/profile" component={Profile} />
-          <Route path="/users" component={Users} />
+        <Route path="/users" component={Users} />
         <Route exact path="/lections" component={Lections} />
         <Route name="lection" path="/lections/:id" component={Topic} />
       </>
