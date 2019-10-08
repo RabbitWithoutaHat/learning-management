@@ -1,12 +1,12 @@
-import { REQUESTED_TOPICS,REQUESTED_ERROR,ADD_TOPICS } from './types';
+import { REQUESTED_TOPICS, REQUESTED_ERROR, ADD_TOPICS } from './types';
 
 const initialState = {
-  topics :[],
+  topics: [],
   loading: '', //loading Topics status
   error: '', //error Topics status
-}
+};
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case REQUESTED_TOPICS: {
       return {
@@ -20,6 +20,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         topics: action.topics,
+        allTopics: action.allTopics,
         loading: true,
         error: false,
       };

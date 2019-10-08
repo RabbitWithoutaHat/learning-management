@@ -15,7 +15,20 @@ const TopicSchema = new Schema({
     required: true,
   },
   group: {
-    type: Schema.Types.ObjectId, ref: 'Group',
+    type: Schema.Types.ObjectId,
+    ref: 'Group',
+  },
+  groupName: {
+    type: String,
+    required: false,
+  },
+  fileLink: {
+    type: String,
+    required: false,
+  },
+  fileName: {
+    type: String,
+    required: false,
   },
   phase: {
     type: String,
