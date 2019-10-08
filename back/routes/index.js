@@ -11,11 +11,7 @@ const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
 const Topic = require('../models/Topic');
-<<<<<<< HEAD
 const fs = require("fs");
-=======
-
->>>>>>> dev
 const router = express.Router();
 
 addMiddlewares(router);
@@ -142,16 +138,10 @@ router.get('/gettopics', async (req, res) => {
   );
 
   // Все топики
-<<<<<<< HEAD
   const topics = await Topic.find({ group: user.group })
   console.log(topics.length);
 
   //Максимальное кол-во фаз и недель!
-=======
-  const topics = await Topic.find({ group: user.group });
-  // Максимальное кол-во фаз и недель!
-
->>>>>>> dev
   let Phase = 0;
   let Week = 0;
   for (let i = 0; i < topics.length; i++) {
@@ -175,15 +165,9 @@ router.get('/gettopics', async (req, res) => {
 
     result.push(phase);
   }
-<<<<<<< HEAD
-  //На всякий пожарный структура для плана "B"
-
-  res.json(result);
-=======
   // На всякий пожарный структура для плана "B"
   console.log(result);
   res.json({ result, topics });
->>>>>>> dev
 });
 
 // Download File тестовая ручка.Не стрирайте.
@@ -191,61 +175,6 @@ router.get('/downloadtest', (req, res, next) => {
   const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
   const fileName = 'lenin.svg'; // The default name the browser will use
 
-<<<<<<< HEAD
-
-//Download File тестовая ручка.Не стрирайте.
-router.get('/downloadtest', function (req, res, next) {
-  var filePath = "/home/oleg-lasttry/Final Project/learning-management/back/public/images/..."; // Or format the path using the `id` rest param
-  var fileName = "lenin.svg"; // The default name the browser will use
-
-  // res.download(filePath, fileName); 
-  res.json({ message: 'Something good happened' });
-  // res.json({user:"hi"})
-});
-router.post('/download', function (req, res, next) {
-  // console.log("xxxxx",req.body);
-
-
-
-  // let fileContent = fs.readFileSync("../back/public/images/lenin.svg");
-  // console.log(fileContent);
-  let file = '/home/oleg-lasttry/FinalProject/learning-management/back/public/images/lenin.svg'
-    
-
-  // res.download('../back/public/images/lenin.svg','lenin.svg');
-  // res.download(file,'lenin.svg');
-  res.sendFile('./public/images/lenin.svg');
-
-
-
-  // req.files.file.tempFilePath('/home/oleg-lasttry/Final Project/learning-management/back/public/images/lenin.svg');
-  // console.log("fiel!!====",file);
-
-  // fileContent.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,err => {
-  //   if(err) {
-  //     console.log(err);
-  //     // return res.status(500).send(err);
-  //   }
-
-  // res.json({hi:"hi"})
-  // res.sendFile('lenin.html', { root: path.join(__dirname, '../public') });
-});
-
-router.get('/getDayData', async function (req, res, next) {
-
-  //Добавляю хардкодом группу т.к при реге её нет
-  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: "5d95f85bd93180d422d24895" });
-  // Все топики
-  const topics = await Topic.find({ group: user.group })
-
-  const mainPageTopic = topics
-    // .sort((el) => (el.phase) ? 1 : -1)
-    .sort((a, b) => {
-      return (b.phase - a.phase) || (b.week - a.week) || (b.day - a.day)
-    });
-  if (mainPageTopic.length === null) {
-    return res.status(400).json({ message: 'No file uploaded' })
-=======
   // res.download(filePath, fileName);
   res.json({ message: 'Something good happened' });
   // res.json({user:"hi"})
@@ -278,7 +207,6 @@ router.get('/getDayData', async (req, res, next) => {
     .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
   if (mainPageTopic.length === null) {
     return res.status(400).json({ message: 'No file uploaded' });
->>>>>>> dev
   }
 
   res.json(mainPageTopic[0]);
@@ -291,25 +219,6 @@ router.post('/upload', async (req, res) => {
   console.log(req.files);
 
   if (req.files === null) {
-<<<<<<< HEAD
-    return res.status(400).json({ message: 'No file uploaded' })
-  }
-  const file = req.files.file;
-  // file.mv(`/home/oleg-lasttry/Final Project/learning-management/back/public/images/${file.name}`,err => {
-  //   if(err) {
-  //     console.log(err);
-  //     // return res.status(500).send(err);
-  //   }
-  //   res.json({fileName:file.name, filePath : `/images/${file.name}`})
-  // });
-  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`, err => {
-    if (err) {
-      console.log(err);
-      // return res.status(500).send(err);
-    }
-    res.json({ fileName: file.name, filePath: `/img/${file.name}` })
-  });
-=======
     return res.status(400).json({ message: 'No file uploaded' });
   }
   const { file } = req.files;
@@ -323,7 +232,6 @@ router.post('/upload', async (req, res) => {
       res.json({ fileName: file.name, filePath: `/img/${file.name}` });
     },
   );
->>>>>>> dev
   console.log('Upload');
 });
 // GET user log out
