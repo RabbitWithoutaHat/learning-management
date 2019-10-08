@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import GhLink from '../GhLink/GhLink';
-import Comments from '../Comments/Comments';
-import File from '../File/File';
-import FileLink from '../FileLink/FileLink';
-import Video from '../Video/Video';
 import { connect } from 'react-redux';
 import { getTopicData } from '../../redux/MainPageTopic/action';
+import { Button, Segment } from 'semantic-ui-react';
 
 class VideoWindow extends Component {
   state = {
@@ -21,7 +17,6 @@ class VideoWindow extends Component {
     const videoSrc = this.props.topic.video.replace('watch?v=', 'embed/');
     this.setState({ videoSrc: videoSrc });
     const GhLink = this.props.topic.githubLink;
-    // const FileLink = this.props.topic.FileLink;
     this.setState({ GhLink: GhLink });
   }
   // async componentDidUpdate(prevProps) {
@@ -42,59 +37,56 @@ class VideoWindow extends Component {
       },
       body: JSON.stringify({ File }),
     });
-    // const data = await resp.json();
-    // console.log(data);
-
-    // if(data) {
-    //  await this.setState({link:true})
-    // }
   };
   render() {
-    // const videoSrc = this.props.topic ?
-    //  (this.props.topic.video.replace('watch?v=','embed/'),
-    //  GhLink =  this.props.topic.GhLink,
-    //  FileLink = this.props.topic.FileLink
-    // //  File = this.props.topic.
-    //  )
-
-    //  :0;
+    console.log(this.props.topic.topicName);
 
     return (
-      // <div>
-      //   <Video/>
-      //   <GhLink/>
-      //   <FileLink/>
-      //   <File/>
-      //   <Comments/>
-      // </div>
       <p className="videoContainer">
+        <h1>Тема урока: {this.props.topic.topicName}</h1>
         <div className="video">
           <iframe
             src={this.state.videoSrc}
-            width="640"
-            height="480"
-            //640 480
+            width="960"
+            height="540"
             frameBorder="0"
             allow="autoplay; encrypted-media"
             allowFullScreen
             title="video"
           />
         </div>
-        <a href="this.state.GhLink">Задания на GitHub</a>
-        <a href={this.state.FileLink}>{this.state.File}</a>
-        <p>
-          <p>
-            <button onClick={this.but}>
-              Download
+        <div className="videoLinksFilesSegment">
+          <div className="videoLinksFiles">
+            <div className="videoLinks">
+              <a target="_blank" href={this.state.GhLink}>
+                Задания на GitHub
+              </a>
+              <a target="_blank" href={this.state.FileLink}>
+                Ссылка на код
+              </a>
+            </div>
+            <div className="videoFile">
+              <p className="fileTitle">Файл к уроку</p>
               <Link
                 // to={FilePath.filePath}
                 to="./images/IMG_7778.jpg"
                 download
                 target="_blank"
-              ></Link>
-            </button>
-          </p>
-        </p>
+              >
+                <Button
+                  basic
+                  type="button"
+                  color="violet"
+                  className="btn btn-success btn-block"
+                  content={this.state.File}
+                  onClick={this.but}
+                  icon="download"
+                  fluid
+                ></Button>
+              </Link>
+            </div>
+          </div>
+        </div>
       </p>
     );
   }
