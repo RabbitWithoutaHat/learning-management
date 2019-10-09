@@ -6,7 +6,6 @@ import { getTopicsData } from '../../redux/Lections/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-
 class SidebarNav extends Component {
   state = {
     date: new Date(),
@@ -20,7 +19,7 @@ class SidebarNav extends Component {
   }
   render() {
     return (
-      <Sidebar.Pushable as={Segment}>
+      <Sidebar.Pushable>
         <Sidebar as={Menu} icon="labeled" inverted vertical visible width="wide">
           {this.props.user ? (
             <>
@@ -30,36 +29,33 @@ class SidebarNav extends Component {
                   Актуальное
                 </Menu.Item>
               </Link>
+              <Link to="/lections">
+                <Menu.Item>
+                  <Icon name="book" />
+                  Лекции
+                </Menu.Item>
+              </Link>
+              <Link to="/users">
+                <Menu.Item>
+                  <Icon name="users" />
+                  Cтуденты
+                </Menu.Item>
+              </Link>
+              <Link to="/tests">
+                <Menu.Item>
+                  <Icon name="tasks" />
+                  Тесты
+                </Menu.Item>
+              </Link>
               <Link to="/profile">
                 <Menu.Item>
                   <Icon name="user outline" />
                   Профиль
                 </Menu.Item>
               </Link>
-              <Link to="/lections">
-                <Menu.Item>
-                  <Icon name="book" />
-                  Лекции
-                </Menu.Item>
-                </Link>
-                <Menu.Item>
-                  <Icon name="play" />
-                  {this.props.userWithGroup||this.props.admin?
-                <>
-                Дать доступ
-                </>
-                :
-                <>
-                  Не давать доступ
-                </>  
-                
-                  }
-                </Menu.Item>
-                
-              }
-              
-              {/* <div>AUTH</div> */}
+
               <Calendar onChange={this.onChange} value={this.state.date} />
+
               <Link className="logoutItem" to="/logout">
                 <Menu.Item>
                   <Icon name="sign-out" />
@@ -81,23 +77,22 @@ class SidebarNav extends Component {
                   Регистрация
                 </Menu.Item>
               </Link>
-              <div>NOT</div>
             </>
           )}
         </Sidebar>
         <Sidebar.Pusher>
           <div className="container">{this.props.children}</div>
+          <footer></footer>
         </Sidebar.Pusher>
       </Sidebar.Pushable>
     );
   }
 }
 
-
 function mapStateToProps(state) {
   return {
     userWithGroup: state.User.user.groupName,
-    admin:state.User.user.adminstatus,
+    admin: state.User.user.adminstatus,
     user: state.User.user.login,
     status: state.User.user.status,
     justregister: state.User.user.justregister,

@@ -1,17 +1,16 @@
 const express = require('express');
 const passport = require('passport');
+// const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 // Usage of FileStore leads to problem of not login in from the first time?
 const MongoStore = require('connect-mongo')(session);
 const bcrypt = require('bcrypt');
-const connection = require('../models/connection');
 const User = require('../models/User');
 
 const config = require('../config/config.json')[process.env.NODE_ENV];
 
 function addMiddlewares(router) {
-  // configure passport.js to use the local strategy
   passport.use(
     new LocalStrategy(
       { usernameField: 'email' },

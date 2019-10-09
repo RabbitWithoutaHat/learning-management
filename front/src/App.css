@@ -21,15 +21,15 @@
   color: #09d3ac;
 }
 .pushable {
-  height: 100vh;
+  min-height: 100vh;
   border: none;
   box-shadow: none;
 }
 
-.ui.segment {
+/* .ui.segment {
   border: none;
   box-shadow: none;
-}
+} */
 
 .ui[class*='left floated'].button {
   margin-left: 10px;
@@ -65,7 +65,6 @@
   width: calc(100% - 350px);
 }
 .container {
-  margin-top: 60px;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -99,8 +98,15 @@
 .regForm {
   width: 50%;
 }
+.avatar {
+  margin-top: 60px;
+}
 .avatar > .ui.button {
   margin-top: 10px;
+}
+
+.usersList {
+  width: 100%
 }
 .lections {
   width: 100%;
@@ -108,16 +114,20 @@
 .lectionsTitle {
   text-align: center;
 }
+.lections h1:first-child {
+  margin-top: 60px;
+}
 
 h3:first-child {
   margin-top: 25px;
   margin-bottom: 15px;
 }
 .ui.list {
-  font-size: 1.1em;
+  font-size: 1em;
 }
 .ui.sidebar {
   margin-right: 20px !important;
+  min-height: 100vh;
 }
 .weekTitle {
   font-size: 24px;
@@ -157,10 +167,85 @@ h3:first-child {
   justify-content: center;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 20px;
+}
+.videoContainer h1 {
+  margin-bottom: 30px;
+  color: #5053aa;
 }
 .video {
   align-self: center;
   margin-bottom: 30px;
+  box-shadow: 0px 0px 35px -5px rgba(34, 36, 38, 0.15);
+}
+
+.profileForm {
+  margin-top: 60px;
+}
+
+.newsMessage {
+  width: 100%;
+  margin-top: 20px;
+}
+.ui.message:first-child {
+  margin-top: 20px;
+}
+
+footer {
+  margin-top: 60px;
+}
+.videoLinksFiles {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-size: 25px;
+
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.videoLinksFiles a {
+  margin-top: 7px;
+  margin-bottom: 7px;
+  color: #4520ab;
+  text-decoration: underline;
+}
+.videoLinksFiles a:hover {
+  color: #3a8eed;
+}
+.videoLinksFiles .ui.button {
+  font-size: 18px;
+}
+.videoLinks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.videoFile {
+  text-align: right;
+}
+.videoLinksFilesSegment {
+  width: 80%;
+  align-self: center;
+  margin-top: 30px;
+}
+.ui.segment.videoLinksFilesSegment {
+  box-shadow: 0px 0px 25px -5px rgba(34, 36, 38, 0.15);
+  border: none;
+}
+.videoFile .ui.button {
+  margin-right: 0;
+}
+.videoFile .fileTitle {
+  margin-bottom: 7px;
+}
+
+.info.ui.message {
+  margin-bottom: 0;
+}
+.videoLinksFiles p {
+  margin-top: 10px;
+  font-size: 20px;
+  text-align: center;
 }
 
 .regForm {
