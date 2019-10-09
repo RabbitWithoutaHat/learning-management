@@ -183,7 +183,7 @@ router.post('/addphase', async (req, res) => {
         phase.push(week);
       }
     }
-    result.push(phase);
+    result.push(result);
   }
 
   // const topic = await Topic.findOneAndUpdate({ _id: req.body.id },{githubLink:req.body.githubLink,

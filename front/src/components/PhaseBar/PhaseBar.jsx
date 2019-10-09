@@ -51,6 +51,7 @@ class PhaseBar extends Component {
     let data = {
       phase: this.state.tabIndex,
     };
+    let group = this.state.selectedGroupName;
     let resp = await fetch('/addweek', {
       method: 'POST',
       headers: {
