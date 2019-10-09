@@ -6,6 +6,9 @@
   "dependencies": {
     "@stardust-ui/docs-components": "^0.39.0",
     "axios": "^0.19.0",
+    "download": "^7.1.0",
+    "file-saver": "^2.0.2",
+    "js-file-download": "^0.4.8",
     "react": "^16.10.1",
     "react-calendar": "^2.19.2",
     "react-dom": "^16.10.1",

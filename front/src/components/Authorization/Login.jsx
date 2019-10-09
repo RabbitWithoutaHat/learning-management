@@ -35,7 +35,7 @@ class Login extends Component {
 
     if (user.user) {
       this.setState({ dataLoaded: true });
-      this.props.add(user.user, user.email);
+      this.props.add(user.user, user.email,user.status);
       this.props.history.push('/');
     } else {
       this.props.addLogMsg(user.message);
@@ -71,7 +71,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: (user, email) => dispatch(addUser(user, email)),
+    add: (user, email,status) => dispatch(addUser(user, email,status)),
     addLogMsg: loginMessage => dispatch(addLogMsg(loginMessage)),
   };
 }

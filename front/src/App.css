@@ -247,3 +247,15 @@ footer {
   font-size: 20px;
   text-align: center;
 }
+
+.regForm {
+  margin-left: auto;
+  margin-right:auto;
+
+}
+.ButPhase {
+  color:green
+}
+.select {
+  float:right;
+}
