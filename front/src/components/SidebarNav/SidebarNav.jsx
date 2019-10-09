@@ -14,7 +14,7 @@ class SidebarNav extends Component {
     let resp = await fetch('/authcheck');
     let user = await resp.json();
     if (user.user) {
-      this.props.add(user.user, user.status);
+      this.props.add(user.user, user.email,user.status,user.photo,user.group,user.groupName);
     }
   }
   render() {
@@ -107,7 +107,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: (login, status) => dispatch(addUser(login, status)),
+    add: (user, email,status,photo,group,groupName) => dispatch(addUser(user, email,status,photo,group,groupName)),
     // getTopics: () => dispatch(getTopicsData()),
   };
 }

@@ -45,21 +45,22 @@ router.post('/login', (req, res, next) => {
 
 router.post('/log', async (req, res, next) => {
   const userr = await User.findOne({ email: req.body.email });
+  // console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',userdata);
+  
   passport.authenticate('local', (err, user) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, async(err) => {
       if (err) {
         return res.json({ message: err });
       }
-      // console.log("user status====", userr);
+      // console.log("user statXXXXXXXXXXXXXXXXXXXXXushhfherh====", req.user);
 
-      return res.json({
-        user: user.nickname,
-        email: user.email,
-        status: userr.status,
-      });
+      const userdata = await User.findOne({_id:req.user.id})
+      console.log("user statXXXXXXXXXXXXXXXXXXXXXushhfherh====", userdata);
+      return res.json({ user: user.nickname, email: user.email, 
+        status: userr.status,photo:userdata.photo,group:userdata.group,groupName:userdata.groupName });
     });
   })(req, res, next);
 });
@@ -89,7 +90,10 @@ router.get('/sign-up', (req, res) => {
 
 router.get('/authcheck', async (req, res) => {
   if (req.isAuthenticated()) {
-    res.json({ user: req.user.nickname, status: req.user.status });
+    console.log('aaaaaaaaaaa',req.user);
+    
+    res.json({ user: req.user.nickname, status: req.user.status,email: req.user.email, 
+      status: req.user.status,photo:req.user.photo,group:req.user.group,groupName:req.user.groupName });
   } else {
     res.json({
       message: 'You are not authenticated, please log-in or register',
@@ -111,16 +115,20 @@ router.post('/edittopic', async (req, res) => {
 
   res.json({ status: 'done' });
 });
-// Add Phase
-router.get('/addphase', async (req, res) => {
+//Add Phase
+router.post('/addphase', async (req, res) => {
   // console.log('tyt', req.body);
-  const user = await User.findOneAndUpdate(
-    { nickname: req.user.nickname },
-    { group: '5d95f85bd93180d422d24895' },
-  );
+  
+  // req.user.groupName
+  
+  // const user = await User.findOneAndUpdate(
+  //   { nickname: req.user.nickname },
+  //   { group: '5d95f85bd93180d422d24895' },
+  
   // console.log(user);
   // Все топики для конкретной группы
-  const topics = await Topic.find({ group: user.group });
+  const topics = await Topic.find({groupName: req.body.group });
+  console.log('ooooooooooooooooooooooooooooooooooooooooooo',topics.length);
   // Максимальное кол-во фаз !
   let Phase = 0;
   let Week = 0;
@@ -132,21 +140,24 @@ router.get('/addphase', async (req, res) => {
   } else {
     Phase = 1;
   }
-  Phase += 1;
-  const newTopic = new Topic({
-    topicName: 'OLEJA',
-    description: 'стили',
-    video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
-    group: '5d95f85bd93180d422d24895',
-    phase: Phase,
-    week: 1,
-    day: 1,
-    githubLink:
-      'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
-    comments: [],
-  });
+  Phase = Phase + 1;
+  const newTopic = new Topic(
+
+    {
+      topicName: 'Заполни меня!!!',
+      description: 'стили',
+      video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
+      group: req.body.group,
+      phase: Phase,
+      week: 1,
+      day: 1,
+      githubLink: 'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
+      comments: [],
+    }
+  )
   await newTopic.save();
-  const updatedTopics = await Topic.find({ group: user.group });
+
+  const updatedTopics = await Topic.find({groupName:req.body.group });
   const result = [];
   for (let p = 1; p < Phase + 1; p++) {
     const phase = [];
@@ -167,7 +178,7 @@ router.get('/addphase', async (req, res) => {
   // const topic = await Topic.findOneAndUpdate({ _id: req.body.id },{githubLink:req.body.githubLink,
   //   video:req.body.youtubeLink,fileLink:req.body.fileLink,topicName:req.body.topic });
   // res.json({ status: 'phase done' })
-  res.json({ result });
+  res.json({ group:req.body.group });
 });
 // POST new user
 router.post('/sign-up', async (req, res) => {
@@ -308,11 +319,18 @@ router.post('/gettopics', async (req, res) => {
 
     res.json({ result, topics });
   }
+  
 });
 
 // GET ALl Groups for lections page
 router.get('/getgroups', (req, res) => {
   res.send({ status: 'hi' });
+});
+// GET ALl Groups for lections page
+router.post('/addweek', (req, res) => {
+  console.log(req.body.phase+1);
+  
+  res.send({status:'hi'});
 });
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
