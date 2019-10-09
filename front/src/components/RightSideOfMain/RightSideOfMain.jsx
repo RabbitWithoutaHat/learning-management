@@ -8,6 +8,8 @@ import Home from '../../pages/Home';
 import Lections from '../../pages/Lections';
 import Users from '../../pages/Users';
 import Topic from '../../pages/Topic';
+import Tests from '../../pages/Tests';
+import TestPage from '../../pages/TestPage';
 import PageWithoutGroup from '../PageWithoutGroup/PageWithoutGroup';
 import { connect } from 'react-redux';
 class NavBar extends Component {

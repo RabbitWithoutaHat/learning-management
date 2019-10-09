@@ -11,6 +11,7 @@ const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
 const Topic = require('../models/Topic');
+const Test = require('../models/Test');
 
 const router = express.Router();
 
@@ -29,7 +30,7 @@ router.post('/login', (req, res, next) => {
       // console.log('Login POST  auth ER 1');
       return res.render('login', { [notifications.error]: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         // console.log('Login POST LOGIN ER 1');
         return res.render('login', { [notifications.error]: err });
@@ -48,7 +49,7 @@ router.post('/log', async (req, res, next) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         return res.json({ message: err });
       }
@@ -182,7 +183,7 @@ router.post('/reg', async (req, res, next) => {
       if (err) {
         return res.json({ message: err });
       }
-      req.logIn(user, err => {
+      req.logIn(user, (err) => {
         if (err) {
           return res.json({ message: err });
         }
@@ -258,9 +259,9 @@ router.post('/gettopics', async (req, res) => {
     const phase = [];
     for (let w = 1; w < Week + 1; w++) {
       const week = topics
-        .filter(el => el.phase === `${p}`)
-        .filter(el => el.week === `${w}`)
-        .sort(el => (el.day ? 1 : -1));
+        .filter((el) => el.phase === `${p}`)
+        .filter((el) => el.week === `${w}`)
+        .sort((el) => (el.day ? 1 : -1));
       if (week.length === 0) {
         continue;
       } else {
@@ -343,7 +344,7 @@ router.post('/upload', async (req, res) => {
 
   file.mv(
     `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
-    err => {
+    (err) => {
       if (err) {
         console.log(err);
         // return res.status(500).send(err);
@@ -424,6 +425,11 @@ router.post('/upload-avatar', async (req, res) => {
 router.get('/get-users', async (req, res) => {
   const users = await User.find();
   res.json(users);
+});
+
+router.get('/get-tests', async (req, res) => {
+  const tests = await Test.find();
+  res.json(tests);
 });
 
 router.post('/update-profile', async (req, res) => {

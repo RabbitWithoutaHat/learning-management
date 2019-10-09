@@ -13,21 +13,24 @@ class UsersList extends Component {
   render() {
 
     return (
-      <List className="ui massive relaxed animated list usersList">
-        {this.props.users ? this.props.users.map((e, i) =>
-          <List.Item key={`${i}user`} className="item">
-            <List.Content className="content">
-              <Header as='a'>
-                <Image className="ui avatar image" src={`/images/${e.photo}`} />
-                <Header.Content>
-                  {e.nickname}
-                  <Header.Subheader >{e.group}</Header.Subheader>
-                </Header.Content>
-              </Header>
-            </List.Content>
-          </List.Item>
-        ) : <></>}
-      </List>
+      <>
+        <List className="ui massive relaxed animated list usersList">
+          {this.props.users ? this.props.users.map((e, i) =>
+            <List.Item key={`${i}user`} className="item">
+              <List.Content className="content">
+                <Header as='a'>
+                  <Image className="ui avatar image" src={`/images/${e.photo}`} />
+                  <Header.Content>
+                    {e.nickname}
+                    <Header.Subheader >{e.groupName}</Header.Subheader>
+                  </Header.Content>
+                </Header>
+              </List.Content>
+            </List.Item>
+          ) : <></>}
+        </List>
+
+      </>
 
     )
 

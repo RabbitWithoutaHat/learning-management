@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fileUpload = require('express-fileupload');
+const connection = require('./models/connection');
 
 const indexRouter = require('./routes/index');
 
