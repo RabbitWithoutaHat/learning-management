@@ -8,6 +8,8 @@ import Home from '../../pages/Home';
 import Lections from '../../pages/Lections';
 import Users from '../../pages/Users';
 import Topic from '../../pages/Topic';
+import Tests from '../../pages/Tests';
+import TestPage from '../../pages/TestPage';
 export default class NavBar extends Component {
   render() {
     return (
@@ -20,7 +22,9 @@ export default class NavBar extends Component {
         <Route path="/users" component={Users} />
         <Route exact path="/lections" component={Lections} />
         <Route name="lection" path="/lections/:id" component={Topic} />
+        <Route exact path="/tests" component={Tests} />
+        <Route name="test" path="/tests/:id" component={TestPage} />
       </>
     );
   }
-}
+} 

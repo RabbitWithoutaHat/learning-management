@@ -44,7 +44,13 @@ class SidebarNav extends Component {
               <Link to="/users">
                 <Menu.Item>
                   <Icon name="users" />
-                  Пользователи
+                  Cтуденты
+                </Menu.Item>
+              </Link>
+              <Link to="/tests">
+                <Menu.Item>
+                  <Icon name="tasks" />
+                  Тесты
                 </Menu.Item>
               </Link>
               {/* <div>AUTH</div> */}

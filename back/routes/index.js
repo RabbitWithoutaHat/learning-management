@@ -11,6 +11,7 @@ const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
 const Topic = require('../models/Topic');
+const Test = require('../models/Test');
 
 const router = express.Router();
 
@@ -134,7 +135,7 @@ router.get('/gettopics', async (req, res) => {
   // Добавляю хардкодом группу т.к при реге её нет
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
-    { group: '5d95f85bd93180d422d24895' },
+    { group: '5d9da4b6d895365403c3d4cc' },
   );
 
   // Все топики
@@ -189,25 +190,12 @@ router.post('/download', (req, res, next) => {
     // res.json({fileName:file.name, filePath : `/img/${file.name}`})
   });
 });
-router.get('/getDayData', async (req, res, next) => {
-  // Добавляю хардкодом группу т.к при реге её нет
-  const user = await User.findOneAndUpdate({ nickname: req.user.nickname }, { group: '5d95f85bd93180d422d24895' });
-  file.mv(
-    `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
-    (err) => {
-      if (err) {
-        console.log(err);
-        // return res.status(500).send(err);
-      }
-      // res.json({fileName:file.name, filePath : `/img/${file.name}`})
-    },
-  );
-});
+
 router.get('/getDayData', async (req, res, next) => {
   // Добавляю хардкодом группу т.к при реге её нет
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
-    { group: '5d95f85bd93180d422d24895' },
+    { group: '5d9da4b6d895365403c3d4cc' },
   );
   // Все топики
   const topics = await Topic.find({ group: user.group });
@@ -319,6 +307,11 @@ router.post('/upload-avatar', async (req, res) => {
 router.get('/get-users', async (req, res) => {
   const users = await User.find();
   res.json(users);
+});
+
+router.get('/get-tests', async (req, res) => {
+  const tests = await Test.find();
+  res.json(tests);
 });
 
 router.post('/update-profile', async (req, res) => {

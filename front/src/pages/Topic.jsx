@@ -50,7 +50,7 @@ class Topic extends Component {
               Download
               <Link
                 // to={FilePath.filePath}
-                to="./images/IMG_7778.jpg"
+                to="./imag  es/IMG_7778.jpg"
                 download
                 target="_blank"
               ></Link>
