@@ -6,7 +6,6 @@ import { getTopicsData } from '../../redux/Lections/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-
 class SidebarNav extends Component {
   state = {
     date: new Date(),
@@ -15,7 +14,7 @@ class SidebarNav extends Component {
     let resp = await fetch('/authcheck');
     let user = await resp.json();
     if (user.user) {
-      this.props.add(user.user,user.status);
+      this.props.add(user.user, user.status);
     }
   }
   render() {
@@ -32,18 +31,11 @@ class SidebarNav extends Component {
               </Link>
               <Link to="/lections">
                 <Menu.Item>
-                  <Icon name="user outline" />
-                  Профиль
-                </Menu.Item>
-              </Link>
-              <Link to="/lections">
-                <Menu.Item>
                   <Icon name="book" />
                   Лекции
                 </Menu.Item>
-
               </Link>
-              <Link to="/profile">
+              <Link to="/users">
                 <Menu.Item>
                   <Icon name="users" />
                   Cтуденты
@@ -55,8 +47,15 @@ class SidebarNav extends Component {
                   Тесты
                 </Menu.Item>
               </Link>
+              <Link to="/profile">
+                <Menu.Item>
+                  <Icon name="user outline" />
+                  Профиль
+                </Menu.Item>
+              </Link>
 
               <Calendar onChange={this.onChange} value={this.state.date} />
+
               <Link className="logoutItem" to="/logout">
                 <Menu.Item>
                   <Icon name="sign-out" />
@@ -90,11 +89,10 @@ class SidebarNav extends Component {
   }
 }
 
-
 function mapStateToProps(state) {
   return {
     userWithGroup: state.User.user.groupName,
-    admin:state.User.user.adminstatus,
+    admin: state.User.user.adminstatus,
     user: state.User.user.login,
     status: state.User.user.status,
     justregister: state.User.user.justregister,
@@ -102,7 +100,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: (login,status) => dispatch(addUser(login,status)),
+    add: (login, status) => dispatch(addUser(login, status)),
     // getTopics: () => dispatch(getTopicsData()),
   };
 }

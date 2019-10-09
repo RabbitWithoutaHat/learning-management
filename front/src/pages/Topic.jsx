@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getTopicsData } from '../redux/Lections/actions';
-import { Button, Segment, Header, Image, Modal, Form, Icon, eventPool, closeIcon } from 'semantic-ui-react'
+import { Button, Segment, Header, Image, Modal, Form, Icon, eventPool, closeIcon } from 'semantic-ui-react';
 
 class Topic extends Component {
   state = {
     topic: {},
     videostr: '',
     str: '',
-
     topicName: '',
     topicPhase: '',
     topicWeek: '',
@@ -20,7 +19,6 @@ class Topic extends Component {
     topicName: '',
     modalOpen: false,
     buttonClicked: '',
-
   };
   youtubeLink = e => {
     this.setState({ youtubeLink: e.target.value });
@@ -35,13 +33,12 @@ class Topic extends Component {
     this.setState({ fileLink: e.target.value });
   };
 
-  handleOpen = (e) => {
-    this.setState({ modalOpen: true })
+  handleOpen = e => {
+    this.setState({ modalOpen: true });
   };
-  handleClose = (e) => {
-    this.setState({ modalOpen: false })
+  handleClose = e => {
+    this.setState({ modalOpen: false });
   };
-
 
   func = async () => {
     let data = {
@@ -61,9 +58,9 @@ class Topic extends Component {
     });
     let dataresp = await resp.json();
     console.log(dataresp);
-    this.setState({ modalOpen: false })
+    this.setState({ modalOpen: false });
     // this.setState({buttonClicked:'sdasd'});
-  }
+  };
   get = async e => {
     e.preventDefault();
     this.func();
@@ -76,7 +73,12 @@ class Topic extends Component {
 
     const topic = this.props.allTopics.find(el => el._id === this.props.match.params.id);
     console.log('TOPIC NAMEEEEEEEEEEEEEEEEE', topic);
-    await this.setState({ topicName: topic.topicName, topicPhase: topic.phase, topicWeek: topic.week, topicDay: topic.day })
+    await this.setState({
+      topicName: topic.topicName,
+      topicPhase: topic.phase,
+      topicWeek: topic.week,
+      topicDay: topic.day,
+    });
     const videoSrc = topic.video;
     let videostr = '';
     if (videoSrc.includes('watch')) {
@@ -91,14 +93,17 @@ class Topic extends Component {
     console.log('prev', prevState);
     console.log('this', this.state);
 
-
     if (prevState.modalOpen && !this.state.modalOpen) {
-
       await this.func();
       await this.props.getTopics(this.props.selectedGroup);
       const topic = this.props.allTopics.find(el => el._id === this.props.match.params.id);
       // console.log(topic.topicName);
-      this.setState({ topicName: topic.topicName, topicPhase: topic.phase, topicWeek: topic.week, topicDay: topic.day })
+      this.setState({
+        topicName: topic.topicName,
+        topicPhase: topic.phase,
+        topicWeek: topic.week,
+        topicDay: topic.day,
+      });
       const videoSrc = topic.video;
       let videostr = '';
       if (videoSrc.includes('watch')) {
@@ -108,30 +113,34 @@ class Topic extends Component {
       }
       this.setState({ topic: topic, videostr: videostr });
     }
-
   }
 
   render() {
-
     console.log('render');
 
     // const { closeOnDocumentClick,closeIcon } = this.state
     return (
       <>
         <Modal
-          trigger={<Button positive onClick={this.handleOpen}>edit</Button>}
+          trigger={
+            <Button positive onClick={this.handleOpen}>
+              edit
+            </Button>
+          }
           closeIcon
           open={this.state.modalOpen}
-        // onClose={this.get}
-        // basic
+          // onClose={this.get}
+          // basic
         >
           <Modal.Header>{this.state.topicName}</Modal.Header>
-          <Modal.Content >
+          <Modal.Content>
             <Modal.Description>
-              <Header className="regForm">Фаза:{this.state.topicPhase} Неделя:{this.state.topicWeek} День:{this.state.topicDay}</Header>
+              <Header className="regForm">
+                Фаза:{this.state.topicPhase} Неделя:{this.state.topicWeek} День:{this.state.topicDay}
+              </Header>
               {/* ФОрма */}
               <Modal.Actions>
-                <Form className="regForm" >
+                <Form className="regForm">
                   <Form.Field>
                     <label htmlFor="topicname">TopicName</label>
                     <input type="text" name="topicname" required onChange={this.topicName} />
@@ -153,7 +162,9 @@ class Topic extends Component {
                     <input type="text" name="fileupload" />
                   </Form.Field>
                   <div className="form-field">
-                    <Button type="button" className="Button" onClick={this.get}>Отправить</Button>{' '}
+                    <Button type="button" className="Button" onClick={this.get}>
+                      Отправить
+                    </Button>{' '}
                   </div>
                 </Form>
               </Modal.Actions>
@@ -164,7 +175,6 @@ class Topic extends Component {
 
         <div className="videoContainer">
           <h1>{this.state.topic.topicName}</h1>
-
 
           <h1>Тема урока: {this.state.topic.topicName}</h1>
 
@@ -184,10 +194,10 @@ class Topic extends Component {
               <div className="videoLinks">
                 <a target="_blank" href={this.state.topic.githubLink}>
                   Задания на GitHub
-              </a>
+                </a>
                 <a target="_blank" href={this.state.FileLink}>
                   Код урока
-              </a>
+                </a>
               </div>
               <div className="videoFile">
                 <p className="fileTitle">Файл к уроку</p>
@@ -212,7 +222,8 @@ class Topic extends Component {
             </div>
           </div>
         </div>
-      </>);
+      </>
+    );
   }
 }
 
@@ -225,7 +236,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     // getNews: () => dispatch(getNewsData())
-    getTopics: (selectedGroup) => dispatch(getTopicsData(selectedGroup)),
+    getTopics: selectedGroup => dispatch(getTopicsData(selectedGroup)),
   };
 };
 export default connect(

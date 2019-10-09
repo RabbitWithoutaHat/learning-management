@@ -19,8 +19,8 @@ addMiddlewares(router);
 
 // GET login form
 router.get('/login', (req, res) => {
-  // console.log('Login GET');
-  res.render('login');
+  console.log('Login GET');
+  res.send('login');
 });
 
 // POST login
@@ -55,10 +55,32 @@ router.post('/log', async (req, res, next) => {
       }
       // console.log("user status====", userr);
 
-      return res.json({ user: user.nickname, email: user.email, status: userr.status });
+      return res.json({
+        user: user.nickname,
+        email: user.email,
+        status: userr.status,
+      });
     });
   })(req, res, next);
 });
+
+router.get(
+  '/auth/google',
+  passport.authenticate('google', { accessType: 'offline', prompt: 'consent' }),
+);
+
+router.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/login',
+    session: false,
+  }),
+  (req, res) => {
+    console.log('vsy ok');
+
+    res.redirect('/');
+  },
+);
 
 // GET registration form
 router.get('/sign-up', (req, res) => {
@@ -67,7 +89,6 @@ router.get('/sign-up', (req, res) => {
 
 router.get('/authcheck', async (req, res) => {
   if (req.isAuthenticated()) {
-
     res.json({ user: req.user.nickname, status: req.user.status });
   } else {
     res.json({
@@ -75,17 +96,22 @@ router.get('/authcheck', async (req, res) => {
     });
   }
 });
-//Edit exactly Topic
+// Edit exactly Topic
 router.post('/edittopic', async (req, res) => {
   // console.log('tyt', req.body);
-  const topic = await Topic.findOneAndUpdate({ _id: req.body.id }, {
-    githubLink: req.body.githubLink,
-    video: req.body.youtubeLink, fileLink: req.body.fileLink, topicName: req.body.topic
-  });
+  const topic = await Topic.findOneAndUpdate(
+    { _id: req.body.id },
+    {
+      githubLink: req.body.githubLink,
+      video: req.body.youtubeLink,
+      fileLink: req.body.fileLink,
+      topicName: req.body.topic,
+    },
+  );
 
-  res.json({ status: 'done' })
+  res.json({ status: 'done' });
 });
-//Add Phase
+// Add Phase
 router.get('/addphase', async (req, res) => {
   // console.log('tyt', req.body);
   const user = await User.findOneAndUpdate(
@@ -106,21 +132,19 @@ router.get('/addphase', async (req, res) => {
   } else {
     Phase = 1;
   }
-  Phase = Phase + 1;
-  const newTopic = new Topic(
-
-    {
-      topicName: 'OLEJA',
-      description: 'стили',
-      video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
-      group: '5d95f85bd93180d422d24895',
-      phase: Phase,
-      week: 1,
-      day: 1,
-      githubLink: 'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
-      comments: [],
-    }
-  )
+  Phase += 1;
+  const newTopic = new Topic({
+    topicName: 'OLEJA',
+    description: 'стили',
+    video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
+    group: '5d95f85bd93180d422d24895',
+    phase: Phase,
+    week: 1,
+    day: 1,
+    githubLink:
+      'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
+    comments: [],
+  });
   await newTopic.save();
   const updatedTopics = await Topic.find({ group: user.group });
   const result = [];
@@ -207,46 +231,43 @@ router.get('/getnews', async (req, res) => {
 router.post('/gettopics', async (req, res) => {
   // Добавляю хардкодом группу т.к при реге её нет
   // console.log(req.user);
-  //Все группы
-  console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm?!?',req.body.selectedGroup);
-  
+  // Все группы
+  console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm?!?', req.body.selectedGroup);
+
   const allGroups = await Group.find();
-  //Последняя группа
-  let selectedGroupName ='';
-  if(req.body.selectedGroup) {
+  // Последняя группа
+  let selectedGroupName = '';
+  if (req.body.selectedGroup) {
     selectedGroupName = req.body.selectedGroup;
-  }else {
-    console.log("НЕТ В БАДИ");
-    selectedGroupName = allGroups[allGroups.length-1].name;
+  } else {
+    console.log('НЕТ В БАДИ');
+    selectedGroupName = allGroups[allGroups.length - 1].name;
   }
   // let selectedGroupName = allGroups[allGroups.length-1].name;
-  console.log('selectedGroupName====',selectedGroupName);
-  
-  //Массив из имён всех групп
-  let groupNames = [];
-  for(let i = 0 ; i < allGroups.length;i++) {
-    let obj={ key: `${i+1}`, value: `${i+1}`, text:allGroups[i].name  };
+  console.log('selectedGroupName====', selectedGroupName);
+
+  // Массив из имён всех групп
+  const groupNames = [];
+  for (let i = 0; i < allGroups.length; i++) {
+    const obj = { key: `${i + 1}`, value: `${i + 1}`, text: allGroups[i].name };
     groupNames.push(obj);
   }
-  //если нет групп вообще
-  if(allGroups.length === 0) {
-    let arr =[];
+  // если нет групп вообще
+  if (allGroups.length === 0) {
+    const arr = [];
     res.json({ arr, arr });
   }
-  //Для админа составим топики последней группы,а для пользователя его группы
-  let topics =[];
-  if(req.user.status==='admin') {
-    console.log("admin");
+  // Для админа составим топики последней группы,а для пользователя его группы
+  let topics = [];
+  if (req.user.status === 'admin') {
+    console.log('admin');
     topics = await Topic.find({ groupName: selectedGroupName });
-    console.log('topic.length===',topics.length);
-    console.log('ТОПИКИ ГРУППЫ ',topics[0].groupName);
-    
-    
+    console.log('topic.length===', topics.length);
+    console.log('ТОПИКИ ГРУППЫ ', topics[0].groupName);
   } else {
-    topics =  await Topic.find({  groupName: req.user.groupName });
+    topics = await Topic.find({ groupName: req.user.groupName });
   }
- 
-  
+
   // Максимальное кол-во фаз и недель!
   let Phase = 0;
   let Week = 0;
@@ -271,30 +292,31 @@ router.post('/gettopics', async (req, res) => {
 
     result.push(phase);
   }
-  //Для админа верне топики последней группые ,все группы и поле конкретной группы для Select!
-  //Для юзера вернем топики его группы
-  if(req.user.status==='admin') {
-    res.json({ result, topics,groupNames,selectedGroupName });
-    console.log('888888888888888888888888888888888888888888888888',groupNames,selectedGroupName);
-    
+  // Для админа верне топики последней группые ,все группы и поле конкретной группы для Select!
+  // Для юзера вернем топики его группы
+  if (req.user.status === 'admin') {
+    res.json({
+ result, topics, groupNames, selectedGroupName 
+});
+    console.log(
+      '888888888888888888888888888888888888888888888888',
+      groupNames,
+      selectedGroupName,
+    );
   } else {
     console.log('WTFFFFFFFFFFFFFFFFFFFFFFFFFFFF?!?');
-    
+
     res.json({ result, topics });
   }
-  
-  
 });
 
 // GET ALl Groups for lections page
 router.get('/getgroups', (req, res) => {
-  res.send({status:'hi'});
+  res.send({ status: 'hi' });
 });
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-
-  const filePath =
-    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
 
   const fileName = 'lenin.svg'; // The default name the browser will use
 
@@ -303,11 +325,8 @@ router.get('/downloadtest', (req, res, next) => {
   // res.json({user:"hi"})
 });
 router.post('/download', (req, res, next) => {
-
-
-
   // res.download('/home/oleg-lasttry/FinalProject/learning-management/front/public/img/com.svg');
-  res.sendFile('/img/com.svg')
+  res.sendFile('/img/com.svg');
 });
 
 router.get('/getDayData', async (req, res, next) => {
@@ -317,10 +336,10 @@ router.get('/getDayData', async (req, res, next) => {
     { group: '5d9da4b6d895365403c3d4cc' },
   );
 
-  //5d9ce8472a0cbe13a7048fea
+  // 5d9ce8472a0cbe13a7048fea
   // Все топики
   const topics = await Topic.find({ group: user.group });
-console.log('ETI TOPIKI!',topics)
+  console.log('ETI TOPIKI!', topics);
   const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
     .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
@@ -367,16 +386,10 @@ router.get('/logoout', (req, res) => {
   res.json({ user: '' });
 });
 // GET home page
-// router.get('/', async (req, res) => {
-//   const { error, message } = req.query;
-//   console.log('GET HOME PAGE');
-//   res.render('index', {
-//     title: 'Home',
-//     currentUser: getUserNickname(req),
-//     error,
-//     message,
-//   });
-// });
+router.get('/', (req, res) => {
+  console.log('GET HOME PAGE');
+  res.send('ok');
+});
 // GET Page with Authentication
 router.get('/auth-page', async (req, res) => {
   if (req.isAuthenticated()) {
@@ -433,10 +446,9 @@ router.get('/get-tests', async (req, res) => {
 });
 
 router.post('/update-profile', async (req, res) => {
-
   let {
-    email, password, nickname, phone, photo
-  } = req.body;
+ email, password, nickname, phone, photo 
+} = req.body;
 
   const { id } = req.user;
 

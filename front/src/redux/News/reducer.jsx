@@ -1,4 +1,4 @@
-import { REQUESTED_NEWS,ADD_NEWS,REQUESTED_ERROR} from './types';
+import { REQUESTED_NEWS, ADD_NEWS, REQUESTED_ERROR, ADD_EVENTS } from './types';
 
 const initialState = {
   user: {
@@ -7,10 +7,10 @@ const initialState = {
     message: '',
     loginMessage: '',
   },
-  news:'', //News
-  loading:'', //loading News data status
-  error:'', //error News status
-  
+  news: '', //News
+  loading: '', //loading News data status
+  error: '', //error News status
+  events: [],
 };
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -18,6 +18,14 @@ export default function(state = initialState, action) {
       return {
         ...state,
         news: action.news,
+        loading: true,
+        error: false,
+      };
+    }
+    case ADD_EVENTS: {
+      return {
+        ...state,
+        events: action.events,
         loading: true,
         error: false,
       };
