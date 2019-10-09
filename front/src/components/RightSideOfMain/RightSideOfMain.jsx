@@ -8,6 +8,7 @@ import Home from '../../pages/Home';
 import Lections from '../../pages/Lections';
 import Users from '../../pages/Users';
 import Topic from '../../pages/Topic';
+import Calendar from '../../components/Calendar/Calendar';
 export default class NavBar extends Component {
   render() {
     return (
@@ -20,6 +21,7 @@ export default class NavBar extends Component {
         <Route path="/users" component={Users} />
         <Route exact path="/lections" component={Lections} />
         <Route name="lection" path="/lections/:id" component={Topic} />
+        <Route name="calendar" path="/calendar" component={Calendar} />
       </>
     );
   }

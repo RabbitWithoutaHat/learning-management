@@ -42,6 +42,7 @@ class SidebarNav extends Component {
                 </Menu.Item>
               </Link>
               <Calendar onChange={this.onChange} value={this.state.date} />
+
               <Link className="logoutItem" to="/logout">
                 <Menu.Item>
                   <Icon name="sign-out" />
@@ -85,7 +86,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     add: login => dispatch(addUser(login)),
-    // getTopics: () => dispatch(getTopicsData()),
   };
 }
 export default connect(

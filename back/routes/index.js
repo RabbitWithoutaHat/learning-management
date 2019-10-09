@@ -19,7 +19,7 @@ addMiddlewares(router);
 // GET login form
 router.get('/login', (req, res) => {
   console.log('Login GET');
-  res.render('login');
+  res.send('login');
 });
 
 // POST login
@@ -29,7 +29,7 @@ router.post('/login', (req, res, next) => {
       console.log('Login POST  auth ER 1');
       return res.render('login', { [notifications.error]: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         console.log('Login POST LOGIN ER 1');
         return res.render('login', { [notifications.error]: err });
@@ -48,7 +48,7 @@ router.post('/log', async (req, res, next) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         return res.json({ message: err });
       }
@@ -56,6 +56,24 @@ router.post('/log', async (req, res, next) => {
     });
   })(req, res, next);
 });
+
+router.get(
+  '/auth/google',
+  passport.authenticate('google', { accessType: 'offline', prompt: 'consent' }),
+);
+
+router.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/login',
+    session: false,
+  }),
+  (req, res) => {
+    console.log('vsy ok');
+
+    res.redirect('/');
+  },
+);
 
 // GET registration form
 router.get('/sign-up', (req, res) => {
@@ -109,7 +127,7 @@ router.post('/reg', async (req, res, next) => {
       if (err) {
         return res.json({ message: err });
       }
-      req.logIn(user, err => {
+      req.logIn(user, (err) => {
         if (err) {
           return res.json({ message: err });
         }
@@ -134,7 +152,7 @@ router.get('/gettopics', async (req, res) => {
   // Добавляю хардкодом группу т.к при реге её нет
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
-    { group: '5d95f85bd93180d422d24895' },
+    { group: '5d9da4b6d895365403c3d4cc' },
   );
 
   // Все топики
@@ -152,9 +170,9 @@ router.get('/gettopics', async (req, res) => {
     const phase = [];
     for (let w = 1; w < Week + 1; w++) {
       const week = topics
-        .filter(el => el.phase === `${p}`)
-        .filter(el => el.week === `${w}`)
-        .sort(el => (el.day ? 1 : -1));
+        .filter((el) => el.phase === `${p}`)
+        .filter((el) => el.week === `${w}`)
+        .sort((el) => (el.day ? 1 : -1));
       if (week.length === 0) {
         continue;
       } else {
@@ -171,8 +189,7 @@ router.get('/gettopics', async (req, res) => {
 
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-  const filePath =
-    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
   const fileName = 'lenin.svg'; // The default name the browser will use
 
   // res.download(filePath, fileName);
@@ -184,7 +201,7 @@ router.post('/download', (req, res, next) => {
 
   file.mv(
     `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
-    err => {
+    (err) => {
       if (err) {
         console.log(err);
         // return res.status(500).send(err);
@@ -198,7 +215,7 @@ router.get('/getDayData', async (req, res, next) => {
   // Добавляю хардкодом группу т.к при реге её нет
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
-    { group: '5d95f85bd93180d422d24895' },
+    { group: '5d9da4b6d895365403c3d4cc' },
   );
   // Все топики
   const topics = await Topic.find({ group: user.group });
@@ -232,7 +249,7 @@ router.post('/upload', async (req, res) => {
   // });
   file.mv(
     `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
-    err => {
+    (err) => {
       if (err) {
         console.log(err);
         // return res.status(500).send(err);
@@ -255,16 +272,10 @@ router.get('/logoout', (req, res) => {
   res.json({ user: '' });
 });
 // GET home page
-// router.get('/', async (req, res) => {
-//   const { error, message } = req.query;
-//   console.log('GET HOME PAGE');
-//   res.render('index', {
-//     title: 'Home',
-//     currentUser: getUserNickname(req),
-//     error,
-//     message,
-//   });
-// });
+router.get('/', (req, res) => {
+  console.log('GET HOME PAGE');
+  res.send('ok');
+});
 // GET Page with Authentication
 router.get('/auth-page', async (req, res) => {
   if (req.isAuthenticated()) {
@@ -316,7 +327,9 @@ router.get('/get-users', async (req, res) => {
 });
 
 router.post('/update-profile', async (req, res) => {
-  let { email, password, nickname, phone, photo } = req.body;
+  let {
+ email, password, nickname, phone, photo 
+} = req.body;
   const { id } = req.user;
 
   let hash = req.user.password;

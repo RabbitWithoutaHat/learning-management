@@ -36,6 +36,14 @@ const UserSchema = new Schema({
     type: String,
     required: false,
   },
+  accessToken: {
+    type: String,
+    required: false,
+  },
+  refreshToken: {
+    type: String,
+    required: false,
+  },
   regDate: {
     type: Date,
     default: Date.now,
@@ -43,11 +51,11 @@ const UserSchema = new Schema({
   },
 });
 
-UserSchema.statics.getByEmail = async function (email) {
+UserSchema.statics.getByEmail = async function(email) {
   return this.find({ email });
 };
 
-UserSchema.statics.getByUserName = async function (nickname) {
+UserSchema.statics.getByUserName = async function(nickname) {
   return this.find({ nickname });
 };
 

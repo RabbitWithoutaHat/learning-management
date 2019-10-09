@@ -4,11 +4,29 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fileUpload = require('express-fileupload');
-
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const indexRouter = require('./routes/index');
+const connection = require('./models/connection');
+const Token = require('./models/Token');
 
 const app = express();
 const port = 5002;
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID:
+        '25492420798-qjo4b8c9nj7p3hibsocb6raf5m91443t.apps.googleusercontent.com',
+      clientSecret: 'J20xLC9i0yNPGwjHSXk54UcO',
+      callbackURL: 'http://localhost:5002/auth/google/callback',
+      scope: ['profile', 'https://www.googleapis.com/auth/calendar.readonly'],
+    },
+    (accessToken, refreshToken, profile, done) => {
+      Token.findOrCreate({ accessToken, refreshToken }, (err, data) => done(err, data),);
+    },
+  ),
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
