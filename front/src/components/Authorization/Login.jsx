@@ -32,10 +32,11 @@ class Login extends Component {
       body: JSON.stringify(data),
     });
     let user = await resp.json();
+console.log('uuuuuuuuuuuuuuuuuuuuuuu',user);
 
     if (user.user) {
       this.setState({ dataLoaded: true });
-      this.props.add(user.user, user.email,user.status);
+      this.props.add(user.user, user.email,user.status,user.photo,user.group,user.groupName);
       this.props.history.push('/');
     } else {
       this.props.addLogMsg(user.message);
@@ -71,7 +72,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: (user, email,status) => dispatch(addUser(user, email,status)),
+    add: (user, email,status,photo,group,groupName) => dispatch(addUser(user, email,status,photo,group,groupName)),
     addLogMsg: loginMessage => dispatch(addLogMsg(loginMessage)),
   };
 }

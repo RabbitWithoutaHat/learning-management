@@ -24,27 +24,70 @@ class PhaseBar extends Component {
   };
   async componentDidMount() {
     await this.props.getTopics();
+
+    console.log(this.props.topics.length);
   }
   addPhase = async () => {
-    let resp = await fetch('/addphase');
+    // let resp = await fetch('/addphase')
+    let group = this.state.selectedGroupName;
+    let resp = await fetch('/addphase', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ group }),
+    });
+    let dataresp = await resp.json();
+
     let data = await resp.json();
     await this.props.getTopics();
   };
   getSelecetedGroup = async (event, { value }) => {
     console.log('VALUE!!', value);
     let selectedGroup = event.target.textContent;
+    this.setState({ selectedGroupName: selectedGroup });
     console.log('text!!', selectedGroup);
     await this.props.getTopics(selectedGroup);
   };
+
+  addWeek = async e => {
+    e.preventDefault();
+    this.func();
+  };
+  func = async () => {
+    let data = {
+      phase: this.state.tabIndex,
+    };
+    let resp = await fetch('/addweek', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    let dataresp = await resp.json();
+    // console.log(dataresp);
+    await this.props.getTopics(dataresp);
+  };
   render() {
+    // console.log(this.state.data);
     return (
       <>
-        <Select
-          className="select"
-          placeholder="Select your country"
-          options={this.props.groupNames}
-          onChange={this.getSelecetedGroup}
-        />
+        {this.props.admin ? (
+          <>
+            <Select
+              className="select"
+              placeholder="Select your country"
+              options={this.props.groupNames}
+              onChange={this.getSelecetedGroup}
+            />
+          </>
+        ) : (
+          <></>
+        )}
+        {/* <div>{this.state.tabIndex}</div> */}
         <Tabs
           selectedIndex={this.state.tabIndex}
           onSelect={tabIndex => this.setState({ tabIndex })}
@@ -57,7 +100,13 @@ class PhaseBar extends Component {
             ) : (
               <p></p>
             )}
-            <Tab onClick={this.addPhase}>+</Tab>
+            {this.props.admin ? (
+              <>
+                <Tab onClick={this.addPhase}>+</Tab>
+              </>
+            ) : (
+              <></>
+            )}
           </TabList>
           {this.props.topics ? (
             this.props.topics.map((phase, i) => (
@@ -76,7 +125,13 @@ class PhaseBar extends Component {
                         </List.Item>
                       ))}
                     </List>
-                    <Button basic color="violet" icon="plus"></Button>
+                    {this.props.admin ? (
+                      <>
+                        <Button basic color="violet" icon="plus"></Button>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </>
                 ))}
               </TabPanel>
@@ -84,11 +139,15 @@ class PhaseBar extends Component {
           ) : (
             <p></p>
           )}
-          <Button className="addWeek" basic color="violet" icon="plus">
-            Добавить неделю
-          </Button>
-
-          <div>{this.props.status ? <div></div> : <div>ti lox</div>}</div>
+          {this.props.admin ? (
+            <>
+              <Button className="addWeek" basic color="violet" icon="plus">
+                Добавить неделю
+              </Button>
+            </>
+          ) : (
+            <></>
+          )}
         </Tabs>
       </>
     );
@@ -103,7 +162,7 @@ const mapStateToProps = state => {
     groupNames: state.Topics.groupNames,
     selectedGroupName: state.Topics.selectedGroupName,
     userName: state.User.user.login,
-    status: state.User.user.adminstatus,
+    admin: state.User.user.adminstatus,
   };
 };
 const mapDispatchToProps = dispatch => {
