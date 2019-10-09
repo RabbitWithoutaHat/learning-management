@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Menu, Segment, Sidebar } from 'semantic-ui-react';
+import { Icon, Menu, Segment, Sidebar, Dimmer, Loader } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import { addUser } from '../../redux/Users/actions';
 import { getTopicsData } from '../../redux/Lections/actions';
@@ -19,72 +19,79 @@ class SidebarNav extends Component {
   }
   render() {
     return (
-      <Sidebar.Pushable>
-        <Sidebar as={Menu} icon="labeled" inverted vertical visible width="wide">
-          {this.props.user ? (
-            <>
-              <Link to="/">
-                <Menu.Item>
-                  <Icon name="play" />
-                  Актуальное
+      <>{this.props.user ?
+        <Sidebar.Pushable>
+          <Sidebar as={Menu} icon="labeled" inverted vertical visible width="wide">
+            {this.props.user ? (
+              <>
+                <Link to="/">
+                  <Menu.Item>
+                    <Icon name="play" />
+                    Актуальное
                 </Menu.Item>
-              </Link>
-              <Link to="/lections">
-                <Menu.Item>
-                  <Icon name="book" />
-                  Лекции
+                </Link>
+                <Link to="/lections">
+                  <Menu.Item>
+                    <Icon name="book" />
+                    Лекции
                 </Menu.Item>
-              </Link>
-              <Link to="/users">
-                <Menu.Item>
-                  <Icon name="users" />
-                  Cтуденты
+                </Link>
+                <Link to="/users">
+                  <Menu.Item>
+                    <Icon name="users" />
+                    Cтуденты
                 </Menu.Item>
-              </Link>
-              <Link to="/tests">
-                <Menu.Item>
-                  <Icon name="tasks" />
-                  Тесты
+                </Link>
+                <Link to="/tests">
+                  <Menu.Item>
+                    <Icon name="tasks" />
+                    Тесты
                 </Menu.Item>
-              </Link>
-              <Link to="/profile">
-                <Menu.Item>
-                  <Icon name="user outline" />
-                  Профиль
+                </Link>
+                <Link to="/profile">
+                  <Menu.Item>
+                    <Icon name="user outline" />
+                    Профиль
                 </Menu.Item>
-              </Link>
+                </Link>
 
-              <Calendar onChange={this.onChange} value={this.state.date} />
+                <Calendar onChange={this.onChange} value={this.state.date} />
 
-              <Link className="logoutItem" to="/logout">
-                <Menu.Item>
-                  <Icon name="sign-out" />
-                  Выйти
+                <Link className="logoutItem" to="/logout">
+                  <Menu.Item>
+                    <Icon name="sign-out" />
+                    Выйти
                 </Menu.Item>
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to="/login">
-                <Menu.Item>
-                  <Icon name="sign-in" />
-                  Логин
+                </Link>
+              </>
+            ) : (
+                <>
+                  <Link to="/login">
+                    <Menu.Item>
+                      <Icon name="sign-in" />
+                      Логин
                 </Menu.Item>
-              </Link>
-              <Link to="/registration">
-                <Menu.Item>
-                  <Icon name="user outline" />
-                  Регистрация
+                  </Link>
+                  <Link to="/registration">
+                    <Menu.Item>
+                      <Icon name="user outline" />
+                      Регистрация
                 </Menu.Item>
-              </Link>
-            </>
-          )}
-        </Sidebar>
-        <Sidebar.Pusher>
-          <div className="container">{this.props.children}</div>
-          <footer></footer>
-        </Sidebar.Pusher>
-      </Sidebar.Pushable>
+                  </Link>
+                </>
+              )}
+          </Sidebar>
+          <Sidebar.Pusher>
+            <div className="container">{this.props.children}</div>
+            <footer></footer>
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
+        :
+        <Dimmer active>
+          <Loader size='massive'>Loading</Loader>
+        </Dimmer>
+      }
+      </>
     );
   }
 }
