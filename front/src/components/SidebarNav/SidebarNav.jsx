@@ -31,17 +31,11 @@ class SidebarNav extends Component {
               </Link>
               <Link to="/lections">
                 <Menu.Item>
-                  <Icon name="user outline" />
-                  Профиль
-                </Menu.Item>
-              </Link>
-              <Link to="/lections">
-                <Menu.Item>
                   <Icon name="book" />
                   Лекции
                 </Menu.Item>
               </Link>
-              <Link to="/profile">
+              <Link to="/users">
                 <Menu.Item>
                   <Icon name="users" />
                   Cтуденты
@@ -51,6 +45,12 @@ class SidebarNav extends Component {
                 <Menu.Item>
                   <Icon name="tasks" />
                   Тесты
+                </Menu.Item>
+              </Link>
+              <Link to="/profile">
+                <Menu.Item>
+                  <Icon name="user outline" />
+                  Профиль
                 </Menu.Item>
               </Link>
 

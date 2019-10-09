@@ -28,6 +28,9 @@ class NavBar extends Component {
               <Route path="/profile" component={Profile} />
               <Route exact path="/lections" component={Lections} />
               <Route name="lection" path="/lections/:id" component={Topic} />
+              <Route exact path="/tests" component={Tests} />
+              <Route name="test" path="/tests/:id" component={TestPage} />
+              <Route path="/users" component={Users} />
             </>
           ) : (
             <>
@@ -38,6 +41,9 @@ class NavBar extends Component {
               <Route path="/registration" component={Registration} />
               <Route exact path="/lections" component={PageWithoutGroup} />
               <Route name="lection" path="/lections/:id" component={PageWithoutGroup} />
+              <Route exact path="/tests" component={Tests} />
+              <Route name="test" path="/tests/:id" component={TestPage} />
+              <Route path="/users" component={Users} />
             </>
           )}
         </>
