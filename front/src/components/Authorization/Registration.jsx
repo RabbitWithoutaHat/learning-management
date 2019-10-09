@@ -43,7 +43,6 @@ class Registration extends Component {
       this.props.addMsg(user.message);
     }
   };
-
   render() {
     return (
       <>

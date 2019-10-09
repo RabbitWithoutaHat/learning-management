@@ -14,7 +14,7 @@ class SidebarNav extends Component {
     let resp = await fetch('/authcheck');
     let user = await resp.json();
     if (user.user) {
-      this.props.add(user.user);
+      this.props.add(user.user, user.status);
     }
   }
   render() {
@@ -41,6 +41,7 @@ class SidebarNav extends Component {
                   Профиль
                 </Menu.Item>
               </Link>
+
               <Calendar onChange={this.onChange} value={this.state.date} />
 
               <Link className="logoutItem" to="/logout">
@@ -78,6 +79,8 @@ class SidebarNav extends Component {
 
 function mapStateToProps(state) {
   return {
+    userWithGroup: state.User.user.groupName,
+    admin: state.User.user.adminstatus,
     user: state.User.user.login,
     status: state.User.user.status,
     justregister: state.User.user.justregister,
@@ -85,7 +88,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: login => dispatch(addUser(login)),
+    add: (login, status) => dispatch(addUser(login, status)),
+    // getTopics: () => dispatch(getTopicsData()),
   };
 }
 export default connect(

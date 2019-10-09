@@ -10,6 +10,8 @@ export const addTopics = topics => {
     type: ADD_TOPICS,
     topics: topics.result,
     allTopics: topics.topics,
+    groupNames:topics.groupNames,
+    selectedGroupName:topics.selectedGroupName,
   };
 };
 export const requestError = () => {
@@ -18,12 +20,21 @@ export const requestError = () => {
   };
 };
 // thunk!
-export const getTopicsData = () => async dispatch => {
+export const getTopicsData = (selectedGroup) => async dispatch => {
   try {
     dispatch(requestTopics());
-    const resp = await fetch('/gettopics');
+    // const resp = await fetch('/gettopics');
+    let resp = await fetch('/gettopics', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({selectedGroup}),
+    });
     const data = await resp.json();
-    console.log(data);
+    
+    console.log('GGGGGGGGGGG',data);
 
     console.log(data.result);
     dispatch(addTopics(data));
