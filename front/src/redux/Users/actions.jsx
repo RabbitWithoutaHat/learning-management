@@ -11,17 +11,15 @@ import {
 } from './types';
 import axios from 'axios';
 
-export const addUser = (login, email,status,photo,group,groupName) => {
+export const addUser = (login, email, status, photo, group, groupName) => {
   return {
     type: ADD_USER,
     login: login,
     email: email,
-    status:status,
-    photo:photo,
-    group:group,
-    groupName:groupName,
-  
-
+    status: status,
+    photo: photo,
+    group: group,
+    groupName: groupName,
   };
 };
 export const addMsg = message => {
@@ -72,8 +70,8 @@ const requestUsers = data => {
   return {
     type: REQUEST_ALL_USERS,
     users: data,
-  }
-}
+  };
+};
 
 //thunk
 const updateProfile = data => async dispatch => {
@@ -109,14 +107,12 @@ const updateAvatar = photo => async dispatch => {
 
 const getAllUsers = () => async dispatch => {
   try {
-    const resp = await fetch('/get-users')
+    const resp = await fetch('/get-users');
     const data = await resp.json();
-    console.log(data)
     dispatch(requestUsers(data));
-
   } catch (error) {
     dispatch(requestErrorAC());
   }
-}
+};
 
 export { updateProfile, updateAvatar, getAllUsers };

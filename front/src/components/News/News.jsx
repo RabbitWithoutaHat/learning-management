@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { getNewsData } from '../../redux/News/action';
 import { connect } from 'react-redux';
 
-import { Header } from 'semantic-ui-react';
-import { Segment, Message } from 'semantic-ui-react';
+import { Message } from 'semantic-ui-react';
 
 class News extends Component {
   state = { visible: true };

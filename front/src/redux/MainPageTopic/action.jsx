@@ -1,4 +1,4 @@
-import { REQUESTED_TOPIC,REQUESTED_ERROR, ADD_TOPIC } from './types';
+import { REQUESTED_TOPIC, REQUESTED_ERROR, ADD_TOPIC } from './types';
 // import {getNewsData} from '../../components/News/News';
 export const requestTopic = () => {
   return {
@@ -23,7 +23,6 @@ export const getTopicData = () => async dispatch => {
     const resp = await fetch('/getDayData');
     const data = await resp.json();
     dispatch(addTopic(data));
-    // console.log(data);
   } catch (err) {
     dispatch(requestError());
   }

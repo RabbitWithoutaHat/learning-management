@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { getNewsData } from '../../redux/News/action';
 import { connect } from 'react-redux';
-import { Route, Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getTopicsData } from '../../redux/Lections/actions';
 import { List } from 'semantic-ui-react';
-import { Tabs, TabList, Tab, TabPanel, CustomTab } from 'react-tabs';
+import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { Button } from 'semantic-ui-react';
 import { Select } from 'semantic-ui-react';
@@ -24,13 +23,10 @@ class PhaseBar extends Component {
   };
   async componentDidMount() {
     await this.props.getTopics();
-
-    console.log(this.props.topics.length);
   }
   addPhase = async () => {
-    // let resp = await fetch('/addphase')
     let group = this.state.selectedGroupName;
-    let resp = await fetch('/addphase', {
+    await fetch('/addphase', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -38,16 +34,12 @@ class PhaseBar extends Component {
       },
       body: JSON.stringify({ group }),
     });
-    let dataresp = await resp.json();
 
-    let data = await resp.json();
     await this.props.getTopics();
   };
   getSelecetedGroup = async (event, { value }) => {
-    console.log('VALUE!!', value);
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupName: selectedGroup });
-    console.log('text!!', selectedGroup);
     await this.props.getTopics(selectedGroup);
   };
 
@@ -68,18 +60,17 @@ class PhaseBar extends Component {
       body: JSON.stringify(data),
     });
     let dataresp = await resp.json();
-    // console.log(dataresp);
     await this.props.getTopics(dataresp);
   };
   render() {
-    // console.log(this.state.data);
+    console.log(this.props.groupNames);
     return (
       <>
-        {this.props.admin ? (
+        {this.props.admin && this.props.groupNames ? (
           <>
             <Select
               className="select"
-              placeholder="Select your country"
+              placeholder="Группа"
               options={this.props.groupNames}
               onChange={this.getSelecetedGroup}
             />
@@ -141,7 +132,7 @@ class PhaseBar extends Component {
           )}
           {this.props.admin ? (
             <>
-              <Button className="addWeek" basic color="violet" icon="plus">
+              <Button className="addWeek" basic color="violet">
                 Добавить неделю
               </Button>
             </>
@@ -155,8 +146,6 @@ class PhaseBar extends Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state);
-
   return {
     topics: state.Topics.topics,
     groupNames: state.Topics.groupNames,

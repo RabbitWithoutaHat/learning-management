@@ -313,3 +313,7 @@ footer {
 .testFrame {
   margin-top: 60px;
 }
+
+h1:first-child.topicHeader {
+  margin-top: 60px;
+}
