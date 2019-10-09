@@ -21,6 +21,8 @@ export default function(state = initialState, action) {
         ...state,
         topics: action.topics,
         allTopics: action.allTopics,
+        groupNames:action. groupNames,
+        selectedGroupName:action.selectedGroupName,
         loading: true,
         error: false,
       };

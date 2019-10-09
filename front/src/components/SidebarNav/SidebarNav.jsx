@@ -6,6 +6,7 @@ import { getTopicsData } from '../../redux/Lections/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+
 class SidebarNav extends Component {
   state = {
     date: new Date(),
@@ -14,7 +15,7 @@ class SidebarNav extends Component {
     let resp = await fetch('/authcheck');
     let user = await resp.json();
     if (user.user) {
-      this.props.add(user.user);
+      this.props.add(user.user,user.status);
     }
   }
   render() {
@@ -40,6 +41,7 @@ class SidebarNav extends Component {
                   <Icon name="book" />
                   Лекции
                 </Menu.Item>
+
               </Link>
               <Link to="/profile">
                 <Menu.Item>
@@ -53,6 +55,7 @@ class SidebarNav extends Component {
                   Тесты
                 </Menu.Item>
               </Link>
+
               <Calendar onChange={this.onChange} value={this.state.date} />
               <Link className="logoutItem" to="/logout">
                 <Menu.Item>
@@ -87,8 +90,11 @@ class SidebarNav extends Component {
   }
 }
 
+
 function mapStateToProps(state) {
   return {
+    userWithGroup: state.User.user.groupName,
+    admin:state.User.user.adminstatus,
     user: state.User.user.login,
     status: state.User.user.status,
     justregister: state.User.user.justregister,
@@ -96,7 +102,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: login => dispatch(addUser(login)),
+    add: (login,status) => dispatch(addUser(login,status)),
     // getTopics: () => dispatch(getTopicsData()),
   };
 }

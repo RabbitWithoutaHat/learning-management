@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FileUpload from '../FileUpload/FileUpload';
 import FileDownload from '../FileDownload/FileDownload';
+
 export default class File extends Component {
   render() {
     return (

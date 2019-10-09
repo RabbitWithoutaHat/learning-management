@@ -19,7 +19,7 @@ addMiddlewares(router);
 
 // GET login form
 router.get('/login', (req, res) => {
-  console.log('Login GET');
+  // console.log('Login GET');
   res.render('login');
 });
 
@@ -27,15 +27,15 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     if (err) {
-      console.log('Login POST  auth ER 1');
+      // console.log('Login POST  auth ER 1');
       return res.render('login', { [notifications.error]: err });
     }
     req.logIn(user, (err) => {
       if (err) {
-        console.log('Login POST LOGIN ER 1');
+        // console.log('Login POST LOGIN ER 1');
         return res.render('login', { [notifications.error]: err });
       }
-      console.log('Login POST LOGIN True');
+      // console.log('Login POST LOGIN True');
       return res.redirect(
         homePageWithNotification(notifications.message, 'You Logged In!'),
       );
@@ -44,7 +44,7 @@ router.post('/login', (req, res, next) => {
 });
 
 router.post('/log', async (req, res, next) => {
-  const user = await User.findOne({ email: req.body.email });
+  const userr = await User.findOne({ email: req.body.email });
   passport.authenticate('local', (err, user) => {
     if (err) {
       return res.json({ message: err });
@@ -53,7 +53,9 @@ router.post('/log', async (req, res, next) => {
       if (err) {
         return res.json({ message: err });
       }
-      return res.json({ user: user.nickname, email: user.email });
+      // console.log("user status====", userr);
+
+      return res.json({ user: user.nickname, email: user.email, status: userr.status });
     });
   })(req, res, next);
 });
@@ -63,14 +65,85 @@ router.get('/sign-up', (req, res) => {
   res.render('sign-up');
 });
 
-router.get('/authcheck', (req, res) => {
+router.get('/authcheck', async (req, res) => {
   if (req.isAuthenticated()) {
-    res.json({ user: req.user.nickname });
+
+    res.json({ user: req.user.nickname, status: req.user.status });
   } else {
     res.json({
       message: 'You are not authenticated, please log-in or register',
     });
   }
+});
+//Edit exactly Topic
+router.post('/edittopic', async (req, res) => {
+  // console.log('tyt', req.body);
+  const topic = await Topic.findOneAndUpdate({ _id: req.body.id }, {
+    githubLink: req.body.githubLink,
+    video: req.body.youtubeLink, fileLink: req.body.fileLink, topicName: req.body.topic
+  });
+
+  res.json({ status: 'done' })
+});
+//Add Phase
+router.get('/addphase', async (req, res) => {
+  // console.log('tyt', req.body);
+  const user = await User.findOneAndUpdate(
+    { nickname: req.user.nickname },
+    { group: '5d95f85bd93180d422d24895' },
+  );
+  // console.log(user);
+  // Все топики для конкретной группы
+  const topics = await Topic.find({ group: user.group });
+  // Максимальное кол-во фаз !
+  let Phase = 0;
+  let Week = 0;
+  if (topics.length !== 0) {
+    for (let i = 0; i < topics.length; i++) {
+      Phase = Math.max(Phase, topics[i].phase);
+      Week = Math.max(Week, topics[i].week);
+    }
+  } else {
+    Phase = 1;
+  }
+  Phase = Phase + 1;
+  const newTopic = new Topic(
+
+    {
+      topicName: 'OLEJA',
+      description: 'стили',
+      video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
+      group: '5d95f85bd93180d422d24895',
+      phase: Phase,
+      week: 1,
+      day: 1,
+      githubLink: 'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
+      comments: [],
+    }
+  )
+  await newTopic.save();
+  const updatedTopics = await Topic.find({ group: user.group });
+  const result = [];
+  for (let p = 1; p < Phase + 1; p++) {
+    const phase = [];
+    for (let w = 1; w < Week + 1; w++) {
+      const week = updatedTopics
+        .filter((el) => el.phase === `${p}`)
+        .filter((el) => el.week === `${w}`)
+        .sort((el) => (el.day ? 1 : -1));
+      if (week.length === 0) {
+        continue;
+      } else {
+        phase.push(week);
+      }
+    }
+    result.push(phase);
+  }
+
+  // const topic = await Topic.findOneAndUpdate({ _id: req.body.id },{githubLink:req.body.githubLink,
+  //   video:req.body.youtubeLink,fileLink:req.body.fileLink,topicName:req.body.topic });
+  // res.json({ status: 'phase done' })
+  res.json({ result });
 });
 // POST new user
 router.post('/sign-up', async (req, res) => {
@@ -114,7 +187,7 @@ router.post('/reg', async (req, res, next) => {
         if (err) {
           return res.json({ message: err });
         }
-        console.log(thisUser.nickname);
+        // console.log(thisUser.nickname);
 
         return res.json({ user: thisUser.nickname });
       });
@@ -126,22 +199,55 @@ router.post('/reg', async (req, res, next) => {
 // Get NEws from BD
 router.get('/getnews', async (req, res) => {
   const news = await News.findOne();
-  console.log('BACKKK', news.name);
+  // console.log('BACKKK', news.name);
 
   res.json({ news: news.name });
 });
 // Get TOpics from BD for users exact group!
-router.get('/gettopics', async (req, res) => {
+router.post('/gettopics', async (req, res) => {
   // Добавляю хардкодом группу т.к при реге её нет
-  const user = await User.findOneAndUpdate(
-    { nickname: req.user.nickname },
-    { group: '5d9da4b6d895365403c3d4cc' },
-  );
-
-  // Все топики
-  const topics = await Topic.find({ group: user.group });
+  // console.log(req.user);
+  //Все группы
+  console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm?!?',req.body.selectedGroup);
+  
+  const allGroups = await Group.find();
+  //Последняя группа
+  let selectedGroupName ='';
+  if(req.body.selectedGroup) {
+    selectedGroupName = req.body.selectedGroup;
+  }else {
+    console.log("НЕТ В БАДИ");
+    selectedGroupName = allGroups[allGroups.length-1].name;
+  }
+  // let selectedGroupName = allGroups[allGroups.length-1].name;
+  console.log('selectedGroupName====',selectedGroupName);
+  
+  //Массив из имён всех групп
+  let groupNames = [];
+  for(let i = 0 ; i < allGroups.length;i++) {
+    let obj={ key: `${i+1}`, value: `${i+1}`, text:allGroups[i].name  };
+    groupNames.push(obj);
+  }
+  //если нет групп вообще
+  if(allGroups.length === 0) {
+    let arr =[];
+    res.json({ arr, arr });
+  }
+  //Для админа составим топики последней группы,а для пользователя его группы
+  let topics =[];
+  if(req.user.status==='admin') {
+    console.log("admin");
+    topics = await Topic.find({ groupName: selectedGroupName });
+    console.log('topic.length===',topics.length);
+    console.log('ТОПИКИ ГРУППЫ ',topics[0].groupName);
+    
+    
+  } else {
+    topics =  await Topic.find({  groupName: req.user.groupName });
+  }
+ 
+  
   // Максимальное кол-во фаз и недель!
-
   let Phase = 0;
   let Week = 0;
   for (let i = 0; i < topics.length; i++) {
@@ -165,14 +271,31 @@ router.get('/gettopics', async (req, res) => {
 
     result.push(phase);
   }
-  // На всякий пожарный структура для плана "B"
-  console.log(result);
-  res.json({ result, topics });
+  //Для админа верне топики последней группые ,все группы и поле конкретной группы для Select!
+  //Для юзера вернем топики его группы
+  if(req.user.status==='admin') {
+    res.json({ result, topics,groupNames,selectedGroupName });
+    console.log('888888888888888888888888888888888888888888888888',groupNames,selectedGroupName);
+    
+  } else {
+    console.log('WTFFFFFFFFFFFFFFFFFFFFFFFFFFFF?!?');
+    
+    res.json({ result, topics });
+  }
+  
+  
 });
 
+// GET ALl Groups for lections page
+router.get('/getgroups', (req, res) => {
+  res.send({status:'hi'});
+});
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-  const filePath = '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+
+  const filePath =
+    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+
   const fileName = 'lenin.svg'; // The default name the browser will use
 
   // res.download(filePath, fileName);
@@ -180,15 +303,11 @@ router.get('/downloadtest', (req, res, next) => {
   // res.json({user:"hi"})
 });
 router.post('/download', (req, res, next) => {
-  console.log('xxxxx', req.body);
 
-  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`, (err) => {
-    if (err) {
-      console.log(err);
-      // return res.status(500).send(err);
-    }
-    // res.json({fileName:file.name, filePath : `/img/${file.name}`})
-  });
+
+
+  // res.download('/home/oleg-lasttry/FinalProject/learning-management/front/public/img/com.svg');
+  res.sendFile('/img/com.svg')
 });
 
 router.get('/getDayData', async (req, res, next) => {
@@ -197,9 +316,11 @@ router.get('/getDayData', async (req, res, next) => {
     { nickname: req.user.nickname },
     { group: '5d9da4b6d895365403c3d4cc' },
   );
+
+  //5d9ce8472a0cbe13a7048fea
   // Все топики
   const topics = await Topic.find({ group: user.group });
-
+console.log('ETI TOPIKI!',topics)
   const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
     .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
@@ -214,19 +335,13 @@ router.post('/upload', async (req, res) => {
   // const data = await JSON.parse(req.body);
   // console.log(data);
 
-  console.log(req.files);
+  // console.log(req.files);
 
   if (req.files === null) {
     return res.status(400).json({ message: 'No file uploaded' });
   }
   const { file } = req.files;
-  // file.mv(`/home/oleg-lasttry/Final Project/learning-management/back/public/images/${file.name}`,err => {
-  //   if(err) {
-  //     console.log(err);
-  //     // return res.status(500).send(err);
-  //   }
-  //   res.json({fileName:file.name, filePath : `/images/${file.name}`})
-  // });
+
   file.mv(
     `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
     (err) => {
@@ -318,9 +433,11 @@ router.get('/get-tests', async (req, res) => {
 });
 
 router.post('/update-profile', async (req, res) => {
+
   let {
-    email, password, nickname, phone, photo,
+    email, password, nickname, phone, photo
   } = req.body;
+
   const { id } = req.user;
 
   let hash = req.user.password;

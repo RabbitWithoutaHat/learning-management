@@ -12,6 +12,7 @@ const initialState = {
     group: '',
     groupName: '',
     photoSrc: '',
+    adminstatus: false,
   },
 };
 export default function(state = initialState, action) {
@@ -19,7 +20,7 @@ export default function(state = initialState, action) {
     case ADD_USER: {
       return {
         ...state,
-        user: { ...state.user, login: action.login, status: true },
+        user: { ...state.user, login: action.login, status: true,adminstatus:action.status },
       };
     }
     case ADD_MSG: {
