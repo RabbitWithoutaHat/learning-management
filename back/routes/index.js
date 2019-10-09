@@ -172,7 +172,7 @@ router.get('/gettopics', async (req, res) => {
 
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const filePath = '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
   const fileName = 'lenin.svg'; // The default name the browser will use
 
   // res.download(filePath, fileName);
@@ -202,7 +202,7 @@ router.get('/getDayData', async (req, res, next) => {
 
   const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
-    .sort((a, b) => (b.phase - a.phase) || (b.week - a.week) || (b.day - a.day));
+    .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
   if (mainPageTopic.length === null) {
     return res.status(400).json({ message: 'No file uploaded' });
   }
@@ -227,13 +227,16 @@ router.post('/upload', async (req, res) => {
   //   }
   //   res.json({fileName:file.name, filePath : `/images/${file.name}`})
   // });
-  file.mv(`/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`, (err) => {
-    if (err) {
-      console.log(err);
-      // return res.status(500).send(err);
-    }
-    res.json({ fileName: file.name, filePath: `/img/${file.name}` });
-  });
+  file.mv(
+    `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+        // return res.status(500).send(err);
+      }
+      res.json({ fileName: file.name, filePath: `/img/${file.name}` });
+    },
+  );
   console.log('Upload');
 });
 // GET user log out

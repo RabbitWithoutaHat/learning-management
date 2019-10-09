@@ -19,7 +19,7 @@ class SidebarNav extends Component {
   }
   render() {
     return (
-      <Sidebar.Pushable as={Segment}>
+      <Sidebar.Pushable>
         <Sidebar as={Menu} icon="labeled" inverted vertical visible width="wide">
           {this.props.user ? (
             <>
@@ -29,7 +29,7 @@ class SidebarNav extends Component {
                   Актуальное
                 </Menu.Item>
               </Link>
-              <Link to="/profile">
+              <Link to="/lections">
                 <Menu.Item>
                   <Icon name="user outline" />
                   Профиль
@@ -41,7 +41,7 @@ class SidebarNav extends Component {
                   Лекции
                 </Menu.Item>
               </Link>
-              <Link to="/users">
+              <Link to="/profile">
                 <Menu.Item>
                   <Icon name="users" />
                   Cтуденты
@@ -53,7 +53,6 @@ class SidebarNav extends Component {
                   Тесты
                 </Menu.Item>
               </Link>
-              {/* <div>AUTH</div> */}
               <Calendar onChange={this.onChange} value={this.state.date} />
               <Link className="logoutItem" to="/logout">
                 <Menu.Item>
@@ -76,12 +75,12 @@ class SidebarNav extends Component {
                   Регистрация
                 </Menu.Item>
               </Link>
-              <div>NOT</div>
             </>
           )}
         </Sidebar>
         <Sidebar.Pusher>
           <div className="container">{this.props.children}</div>
+          <footer></footer>
         </Sidebar.Pusher>
       </Sidebar.Pushable>
     );
