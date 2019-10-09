@@ -1,4 +1,13 @@
-import { ADD_USER, DEL_USER, ADD_MSG, ADD_LOGMSG, UPDATE_AVATAR, UPDATE_PROFILE, AVATAR_TO_STATE, REQUEST_ALL_USERS } from './types';
+import {
+  ADD_USER,
+  DEL_USER,
+  ADD_MSG,
+  ADD_LOGMSG,
+  UPDATE_AVATAR,
+  UPDATE_PROFILE,
+  AVATAR_TO_STATE,
+  REQUEST_ALL_USERS,
+} from './types';
 
 const initialState = {
   user: {
@@ -13,6 +22,7 @@ const initialState = {
     groupName: '',
     photoSrc: '',
     adminstatus: false,
+    loading: false,
   },
 };
 export default function(state = initialState, action) {
@@ -20,8 +30,16 @@ export default function(state = initialState, action) {
     case ADD_USER: {
       return {
         ...state,
-        user: { ...state.user, login: action.login, status: true,adminstatus:action.status,
-          photo:action.photo,group:action.group,groupName:action.groupName },
+        user: {
+          ...state.user,
+          login: action.login,
+          status: true,
+          adminstatus: action.status,
+          photo: action.photo,
+          group: action.group,
+          groupName: action.groupName,
+          loading: true,
+        },
       };
     }
     case ADD_MSG: {
@@ -39,7 +57,7 @@ export default function(state = initialState, action) {
     case DEL_USER: {
       return {
         ...state,
-        user: { login: '', status: false },
+        user: { login: '', status: false, loading: true },
       };
     }
     case AVATAR_TO_STATE: {
@@ -72,7 +90,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         users: action.users,
-      }
+      };
     }
     default:
       return state;

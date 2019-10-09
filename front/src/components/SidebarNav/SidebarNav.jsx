@@ -14,83 +14,84 @@ class SidebarNav extends Component {
     let resp = await fetch('/authcheck');
     let user = await resp.json();
     if (user.user) {
-      this.props.add(user.user, user.email,user.status,user.photo,user.group,user.groupName);
+      this.props.add(user.user, user.email, user.status, user.photo, user.group, user.groupName);
     }
   }
   render() {
     return (
-      <>{this.props.user ?
-        <Sidebar.Pushable>
-          <Sidebar as={Menu} icon="labeled" inverted vertical visible width="wide">
-            {this.props.user ? (
-              <>
-                <Link to="/">
-                  <Menu.Item>
-                    <Icon name="play" />
-                    Актуальное
-                </Menu.Item>
-                </Link>
-                <Link to="/lections">
-                  <Menu.Item>
-                    <Icon name="book" />
-                    Лекции
-                </Menu.Item>
-                </Link>
-                <Link to="/users">
-                  <Menu.Item>
-                    <Icon name="users" />
-                    Cтуденты
-                </Menu.Item>
-                </Link>
-                <Link to="/tests">
-                  <Menu.Item>
-                    <Icon name="tasks" />
-                    Тесты
-                </Menu.Item>
-                </Link>
-                <Link to="/profile">
-                  <Menu.Item>
-                    <Icon name="user outline" />
-                    Профиль
-                </Menu.Item>
-                </Link>
+      <>
+        {this.props.loading ? (
+          <Sidebar.Pushable>
+            <Sidebar as={Menu} icon="labeled" inverted vertical visible width="wide">
+              {this.props.user ? (
+                <>
+                  <Link to="/">
+                    <Menu.Item>
+                      <Icon name="play" />
+                      Актуальное
+                    </Menu.Item>
+                  </Link>
+                  <Link to="/lections">
+                    <Menu.Item>
+                      <Icon name="book" />
+                      Лекции
+                    </Menu.Item>
+                  </Link>
+                  <Link to="/users">
+                    <Menu.Item>
+                      <Icon name="users" />
+                      Cтуденты
+                    </Menu.Item>
+                  </Link>
+                  <Link to="/tests">
+                    <Menu.Item>
+                      <Icon name="tasks" />
+                      Тесты
+                    </Menu.Item>
+                  </Link>
+                  <Link to="/profile">
+                    <Menu.Item>
+                      <Icon name="user outline" />
+                      Профиль
+                    </Menu.Item>
+                  </Link>
 
-                <Calendar onChange={this.onChange} value={this.state.date} />
+                  <Calendar onChange={this.onChange} value={this.state.date} />
 
-                <Link className="logoutItem" to="/logout">
-                  <Menu.Item>
-                    <Icon name="sign-out" />
-                    Выйти
-                </Menu.Item>
-                </Link>
-              </>
-            ) : (
+                  <Link className="logoutItem" to="/logout">
+                    <Menu.Item>
+                      <Icon name="sign-out" />
+                      Выйти
+                    </Menu.Item>
+                  </Link>
+                </>
+              ) : (
                 <>
                   <Link to="/login">
                     <Menu.Item>
                       <Icon name="sign-in" />
                       Логин
-                </Menu.Item>
+                    </Menu.Item>
                   </Link>
                   <Link to="/registration">
                     <Menu.Item>
                       <Icon name="user outline" />
                       Регистрация
-                </Menu.Item>
+                    </Menu.Item>
                   </Link>
                 </>
               )}
-          </Sidebar>
-          <Sidebar.Pusher>
-            <div className="container">{this.props.children}</div>
-            <footer></footer>
-          </Sidebar.Pusher>
-        </Sidebar.Pushable>
-        :
-        <Dimmer active>
-          <Loader size='massive'>Loading</Loader>
-        </Dimmer>
-      }
+            </Sidebar>
+            <Sidebar.Pusher>
+              <div className="container">{this.props.children}</div>
+              <footer></footer>
+            </Sidebar.Pusher>
+          </Sidebar.Pushable>
+        ) : (
+          <Dimmer active>
+            <Loader size="massive">Loading</Loader>
+          </Dimmer>
+        )}
       </>
     );
   }
@@ -103,11 +104,13 @@ function mapStateToProps(state) {
     user: state.User.user.login,
     status: state.User.user.status,
     justregister: state.User.user.justregister,
+    loading: state.User.user.loading,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: (user, email,status,photo,group,groupName) => dispatch(addUser(user, email,status,photo,group,groupName)),
+    add: (user, email, status, photo, group, groupName) =>
+      dispatch(addUser(user, email, status, photo, group, groupName)),
     // getTopics: () => dispatch(getTopicsData()),
   };
 }
