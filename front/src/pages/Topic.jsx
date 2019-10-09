@@ -121,8 +121,8 @@ class Topic extends Component {
     // const { closeOnDocumentClick,closeIcon } = this.state
     return (
       <>
-        {this.props.admin ?
-              <>
+        {/* {this.props.admin ? */}
+              {/* <> */}
                 <Modal
         trigger={<Button positive onClick={this.handleOpen}>edit</Button>}
         closeIcon
@@ -170,10 +170,7 @@ class Topic extends Component {
             </Modal.Description>
           </Modal.Content>
         </Modal>
-        </>
-        :
-        <>
-        </>}
+        
 
         <div className="videoContainer">
           <h1>{this.state.topic.topicName}</h1>
