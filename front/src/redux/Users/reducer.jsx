@@ -1,4 +1,4 @@
-import { ADD_USER, DEL_USER, ADD_MSG, ADD_LOGMSG, UPDATE_AVATAR, UPDATE_PROFILE, AVATAR_TO_STATE } from './types';
+import { ADD_USER, DEL_USER, ADD_MSG, ADD_LOGMSG, UPDATE_AVATAR, UPDATE_PROFILE, AVATAR_TO_STATE, REQUEST_ALL_USERS } from './types';
 
 const initialState = {
   user: {
@@ -66,6 +66,12 @@ export default function(state = initialState, action) {
           photoSrc: action.photo,
         },
       };
+    }
+    case REQUEST_ALL_USERS: {
+      return {
+        ...state,
+        users: action.users,
+      }
     }
     default:
       return state;

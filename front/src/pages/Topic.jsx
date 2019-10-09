@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Button, Segment } from 'semantic-ui-react';
 import { getTopicsData } from '../redux/Lections/actions';
 import { Button, Header, Image, Modal,Form,Icon,eventPool,closeIcon } from 'semantic-ui-react'
 
@@ -9,6 +10,7 @@ class Topic extends Component {
     topic: {},
     videostr: '',
     str: '',
+
     topicName:'',
     topicPhase:'',
     topicWeek:'',
@@ -19,7 +21,7 @@ class Topic extends Component {
     topicName:'',
     modalOpen: false,
     buttonClicked:'',
-   
+
   };
   youtubeLink = e => {
     this.setState({ youtubeLink: e.target.value });
@@ -111,6 +113,7 @@ class Topic extends Component {
   }
 
   render() {
+
     console.log('render');
     
     // const { closeOnDocumentClick,closeIcon } = this.state
@@ -160,35 +163,53 @@ class Topic extends Component {
       </Modal.Description>
     </Modal.Content>
   </Modal>
+        <div className="videoContainer">
         <h1>{this.state.topic.topicName}</h1>
+
+      
+        <h1>Тема урока: {this.state.topic.topicName}</h1>
+
         <div className="video">
           <iframe
             src={this.state.videostr}
-            width="900"
-            height="560"
+            width="960"
+            height="540"
             frameBorder="0"
             allow="autoplay; encrypted-media"
             allowFullScreen
             title="video"
           />
         </div>
-        <a target="_blank" href={this.state.topic.githubLink}>
-          Задание на GitHub
-        </a>
-        <div>FileLink</div>
-        <div>
-          {/* {uploadedFile} */}
-          File
-          <div>
-            <button onClick={this.but}>
-              Download
+        <div className="videoLinksFilesSegment">
+          <div className="videoLinksFiles">
+            <div className="videoLinks">
+              <a target="_blank" href={this.state.topic.githubLink}>
+                Задания на GitHub
+              </a>
+              <a target="_blank" href={this.state.FileLink}>
+                Код урока
+              </a>
+            </div>
+            <div className="videoFile">
+              <p className="fileTitle">Файл к уроку</p>
               <Link
                 // to={FilePath.filePath}
                 to="./images/IMG_7778.jpg"
                 download
                 target="_blank"
-              ></Link>
-            </button>
+              >
+                <Button
+                  basic
+                  type="button"
+                  color="violet"
+                  className="btn btn-success btn-block"
+                  content={this.state.File}
+                  onClick={this.but}
+                  icon="download"
+                  fluid
+                ></Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

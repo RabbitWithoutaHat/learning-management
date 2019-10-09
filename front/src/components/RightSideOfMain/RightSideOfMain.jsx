@@ -6,6 +6,7 @@ import Registration from '../Authorization/Registration';
 import Profile from '../../pages/Profile';
 import Home from '../../pages/Home';
 import Lections from '../../pages/Lections';
+import Users from '../../pages/Users';
 import Topic from '../../pages/Topic';
 import PageWithoutGroup from '../PageWithoutGroup/PageWithoutGroup';
 import { connect } from 'react-redux';
@@ -45,6 +46,7 @@ class NavBar extends Component {
         <Route path="/login" component={Login} />
         <Route path="/registration" component={Registration} />
         <Route path="/profile" component={Profile} />
+        <Route path="/users" component={Users} />
         <Route exact path="/lections" component={Lections} />
         <Route name="lection" path="/lections/:id" component={Topic} /> */}
       </>

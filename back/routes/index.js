@@ -29,7 +29,7 @@ router.post('/login', (req, res, next) => {
       // console.log('Login POST  auth ER 1');
       return res.render('login', { [notifications.error]: err });
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, err => {
       if (err) {
         // console.log('Login POST LOGIN ER 1');
         return res.render('login', { [notifications.error]: err });
@@ -48,7 +48,7 @@ router.post('/log', async (req, res, next) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, err => {
       if (err) {
         return res.json({ message: err });
       }
@@ -70,7 +70,7 @@ router.get('/authcheck', async (req, res) => {
     res.json({ user: req.user.nickname, status: req.user.status });
   } else {
     res.json({
-      message: 'You are not authinticated,please log-in or register',
+      message: 'You are not authenticated, please log-in or register',
     });
   }
 });
@@ -182,7 +182,7 @@ router.post('/reg', async (req, res, next) => {
       if (err) {
         return res.json({ message: err });
       }
-      req.logIn(user, (err) => {
+      req.logIn(user, err => {
         if (err) {
           return res.json({ message: err });
         }
@@ -258,9 +258,9 @@ router.post('/gettopics', async (req, res) => {
     const phase = [];
     for (let w = 1; w < Week + 1; w++) {
       const week = topics
-        .filter((el) => el.phase === `${p}`)
-        .filter((el) => el.week === `${w}`)
-        .sort((el) => (el.day ? 1 : -1));
+        .filter(el => el.phase === `${p}`)
+        .filter(el => el.week === `${w}`)
+        .sort(el => (el.day ? 1 : -1));
       if (week.length === 0) {
         continue;
       } else {
@@ -291,7 +291,10 @@ router.get('/getgroups', (req, res) => {
 });
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-  const filePath = '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+
+  const filePath =
+    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+
   const fileName = 'lenin.svg'; // The default name the browser will use
 
   // res.download(filePath, fileName);
@@ -301,16 +304,11 @@ router.get('/downloadtest', (req, res, next) => {
 router.post('/download', (req, res, next) => {
 
 
+
   // res.download('/home/oleg-lasttry/FinalProject/learning-management/front/public/img/com.svg');
   res.sendFile('/img/com.svg')
 });
-// router.get('/admin', (req, res, next) => {
-//   const user = await User.findOneAndUpdate(
-//     { nickname: req.user.nickname },
-//     { status: 'admin' },
-//   );
-//   res.json({message:'Done'})
-// });
+
 router.get('/getDayData', async (req, res, next) => {
   // Добавляю хардкодом группу т.к при реге её нет
   const user = await User.findOneAndUpdate(
@@ -342,11 +340,10 @@ router.post('/upload', async (req, res) => {
     return res.status(400).json({ message: 'No file uploaded' });
   }
   const { file } = req.files;
-  // console.log(file);
-  
+
   file.mv(
     `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
-    (err) => {
+    err => {
       if (err) {
         console.log(err);
         // return res.status(500).send(err);
@@ -424,10 +421,17 @@ router.post('/upload-avatar', async (req, res) => {
   }
 });
 
+router.get('/get-users', async (req, res) => {
+  const users = await User.find();
+  res.json(users);
+});
+
 router.post('/update-profile', async (req, res) => {
+
   let {
     email, password, nickname, phone, photo
   } = req.body;
+
   const { id } = req.user;
 
   let hash = req.user.password;

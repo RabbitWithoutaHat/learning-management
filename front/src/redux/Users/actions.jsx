@@ -7,6 +7,7 @@ import {
   UPDATE_PROFILE,
   AVATAR_TO_STATE,
   REQUESTED_FAILED,
+  REQUEST_ALL_USERS,
 } from './types';
 import axios from 'axios';
 
@@ -62,6 +63,13 @@ const requestErrorAC = () => {
   return { type: REQUESTED_FAILED };
 };
 
+const requestUsers = data => {
+  return {
+    type: REQUEST_ALL_USERS,
+    users: data,
+  }
+}
+
 //thunk
 const updateProfile = data => async dispatch => {
   try {
@@ -94,4 +102,16 @@ const updateAvatar = photo => async dispatch => {
   }
 };
 
-export { updateProfile, updateAvatar };
+const getAllUsers = () => async dispatch => {
+  try {
+    const resp = await fetch('/get-users')
+    const data = await resp.json();
+    console.log(data)
+    dispatch(requestUsers(data));
+
+  } catch (error) {
+    dispatch(requestErrorAC());
+  }
+}
+
+export { updateProfile, updateAvatar, getAllUsers };
