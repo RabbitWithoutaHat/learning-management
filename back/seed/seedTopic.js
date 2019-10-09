@@ -2,14 +2,16 @@ const connection = require('../models/connection');
 
 const Topic = require('../models/Topic');
 
-const beaverId = '5d9a34fc667f67101277dfce';
-
+const beaverId = '5d9da4b6d895365403c3d4cc';
+const bearId = '5d95fb0644533cdb91290e74';
+const group = 'Beavers';
 const topics = [
   {
     topicName: 'CSS',
     description: 'стили',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 1,
     week: 1,
     day: 1,
@@ -21,6 +23,7 @@ const topics = [
     description: 'асинхронные запросы',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 1,
     week: 1,
     day: 2,
@@ -32,6 +35,7 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 1,
     week: 1,
     day: 3,
@@ -43,6 +47,7 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 1,
     week: 1,
     day: 4,
@@ -55,6 +60,7 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 1,
     week: 2,
     day: 1,
@@ -67,6 +73,7 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 1,
     week: 2,
     day: 2,
@@ -78,6 +85,7 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 1,
     week: 2,
     day: 3,
@@ -89,6 +97,7 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 1,
     week: 3,
     day: 1,
@@ -100,6 +109,7 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 2,
     week: 1,
     day: 1,
@@ -111,6 +121,7 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 2,
     week: 1,
     day: 2,
@@ -122,6 +133,7 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
+    groupName:group,
     phase: 2,
     week: 1,
     day: 3,
@@ -133,9 +145,10 @@ const topics = [
     description: 'react-redux',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     group: beaverId,
-    phase: 2,
-    week: 3,
-    day: 3,
+    groupName:group,
+    phase: 3,
+    week: 1,
+    day: 1,
     githubLink: 'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
     comments: [],
   },

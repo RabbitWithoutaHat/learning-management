@@ -7,6 +7,8 @@ import FileLink from '../FileLink/FileLink';
 import Video from '../Video/Video';
 import { connect } from 'react-redux';
 import { getTopicData } from '../../redux/MainPageTopic/action';
+import FileSaver from 'file-saver';
+import FileDownload from 'js-file-download';
 
 class VideoWindow extends Component {
   state = {
@@ -15,9 +17,13 @@ class VideoWindow extends Component {
     FileLink: 'https://github.com/RabbitWithoutaHat/learning-management/pull/25',
     File: 'lenin.svg',
     link: false,
+    rr:'',
   };
   async componentDidMount() {
     await this.props.getTopic();
+    // if(this.props.topic.video) {
+      console.log(this.props.topic.video);
+      
     const videoSrc = this.props.topic.video.replace('watch?v=', 'embed/');
     this.setState({ videoSrc: videoSrc });
     const GhLink = this.props.topic.githubLink;
@@ -42,8 +48,31 @@ class VideoWindow extends Component {
       },
       body: JSON.stringify({ File }),
     });
-    // const data = await resp.json();
+    // const data = await resp.blob();
     // console.log(data);
+    
+    // console.log(dat);
+    // // "application/zip"
+    // const data = new Blob([dat], {type: 'image/svg+xml'}); 
+    //                 const csvURL = window.URL.createObjectURL(data);
+    //                 //window.open(csvURL);
+    //                 // then commenting out the window.open & replacing
+    //                 // with this allowed a file name to be passed out
+    //                 const tempLink = document.createElement('a');
+    //                 tempLink.href = csvURL;
+    //                 tempLink.setAttribute('download', 'com.svg');
+    //                 tempLink.click();
+    
+    // await this.setState({rr:data})
+    // FileSaver.saveAs(data, 'com.svg');
+    // FileDownload(data, 'com.svg');
+  
+     //for chrome in apple devices
+    //  let url = window.URL.createObjectURL(data);
+    //  let a = document.createElement('a');
+    //  a.href = url;
+    //  a.download = 'com.svg';
+    //  a.click();
 
     // if(data) {
     //  await this.setState({link:true})
@@ -64,7 +93,7 @@ class VideoWindow extends Component {
       //   <Video/>
       //   <GhLink/>
       //   <FileLink/>
-      //   <File/>
+        // <File/>
       //   <Comments/>
       // </div>
       <p className="videoContainer">
@@ -86,13 +115,14 @@ class VideoWindow extends Component {
           <p>
             <button onClick={this.but}>
               Download
+              </button>
               <Link
                 // to={FilePath.filePath}
-                to="./images/IMG_7778.jpg"
+                to={this.state.rr}
                 download
                 target="_blank"
-              ></Link>
-            </button>
+              >xxx</Link>
+            
           </p>
         </p>
       </p>
