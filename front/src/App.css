@@ -106,7 +106,9 @@
 }
 
 .usersList {
-  width: 100%
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 }
 .lections {
   width: 100%;
@@ -250,12 +252,64 @@ footer {
 
 .regForm {
   margin-left: auto;
-  margin-right:auto;
-
+  margin-right: auto;
 }
 .ButPhase {
-  color:green
+  color: green;
 }
 .select {
-  float:right;
+  float: right;
+}
+
+.react-tabs__tab-panel .ui.icon.button {
+  padding: 10px;
+  background: white;
+  color: #4520ab;
+  font-size: 10px;
+  /* width: 10%; */
+  opacity: 0.6;
+  margin-top: -5px;
+  margin-left: 10px;
+  /* height: 20px; */
+}
+.react-tabs__tab-panel .ui.icon.button:hover {
+  opacity: 1;
+}
+.react-tabs__tab-panel .ui.list {
+  margin: 10px;
+}
+.addWeek.ui.button {
+  margin-top: 30px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.usersTitle.ui.header:first-child {
+  margin-top: 60px;
+}
+.itemUser {
+  flex-basis: 33%;
+  min-height: 130px;
+}
+
+.testHeader.ui.header:first-child {
+  margin-top: 60px;
+}
+
+.testsList {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.testItem {
+  flex-basis: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.testItem.ui.list > .item {
+  padding: 0;
+}
+.testFrame {
+  margin-top: 60px;
 }
