@@ -11,12 +11,17 @@ import {
 } from './types';
 import axios from 'axios';
 
-export const addUser = (login,status) => {
+export const addUser = (login, email,status,photo,group,groupName) => {
   return {
     type: ADD_USER,
     login: login,
-    // email: email,
+    email: email,
     status:status,
+    photo:photo,
+    group:group,
+    groupName:groupName,
+  
+
   };
 };
 export const addMsg = message => {
