@@ -141,14 +141,16 @@ router.post('/addphase', async (req, res) => {
     Phase = 1;
   }
   Phase = Phase + 1;
+  const group = req.body.group;
+  console.log('FAZA+LOGIN',Phase,group);
+  
   const newTopic = new Topic(
-
     {
       topicName: 'Заполни меня!!!',
       description: 'стили',
       video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
-      group: req.body.group,
-      phase: Phase,
+      groupName: group,
+      phase: Phase.toString(),
       week: 1,
       day: 1,
       githubLink: 'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
@@ -158,6 +160,8 @@ router.post('/addphase', async (req, res) => {
   await newTopic.save();
 
   const updatedTopics = await Topic.find({groupName:req.body.group });
+  console.log('ccccccccccccccccccccccccccccccccccccccccccccc',updatedTopics);
+  
   const result = [];
   for (let p = 1; p < Phase + 1; p++) {
     const phase = [];
@@ -172,7 +176,7 @@ router.post('/addphase', async (req, res) => {
         phase.push(week);
       }
     }
-    result.push(phase);
+    result.push(result);
   }
 
   // const topic = await Topic.findOneAndUpdate({ _id: req.body.id },{githubLink:req.body.githubLink,
@@ -328,8 +332,20 @@ router.get('/getgroups', (req, res) => {
 });
 // GET ALl Groups for lections page
 router.post('/addweek', (req, res) => {
-  console.log(req.body.phase+1);
-  
+  console.log(req.body.phase);
+  const phase = req.body.phase+1;
+  // let Phase = 0;
+  // let Week = 0;
+  // if (topics.length !== 0) {
+  //   for (let i = 0; i < topics.length; i++) {
+  //     Phase = Math.max(Phase, topics[i].phase);
+  //     Week = Math.max(Week, topics[i].week);
+  //   }
+  // } else {
+  //   Phase = 1;
+  // }
+
+  // phase = req.body.phase+1;
   res.send({status:'hi'});
 });
 // Download File тестовая ручка.Не стрирайте.

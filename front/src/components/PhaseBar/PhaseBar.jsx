@@ -39,10 +39,9 @@ class PhaseBar extends Component {
       body: JSON.stringify({ group }),
     });
     let dataresp = await resp.json();
-
-    let data = await resp.json();
-    await this.props.getTopics();
-  };
+    console.log('AAAAAAAAAADDDD PHAEEEEEE',dataresp);
+    await this.props.getTopics(dataresp.group);
+  }
   getSelecetedGroup = async (event, { value }) => {
     console.log('VALUE!!', value);
     let selectedGroup = event.target.textContent;
@@ -59,6 +58,7 @@ class PhaseBar extends Component {
     let data = {
       phase: this.state.tabIndex,
     };
+    let group = this.state.selectedGroupName;
     let resp = await fetch('/addweek', {
       method: 'POST',
       headers: {
@@ -68,9 +68,9 @@ class PhaseBar extends Component {
       body: JSON.stringify(data),
     });
     let dataresp = await resp.json();
-    // console.log(dataresp);
-    await this.props.getTopics(dataresp);
-  };
+    console.log('DDDDDDDDDDAAATATTA',dataresp);
+    // await this.props.getTopics(dataresp);
+  }
   render() {
     // console.log(this.state.data);
     return (
