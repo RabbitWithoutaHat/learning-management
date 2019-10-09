@@ -116,8 +116,9 @@ class Topic extends Component {
     // const { closeOnDocumentClick,closeIcon } = this.state
     return (
       <div className="videoContainer">
-       
-        <Modal
+        {this.props.admin ?
+              <>
+                <Modal
         trigger={<Button positive onClick={this.handleOpen}>edit</Button>}
         closeIcon
         open={this.state.modalOpen}
@@ -160,6 +161,14 @@ class Topic extends Component {
       </Modal.Description>
     </Modal.Content>
   </Modal>
+                
+          </>
+              :
+              <>
+              </>
+            }
+
+       
         <h1>{this.state.topic.topicName}</h1>
         <div className="video">
           <iframe

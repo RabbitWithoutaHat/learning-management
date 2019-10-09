@@ -20,7 +20,8 @@ export default function(state = initialState, action) {
     case ADD_USER: {
       return {
         ...state,
-        user: { ...state.user, login: action.login, status: true,adminstatus:action.status },
+        user: { ...state.user, login: action.login, status: true,adminstatus:action.status,
+          photo:action.photo,group:action.group,groupName:action.groupName },
       };
     }
     case ADD_MSG: {
