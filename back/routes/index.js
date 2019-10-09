@@ -1,54 +1,55 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const passport = require("passport");
-const fileUpload = require("express-fileupload");
-const User = require("../models/User");
-const Group = require("../models/Group");
-const homePageWithNotification = require("../helpers/homePageWithNotification");
-const notifications = require("../constants/notification-types");
-const addMiddlewares = require("../middlewares/add-middlewares");
-const { getUserNickname } = require("../helpers/reqHelpers");
-const { bcrypt: saltRounds } = require("../constants/other-constants");
-const News = require("../models/News");
-const Topic = require("../models/Topic");
+const express = require('express');
+const bcrypt = require('bcrypt');
+const passport = require('passport');
+const fileUpload = require('express-fileupload');
+const User = require('../models/User');
+const Group = require('../models/Group');
+const homePageWithNotification = require('../helpers/homePageWithNotification');
+const notifications = require('../constants/notification-types');
+const addMiddlewares = require('../middlewares/add-middlewares');
+const { getUserNickname } = require('../helpers/reqHelpers');
+const { bcrypt: saltRounds } = require('../constants/other-constants');
+const News = require('../models/News');
+const Topic = require('../models/Topic');
+const Test = require('../models/Test');
 
 const router = express.Router();
 
 addMiddlewares(router);
 
 // GET login form
-router.get("/login", (req, res) => {
-  console.log("Login GET");
-  res.send("login");
+router.get('/login', (req, res) => {
+  console.log('Login GET');
+  res.send('login');
 });
 
 // POST login
-router.post("/login", (req, res, next) => {
-  passport.authenticate("local", (err, user) => {
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user) => {
     if (err) {
       // console.log('Login POST  auth ER 1');
-      return res.render("login", { [notifications.error]: err });
+      return res.render('login', { [notifications.error]: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         // console.log('Login POST LOGIN ER 1');
-        return res.render("login", { [notifications.error]: err });
+        return res.render('login', { [notifications.error]: err });
       }
       // console.log('Login POST LOGIN True');
       return res.redirect(
-        homePageWithNotification(notifications.message, "You Logged In!")
+        homePageWithNotification(notifications.message, 'You Logged In!'),
       );
     });
   })(req, res, next);
 });
 
-router.post("/log", async (req, res, next) => {
+router.post('/log', async (req, res, next) => {
   const userr = await User.findOne({ email: req.body.email });
-  passport.authenticate("local", (err, user) => {
+  passport.authenticate('local', (err, user) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         return res.json({ message: err });
       }
@@ -57,46 +58,46 @@ router.post("/log", async (req, res, next) => {
       return res.json({
         user: user.nickname,
         email: user.email,
-        status: userr.status
+        status: userr.status,
       });
     });
   })(req, res, next);
 });
 
 router.get(
-  "/auth/google",
-  passport.authenticate("google", { accessType: "offline", prompt: "consent" })
+  '/auth/google',
+  passport.authenticate('google', { accessType: 'offline', prompt: 'consent' }),
 );
 
 router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/login",
-    session: false
+  '/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/login',
+    session: false,
   }),
   (req, res) => {
-    console.log("vsy ok");
+    console.log('vsy ok');
 
-    res.redirect("/");
-  }
+    res.redirect('/');
+  },
 );
 
 // GET registration form
-router.get("/sign-up", (req, res) => {
-  res.render("sign-up");
+router.get('/sign-up', (req, res) => {
+  res.render('sign-up');
 });
 
-router.get("/authcheck", async (req, res) => {
+router.get('/authcheck', async (req, res) => {
   if (req.isAuthenticated()) {
     res.json({ user: req.user.nickname, status: req.user.status });
   } else {
     res.json({
-      message: "You are not authenticated, please log-in or register"
+      message: 'You are not authenticated, please log-in or register',
     });
   }
 });
-//Edit exactly Topic
-router.post("/edittopic", async (req, res) => {
+// Edit exactly Topic
+router.post('/edittopic', async (req, res) => {
   // console.log('tyt', req.body);
   const topic = await Topic.findOneAndUpdate(
     { _id: req.body.id },
@@ -104,18 +105,18 @@ router.post("/edittopic", async (req, res) => {
       githubLink: req.body.githubLink,
       video: req.body.youtubeLink,
       fileLink: req.body.fileLink,
-      topicName: req.body.topic
-    }
+      topicName: req.body.topic,
+    },
   );
 
-  res.json({ status: "done" });
+  res.json({ status: 'done' });
 });
-//Add Phase
-router.get("/addphase", async (req, res) => {
+// Add Phase
+router.get('/addphase', async (req, res) => {
   // console.log('tyt', req.body);
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
-    { group: "5d95f85bd93180d422d24895" }
+    { group: '5d95f85bd93180d422d24895' },
   );
   // console.log(user);
   // Все топики для конкретной группы
@@ -131,18 +132,18 @@ router.get("/addphase", async (req, res) => {
   } else {
     Phase = 1;
   }
-  Phase = Phase + 1;
+  Phase += 1;
   const newTopic = new Topic({
-    topicName: "OLEJA",
-    description: "стили",
-    video: "https://www.youtube.com/watch?v=O2ulyJuvU3Q",
-    group: "5d95f85bd93180d422d24895",
+    topicName: 'OLEJA',
+    description: 'стили',
+    video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
+    group: '5d95f85bd93180d422d24895',
     phase: Phase,
     week: 1,
     day: 1,
     githubLink:
-      "https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md",
-    comments: []
+      'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
+    comments: [],
   });
   await newTopic.save();
   const updatedTopics = await Topic.find({ group: user.group });
@@ -151,9 +152,9 @@ router.get("/addphase", async (req, res) => {
     const phase = [];
     for (let w = 1; w < Week + 1; w++) {
       const week = updatedTopics
-        .filter(el => el.phase === `${p}`)
-        .filter(el => el.week === `${w}`)
-        .sort(el => (el.day ? 1 : -1));
+        .filter((el) => el.phase === `${p}`)
+        .filter((el) => el.week === `${w}`)
+        .sort((el) => (el.day ? 1 : -1));
       if (week.length === 0) {
         continue;
       } else {
@@ -169,7 +170,7 @@ router.get("/addphase", async (req, res) => {
   res.json({ result });
 });
 // POST new user
-router.post("/sign-up", async (req, res) => {
+router.post('/sign-up', async (req, res) => {
   const { nickname, email, password } = req.body;
   const curEmail = await User.getByEmail(email);
   if (curEmail.length === 0) {
@@ -177,21 +178,21 @@ router.post("/sign-up", async (req, res) => {
     await User.create({
       nickname,
       email,
-      password: hash
+      password: hash,
     });
     return res.redirect(
       homePageWithNotification(
         notifications.message,
-        "You Signed Up. Please Log In!"
-      )
+        'You Signed Up. Please Log In!',
+      ),
     );
   }
-  return res.render("sign-up", {
-    [notifications.error]: "This email is already used"
+  return res.render('sign-up', {
+    [notifications.error]: 'This email is already used',
   });
 });
 
-router.post("/reg", async (req, res, next) => {
+router.post('/reg', async (req, res, next) => {
   const { nickname, email, password } = req.body;
   const curUser = await User.find({ email: req.body.email });
   if (curUser.length === 0) {
@@ -199,14 +200,14 @@ router.post("/reg", async (req, res, next) => {
     await User.create({
       nickname,
       email,
-      password: hash
+      password: hash,
     });
-    return passport.authenticate("local", async (err, user) => {
+    return passport.authenticate('local', async (err, user) => {
       const thisUser = await User.findOne({ email: req.body.email });
       if (err) {
         return res.json({ message: err });
       }
-      req.logIn(user, err => {
+      req.logIn(user, (err) => {
         if (err) {
           return res.json({ message: err });
         }
@@ -216,53 +217,53 @@ router.post("/reg", async (req, res, next) => {
       });
     })(req, res, next);
   }
-  return res.json({ message: "This email is already used" });
+  return res.json({ message: 'This email is already used' });
 });
 
 // Get NEws from BD
-router.get("/getnews", async (req, res) => {
+router.get('/getnews', async (req, res) => {
   const news = await News.findOne();
   // console.log('BACKKK', news.name);
 
   res.json({ news: news.name });
 });
 // Get TOpics from BD for users exact group!
-router.post("/gettopics", async (req, res) => {
+router.post('/gettopics', async (req, res) => {
   // Добавляю хардкодом группу т.к при реге её нет
   // console.log(req.user);
-  //Все группы
-  console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm?!?", req.body.selectedGroup);
+  // Все группы
+  console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm?!?', req.body.selectedGroup);
 
   const allGroups = await Group.find();
-  //Последняя группа
-  let selectedGroupName = "";
+  // Последняя группа
+  let selectedGroupName = '';
   if (req.body.selectedGroup) {
     selectedGroupName = req.body.selectedGroup;
   } else {
-    console.log("НЕТ В БАДИ");
+    console.log('НЕТ В БАДИ');
     selectedGroupName = allGroups[allGroups.length - 1].name;
   }
   // let selectedGroupName = allGroups[allGroups.length-1].name;
-  console.log("selectedGroupName====", selectedGroupName);
+  console.log('selectedGroupName====', selectedGroupName);
 
-  //Массив из имён всех групп
-  let groupNames = [];
+  // Массив из имён всех групп
+  const groupNames = [];
   for (let i = 0; i < allGroups.length; i++) {
-    let obj = { key: `${i + 1}`, value: `${i + 1}`, text: allGroups[i].name };
+    const obj = { key: `${i + 1}`, value: `${i + 1}`, text: allGroups[i].name };
     groupNames.push(obj);
   }
-  //если нет групп вообще
+  // если нет групп вообще
   if (allGroups.length === 0) {
-    let arr = [];
+    const arr = [];
     res.json({ arr, arr });
   }
-  //Для админа составим топики последней группы,а для пользователя его группы
+  // Для админа составим топики последней группы,а для пользователя его группы
   let topics = [];
-  if (req.user.status === "admin") {
-    console.log("admin");
+  if (req.user.status === 'admin') {
+    console.log('admin');
     topics = await Topic.find({ groupName: selectedGroupName });
-    console.log("topic.length===", topics.length);
-    console.log("ТОПИКИ ГРУППЫ ", topics[0].groupName);
+    console.log('topic.length===', topics.length);
+    console.log('ТОПИКИ ГРУППЫ ', topics[0].groupName);
   } else {
     topics = await Topic.find({ groupName: req.user.groupName });
   }
@@ -279,9 +280,9 @@ router.post("/gettopics", async (req, res) => {
     const phase = [];
     for (let w = 1; w < Week + 1; w++) {
       const week = topics
-        .filter(el => el.phase === `${p}`)
-        .filter(el => el.week === `${w}`)
-        .sort(el => (el.day ? 1 : -1));
+        .filter((el) => el.phase === `${p}`)
+        .filter((el) => el.week === `${w}`)
+        .sort((el) => (el.day ? 1 : -1));
       if (week.length === 0) {
         continue;
       } else {
@@ -291,119 +292,120 @@ router.post("/gettopics", async (req, res) => {
 
     result.push(phase);
   }
-  //Для админа верне топики последней группые ,все группы и поле конкретной группы для Select!
-  //Для юзера вернем топики его группы
-  if (req.user.status === "admin") {
-    res.json({ result, topics, groupNames, selectedGroupName });
+  // Для админа верне топики последней группые ,все группы и поле конкретной группы для Select!
+  // Для юзера вернем топики его группы
+  if (req.user.status === 'admin') {
+    res.json({
+ result, topics, groupNames, selectedGroupName 
+});
     console.log(
-      "888888888888888888888888888888888888888888888888",
+      '888888888888888888888888888888888888888888888888',
       groupNames,
-      selectedGroupName
+      selectedGroupName,
     );
   } else {
-    console.log("WTFFFFFFFFFFFFFFFFFFFFFFFFFFFF?!?");
+    console.log('WTFFFFFFFFFFFFFFFFFFFFFFFFFFFF?!?');
 
     res.json({ result, topics });
   }
 });
 
 // GET ALl Groups for lections page
-router.get("/getgroups", (req, res) => {
-  res.send({ status: "hi" });
+router.get('/getgroups', (req, res) => {
+  res.send({ status: 'hi' });
 });
 // Download File тестовая ручка.Не стрирайте.
-router.get("/downloadtest", (req, res, next) => {
-  const filePath =
-    "/home/oleg-lasttry/Final Project/learning-management/back/public/images/..."; // Or format the path using the `id` rest param
+router.get('/downloadtest', (req, res, next) => {
+  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
 
-  const fileName = "lenin.svg"; // The default name the browser will use
+  const fileName = 'lenin.svg'; // The default name the browser will use
 
   // res.download(filePath, fileName);
-  res.json({ message: "Something good happened" });
+  res.json({ message: 'Something good happened' });
   // res.json({user:"hi"})
 });
-router.post("/download", (req, res, next) => {
+router.post('/download', (req, res, next) => {
   // res.download('/home/oleg-lasttry/FinalProject/learning-management/front/public/img/com.svg');
-  res.sendFile("/img/com.svg");
+  res.sendFile('/img/com.svg');
 });
 
-router.get("/getDayData", async (req, res, next) => {
+router.get('/getDayData', async (req, res, next) => {
   // Добавляю хардкодом группу т.к при реге её нет
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
-    { group: "5d9da4b6d895365403c3d4cc" }
+    { group: '5d9da4b6d895365403c3d4cc' },
   );
 
-  //5d9ce8472a0cbe13a7048fea
+  // 5d9ce8472a0cbe13a7048fea
   // Все топики
   const topics = await Topic.find({ group: user.group });
-  console.log("ETI TOPIKI!", topics);
+  console.log('ETI TOPIKI!', topics);
   const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
     .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
   if (mainPageTopic.length === null) {
-    return res.status(400).json({ message: "No file uploaded" });
+    return res.status(400).json({ message: 'No file uploaded' });
   }
 
   res.json(mainPageTopic[0]);
 });
 // Upload some File
-router.post("/upload", async (req, res) => {
+router.post('/upload', async (req, res) => {
   // const data = await JSON.parse(req.body);
   // console.log(data);
 
   // console.log(req.files);
 
   if (req.files === null) {
-    return res.status(400).json({ message: "No file uploaded" });
+    return res.status(400).json({ message: 'No file uploaded' });
   }
   const { file } = req.files;
 
   file.mv(
     `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
-    err => {
+    (err) => {
       if (err) {
         console.log(err);
         // return res.status(500).send(err);
       }
       res.json({ fileName: file.name, filePath: `/img/${file.name}` });
-    }
+    },
   );
-  console.log("Upload");
+  console.log('Upload');
 });
 // GET user log out
-router.get("/logout", (req, res) => {
+router.get('/logout', (req, res) => {
   req.logout();
   res.redirect(
-    homePageWithNotification(notifications.message, "You logged out!")
+    homePageWithNotification(notifications.message, 'You logged out!'),
   );
 });
-router.get("/logoout", (req, res) => {
+router.get('/logoout', (req, res) => {
   req.logout();
-  console.log("LOGOUT get");
-  res.json({ user: "" });
+  console.log('LOGOUT get');
+  res.json({ user: '' });
 });
 // GET home page
-router.get("/", (req, res) => {
-  console.log("GET HOME PAGE");
-  res.send("ok");
+router.get('/', (req, res) => {
+  console.log('GET HOME PAGE');
+  res.send('ok');
 });
 // GET Page with Authentication
-router.get("/auth-page", async (req, res) => {
+router.get('/auth-page', async (req, res) => {
   if (req.isAuthenticated()) {
-    console.log("Esli AUTH-PAGE TRUE");
-    console.log("THis user data = ", req.user);
+    console.log('Esli AUTH-PAGE TRUE');
+    console.log('THis user data = ', req.user);
 
-    res.render("auth-page", { currentUser: getUserNickname(req) });
+    res.render('auth-page', { currentUser: getUserNickname(req) });
   } else {
-    console.log("Esli AUTH-PAGE NOT NOT TRUE!");
+    console.log('Esli AUTH-PAGE NOT NOT TRUE!');
     res.redirect(
-      homePageWithNotification(notifications.error, "Not Authenticated!")
+      homePageWithNotification(notifications.error, 'Not Authenticated!'),
     );
   }
 });
 
-router.post("/upload-avatar", async (req, res) => {
+router.post('/upload-avatar', async (req, res) => {
   const id = req.user._id;
   await User.updateOne({ _id: id }, { $set: { photo: req.files.photo.name } });
 
@@ -411,7 +413,7 @@ router.post("/upload-avatar", async (req, res) => {
     if (!req.files.photo) {
       res.send({
         status: false,
-        message: "No file uploaded"
+        message: 'No file uploaded',
       });
     } else {
       const { photo } = req.files;
@@ -420,12 +422,12 @@ router.post("/upload-avatar", async (req, res) => {
       // send response
       res.send({
         status: true,
-        message: "File is uploaded",
+        message: 'File is uploaded',
         data: {
           name: photo.name,
           mimetype: photo.mimetype,
-          size: photo.size
-        }
+          size: photo.size,
+        },
       });
     }
   } catch (err) {
@@ -433,13 +435,20 @@ router.post("/upload-avatar", async (req, res) => {
   }
 });
 
-router.get("/get-users", async (req, res) => {
+router.get('/get-users', async (req, res) => {
   const users = await User.find();
   res.json(users);
 });
 
-router.post("/update-profile", async (req, res) => {
-  let { email, password, nickname, phone, photo } = req.body;
+router.get('/get-tests', async (req, res) => {
+  const tests = await Test.find();
+  res.json(tests);
+});
+
+router.post('/update-profile', async (req, res) => {
+  let {
+ email, password, nickname, phone, photo 
+} = req.body;
 
   const { id } = req.user;
 
@@ -466,9 +475,9 @@ router.post("/update-profile", async (req, res) => {
         email,
         password: hash,
         nickname,
-        phone
-      }
-    }
+        phone,
+      },
+    },
   );
   console.log(req.user);
   console.log(req.user.groupName);
@@ -479,7 +488,7 @@ router.post("/update-profile", async (req, res) => {
     photo: req.user.photo,
     phone: req.user.phone,
     group: req.user.group,
-    groupName: req.user.groupName
+    groupName: req.user.groupName,
   });
 });
 

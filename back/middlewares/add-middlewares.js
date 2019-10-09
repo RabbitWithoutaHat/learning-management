@@ -6,7 +6,6 @@ const session = require('express-session');
 // Usage of FileStore leads to problem of not login in from the first time?
 const MongoStore = require('connect-mongo')(session);
 const bcrypt = require('bcrypt');
-
 const User = require('../models/User');
 
 const config = require('../config/config.json')[process.env.NODE_ENV];

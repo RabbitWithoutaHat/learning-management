@@ -6,8 +6,9 @@ const logger = require('morgan');
 const fileUpload = require('express-fileupload');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const indexRouter = require('./routes/index');
 const connection = require('./models/connection');
+
+const indexRouter = require('./routes/index');
 const Token = require('./models/Token');
 
 const app = express();

@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getTopicsData } from '../redux/Lections/actions';
-import { Button, Header, Image, Modal, Form, Icon, eventPool, closeIcon, Segment } from 'semantic-ui-react';
+import { Button, Segment, Header, Image, Modal, Form, Icon, eventPool, closeIcon } from 'semantic-ui-react';
 
 class Topic extends Component {
   state = {
     topic: {},
     videostr: '',
     str: '',
-
     topicName: '',
     topicPhase: '',
     topicWeek: '',
@@ -173,6 +172,7 @@ class Topic extends Component {
             </Modal.Description>
           </Modal.Content>
         </Modal>
+
         <div className="videoContainer">
           <h1>{this.state.topic.topicName}</h1>
 
@@ -203,7 +203,7 @@ class Topic extends Component {
                 <p className="fileTitle">Файл к уроку</p>
                 <Link
                   // to={FilePath.filePath}
-                  to="./images/IMG_7778.jpg"
+                  to="./imag  es/IMG_7778.jpg"
                   download
                   target="_blank"
                 >
