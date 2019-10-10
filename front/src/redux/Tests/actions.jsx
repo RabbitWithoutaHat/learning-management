@@ -12,7 +12,7 @@ const requestSelectedUsers = data => {
   return {
     type: GET_SELECTED_USERS,
     selectedGroupList: data.groupNames,
-    selectedGroupItems: data.selectedGroupItems,
+    selectedGroupTests: data.selectedGroupTests,
   };
 };
 
@@ -23,7 +23,6 @@ const requestErrorAC = () => {
 const getSelectedUsers = selectedGroup => async dispatch => {
   try {
     const resp = await axios.post('/get-tests', { groupName: selectedGroup });
-    console.log(resp.data);
     dispatch(requestSelectedUsers(resp.data));
   } catch (error) { }
 };

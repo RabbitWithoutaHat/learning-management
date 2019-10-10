@@ -4,7 +4,7 @@ const initialState = {
   test: {
     tests: [],
     selectedGroupList: [],
-    selectedGroupItems: [],
+    selectedGroupTests: [],
   },
 };
 
@@ -20,7 +20,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         selectedGroupList: action.selectedGroupList,
-        selectedGroupItems: action.selectedGroupItems,
+        selectedGroupTests: action.selectedGroupTests,
       };
     }
     default:

@@ -17,6 +17,7 @@ class TestList extends Component {
 
   getSelectedGroup = async (event) => {
     let selectedGroup = event.target.textContent;
+
     this.setState({ selectedGroupName: selectedGroup });
     await this.props.getSelectedUsers(selectedGroup);
   };
@@ -33,8 +34,9 @@ class TestList extends Component {
           />
         </>
         <List className="ui massive  list testsList">
-          {this.props.selectedGroupItems ? (
-            this.props.selectedGroupItems.map((e, i) => (
+          {console.log('OKOOKSODKSODSOD',this.props.selectedGroupTests)}
+          {this.props.selectedGroupTests ? (
+            this.props.selectedGroupTests.map((e, i) => (
               <List.Item key={`${i}test`} className="item testItem">
                 <List.Content className="content">
                   <Icon className="question" />
@@ -55,11 +57,13 @@ class TestList extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
+  console.log('OLLLLLLO', state)
+
+  return {  
     tests: state.Test.tests,
     user: state.User.user,
-    selectedGroupItems: state.User.selectedGroupItems,
-    selectedGroupList: state.User.selectedGroupList,
+    selectedGroupTests: state.Test.selectedGroupTests,
+    selectedGroupList: state.Test.selectedGroupList,
   };
 };
 

@@ -377,6 +377,14 @@ router.post('/addday', async (req, res) => {
   res.json({ group });
 });
 
+router.post('/add-test', async (req, res) => {
+  const newTest = new Test({
+    title: '',
+    googleFormsLink: '',
+    groupName: req.body.group,
+  });
+});
+
 // Add week
 router.post('/addweek', async (req, res) => {
   console.log('группа', req.body.group);
@@ -587,16 +595,16 @@ router.get('/get-tests', async (req, res) => {
 
 router.post('/get-tests', async (req, res) => {
   const groupNames = [];
-  let selectedGroupItems = [];
+  let selectedGroupTests = [];
   if (req.body.groupName) {
-    selectedGroupItems = await Test.find({ groupName: req.body.groupName });
+    selectedGroupTests = await Test.find({ groupName: req.body.groupName });
   }
   if (!req.body.groupName || req.body.groupName === 'Все пользователи') {
-    selectedGroupItems = await Test.find();
+    selectedGroupTests = await Test.find();
   }
   if (req.body.groupName === '') {
-    selectedGroupItems = await Test.find({ groupName: '' });
-    console.log('without group', selectedGroupItems);
+    selectedGroupTests = await Test.find({ groupName: '' });
+    console.log('without group', selectedGroupTests);
   }
 
   const groupList = await Group.find();
@@ -616,8 +624,8 @@ router.post('/get-tests', async (req, res) => {
       groupNames.push(allUser);
     }
   }
-
-  res.json({ groupNames, selectedGroupItems });
+console.log('OKOKOKOKOK', selectedGroupTests);
+  res.json({ groupNames, selectedGroupTests });
 });
 
 router.post('/update-profile', async (req, res) => {
