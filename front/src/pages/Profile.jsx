@@ -99,6 +99,7 @@ class Profile extends Component {
         </Form>
         <div className="col-4 avatar">
           <Image
+            className="profileAvatar"
             src={
               this.state.tempSrc
                 ? this.state.tempSrc
