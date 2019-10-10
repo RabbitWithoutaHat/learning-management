@@ -34,9 +34,6 @@ export const getTopicsData = (selectedGroup) => async dispatch => {
     });
     const data = await resp.json();
     
-    console.log('GGGGGGGGGGG',data);
-
-    console.log(data.result);
     dispatch(addTopics(data));
   } catch (err) {
     dispatch(requestError());

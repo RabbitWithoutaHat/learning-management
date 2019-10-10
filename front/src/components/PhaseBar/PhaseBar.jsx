@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { getNewsData } from '../../redux/News/action';
 import { connect } from 'react-redux';
-import { Route, Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getTopicsData } from '../../redux/Lections/actions';
 import { List } from 'semantic-ui-react';
-import { Tabs, TabList, Tab, TabPanel, CustomTab } from 'react-tabs';
+import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { Button } from 'semantic-ui-react';
 import { Select } from 'semantic-ui-react';
@@ -15,17 +14,11 @@ class PhaseBar extends Component {
     active: false,
     values: [],
     search: '',
-    countryOptions: [
-      { key: 'af', value: 'af', text: 'Afghanistan' },
-      { key: 'ax', value: 'ax', text: 'Aland Islands' },
-    ],
     selectedGroupName: '',
     groupNames: '',
   };
   async componentDidMount() {
     await this.props.getTopics();
-
-    console.log(this.props.topics.length);
   }
   addPhase = async () => {
     // let resp = await fetch('/addphase')
@@ -58,7 +51,6 @@ class PhaseBar extends Component {
     let data = {
       phase: this.state.tabIndex,
     };
-    let group = this.state.selectedGroupName;
     let resp = await fetch('/addweek', {
       method: 'POST',
       headers: {

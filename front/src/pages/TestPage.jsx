@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getAllTests } from '../redux/Tests/actions';
 
@@ -19,6 +18,7 @@ class TestPage extends Component {
       <>
         {this.state.test ? (
           <iframe
+            title='gForm'
             className="testFrame"
             src={`https://docs.google.com/forms/d/e/${this.state.test.googleFormsLink}/viewform?embedded=true`}
             width="700"
@@ -30,8 +30,8 @@ class TestPage extends Component {
             Загрузка...
           </iframe>
         ) : (
-          <></>
-        )}
+            <></>
+          )}
       </>
     );
   }

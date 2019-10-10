@@ -111,7 +111,6 @@ const getAllUsers = () => async dispatch => {
   try {
     const resp = await fetch('/get-users')
     const data = await resp.json();
-    console.log(data)
     dispatch(requestUsers(data));
 
   } catch (error) {

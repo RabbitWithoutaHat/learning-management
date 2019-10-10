@@ -41,7 +41,6 @@ class Profile extends Component {
     });
   };
   render() {
-    console.log(this.props);
     return (
       <>
         <Form className="col-8 profileForm">
@@ -122,7 +121,6 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
 
   return {
     email: state.User.user.email,

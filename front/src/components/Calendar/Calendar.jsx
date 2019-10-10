@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getCalendar } from '../../redux/News/action';
-import { link } from 'fs';
 
 class Calendar extends Component {
   state = {

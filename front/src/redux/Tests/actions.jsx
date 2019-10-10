@@ -15,7 +15,6 @@ const getAllTests = () => async dispatch => {
   try {
     const resp = await fetch('/get-tests')
     const data = await resp.json();
-    console.log(data)
     dispatch(requestTests(data));
 
   } catch (error) {
