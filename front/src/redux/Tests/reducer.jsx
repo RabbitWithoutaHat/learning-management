@@ -1,7 +1,11 @@
-import { REQUEST_ALL_TESTS } from './types';
+import { REQUEST_ALL_TESTS, GET_SELECTED_USERS } from './types';
 
 const initialState = {
-  tests: [],
+  test: {
+    tests: [],
+    selectedGroupList: [],
+    selectedGroupItems: [],
+  },
 };
 
 export default function (state = initialState, action) {
@@ -11,6 +15,13 @@ export default function (state = initialState, action) {
         ...state,
         tests: action.tests,
       }
+    }
+    case GET_SELECTED_USERS: {
+      return {
+        ...state,
+        selectedGroupList: action.selectedGroupList,
+        selectedGroupItems: action.selectedGroupItems,
+      };
     }
     default:
       return state;

@@ -5,17 +5,17 @@ import { Image, List, Header, Select } from 'semantic-ui-react';
 
 class UsersList extends Component {
   state = {
-    getSelecetedGroup: '',
+    getSelectedGroup: '',
   };
   componentDidMount() {
     this.props.getSelectedUsers();
   }
-  getSelecetedGroup = async (event, { value }) => {
+  getSelectedGroup = async (event) => {
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupName: selectedGroup });
     await this.props.getSelectedUsers(selectedGroup);
   };
-  
+
   render() {
     return (
       <>
@@ -24,7 +24,7 @@ class UsersList extends Component {
             className="select"
             placeholder="Все пользователи"
             options={this.props.selectedGroupList}
-            onChange={this.getSelecetedGroup}
+            onChange={this.getSelectedGroup}
           />
         </>
         <List className="ui massive relaxed animated list usersList">
@@ -48,8 +48,8 @@ class UsersList extends Component {
               </List.Item>
             ))
           ) : (
-            <></>
-          )}
+              <></>
+            )}
         </List>
       </>
     );
