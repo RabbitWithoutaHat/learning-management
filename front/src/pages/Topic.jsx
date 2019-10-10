@@ -117,17 +117,18 @@ class Topic extends Component {
 
   render() {
     console.log('render');
-
+    // open={this.state.modalOpen}
     // const { closeOnDocumentClick,closeIcon } = this.state
     return (
       <>
         {/* {this.props.admin ? */}
               {/* <> */}
+        
                 <Modal
         trigger={<Button positive onClick={this.handleOpen}>edit</Button>}
         closeIcon
         open={this.state.modalOpen}
-        // onClose={this.get}
+         onClose ={this.handleClose}
         // basic
         >
           <Modal.Header>{this.state.topicName}</Modal.Header>

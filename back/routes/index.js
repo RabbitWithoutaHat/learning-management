@@ -19,7 +19,7 @@ addMiddlewares(router);
 
 // GET login form
 router.get('/login', (req, res) => {
-  console.log('Login GET');
+  // console.log('Login GET');
   res.send('login');
 });
 
@@ -58,7 +58,7 @@ router.post('/log', async (req, res, next) => {
       // console.log("user statXXXXXXXXXXXXXXXXXXXXXushhfherh====", req.user);
 
       const userdata = await User.findOne({_id:req.user.id})
-      console.log("user statXXXXXXXXXXXXXXXXXXXXXushhfherh====", userdata);
+      // console.log("user statXXXXXXXXXXXXXXXXXXXXXushhfherh====", userdata);
       return res.json({ user: user.nickname, email: user.email, 
         status: userr.status,photo:userdata.photo,group:userdata.group,groupName:userdata.groupName });
     });
@@ -90,7 +90,7 @@ router.get('/sign-up', (req, res) => {
 
 router.get('/authcheck', async (req, res) => {
   if (req.isAuthenticated()) {
-    console.log('aaaaaaaaaaa',req.user);
+    // console.log('aaaaaaaaaaa',req.user);
     
     res.json({ user: req.user.nickname, status: req.user.status,email: req.user.email, 
       status: req.user.status,photo:req.user.photo,group:req.user.group,groupName:req.user.groupName });
@@ -128,7 +128,7 @@ router.post('/addphase', async (req, res) => {
   // console.log(user);
   // Все топики для конкретной группы
   const topics = await Topic.find({groupName: req.body.group });
-  console.log('ooooooooooooooooooooooooooooooooooooooooooo',topics.length);
+  // console.log('ooooooooooooooooooooooooooooooooooooooooooo',topics.length);
   // Максимальное кол-во фаз !
   let Phase = 0;
   let Week = 0;
@@ -142,7 +142,7 @@ router.post('/addphase', async (req, res) => {
   }
   Phase = Phase + 1;
   const group = req.body.group;
-  console.log('FAZA+LOGIN',Phase,group);
+  // console.log('FAZA+LOGIN',Phase,group);
   
   const newTopic = new Topic(
     {
@@ -160,7 +160,7 @@ router.post('/addphase', async (req, res) => {
   await newTopic.save();
 
   const updatedTopics = await Topic.find({groupName:req.body.group });
-  console.log('ccccccccccccccccccccccccccccccccccccccccccccc',updatedTopics);
+  // console.log('ccccccccccccccccccccccccccccccccccccccccccccc',updatedTopics);
   
   const result = [];
   for (let p = 1; p < Phase + 1; p++) {
@@ -247,7 +247,7 @@ router.post('/gettopics', async (req, res) => {
   // Добавляю хардкодом группу т.к при реге её нет
   // console.log(req.user);
   // Все группы
-  console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm?!?', req.body.selectedGroup);
+  // console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm?!?', req.body.selectedGroup);
 
   const allGroups = await Group.find();
   // Последняя группа
@@ -259,7 +259,7 @@ router.post('/gettopics', async (req, res) => {
     selectedGroupName = allGroups[allGroups.length - 1].name;
   }
   // let selectedGroupName = allGroups[allGroups.length-1].name;
-  console.log('selectedGroupName====', selectedGroupName);
+  // console.log('selectedGroupName====', selectedGroupName);
 
   // Массив из имён всех групп
   const groupNames = [];
@@ -297,7 +297,7 @@ router.post('/gettopics', async (req, res) => {
       const week = topics
         .filter((el) => el.phase === `${p}`)
         .filter((el) => el.week === `${w}`)
-        .sort((el) => (el.day ? 1 : -1));
+        .sort((el) => (el.day ? -1 : 1));
       if (week.length === 0) {
         continue;
       } else {
@@ -313,13 +313,13 @@ router.post('/gettopics', async (req, res) => {
     res.json({
  result, topics, groupNames, selectedGroupName 
 });
-    console.log(
-      '888888888888888888888888888888888888888888888888',
-      groupNames,
-      selectedGroupName,
-    );
+    // console.log(
+    //   '888888888888888888888888888888888888888888888888',
+    //   groupNames,
+    //   selectedGroupName,
+    // );
   } else {
-    console.log('WTFFFFFFFFFFFFFFFFFFFFFFFFFFFF?!?');
+    // console.log('WTFFFFFFFFFFFFFFFFFFFFFFFFFFFF?!?');
 
     res.json({ result, topics });
   }
@@ -330,23 +330,71 @@ router.post('/gettopics', async (req, res) => {
 router.get('/getgroups', (req, res) => {
   res.send({ status: 'hi' });
 });
-// GET ALl Groups for lections page
-router.post('/addweek', (req, res) => {
-  console.log(req.body.phase);
+
+// Add day
+router.post('/addday', async (req, res) => {
+  // console.log('addday!!!!!!!!!!!!!!!!!!!!!!!!!1',req.body);
   const phase = req.body.phase+1;
+  const group = req.body.group;
+  const week = req.body.week;
+  const day = req.body.day+1;
+  // console.log(phase,group,week,day);
+  const newTopic = new Topic(
+    {
+      topicName: 'Заполни меня!!!',
+      description: 'стили',
+      video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
+      groupName: group,
+      phase: phase.toString(),
+      week: week,
+      day: day,
+      githubLink: 'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
+      comments: [],
+    }
+  )
+  await newTopic.save();
+  res.json({group:group});
+});
+
+//Add week
+router.post('/addweek', async(req, res) => {
+  console.log('группа',req.body.group);
+  const Phase = req.body.phase+1;
+  const topics = await Topic.find({phase:Phase,groupName:req.body.group});
+  // console.log('TOPIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIC',topics);
+  
   // let Phase = 0;
-  // let Week = 0;
-  // if (topics.length !== 0) {
-  //   for (let i = 0; i < topics.length; i++) {
-  //     Phase = Math.max(Phase, topics[i].phase);
-  //     Week = Math.max(Week, topics[i].week);
-  //   }
-  // } else {
-  //   Phase = 1;
-  // }
+  let Week = 0;
+  if (topics.length !== 0) {
+    for (let i = 0; i < topics.length; i++) {
+      // Phase = Math.max(Phase, topics[i].phase);
+      Week = Math.max(Week, topics[i].week);
+    }
+  } else {
+    res.send({status:'hi'});
+  }
+// console.log('GROUP!!', req.body.group);
+Week = Week+1;
+console.log('Weeekkkkkkkkkkkkkkkkkkkk',Week);
 
   // phase = req.body.phase+1;
-  res.send({status:'hi'});
+  const newTopic = new Topic(
+    {
+      topicName: 'Заполни меня!!!',
+      description: 'стили',
+      video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
+      groupName: req.body.group,
+      phase: Phase.toString(),
+      week: Week,
+      day: 1,
+      githubLink: 'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
+      comments: [],
+    }
+  )
+  await newTopic.save();
+  // console.log(req.body);
+  
+  res.json({group:req.body.group});
 });
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
@@ -359,8 +407,8 @@ router.get('/downloadtest', (req, res, next) => {
   // res.json({user:"hi"})
 });
 router.post('/download', (req, res, next) => {
-  // res.download('/home/oleg-lasttry/FinalProject/learning-management/front/public/img/com.svg');
-  res.sendFile('/img/com.svg');
+  res.download('/home/oleg-lasttry/FinalProject/learning-management/back/public/com.svg');
+  // res.sendFile('/home/oleg-lasttry/FinalProject/learning-management/back/public/com.svg');
 });
 
 router.get('/getDayData', async (req, res, next) => {
@@ -373,7 +421,7 @@ router.get('/getDayData', async (req, res, next) => {
   // 5d9ce8472a0cbe13a7048fea
   // Все топики
   const topics = await Topic.find({ group: user.group });
-  console.log('ETI TOPIKI!', topics);
+  // console.log('ETI TOPIKI!', topics);
   const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
     .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);

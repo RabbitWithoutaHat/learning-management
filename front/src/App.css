@@ -313,3 +313,11 @@ footer {
 .testFrame {
   margin-top: 60px;
 }
+
+.selectDiv {
+/* 
+  display:flex; */
+  text-align-last: center;
+  color:red;
+  
+}

@@ -51,8 +51,8 @@ class VideoWindow extends Component {
       body: JSON.stringify({ File }),
     });
 
-    // const data = await resp.blob();
-    // console.log(data);
+    const data = await resp.blob();
+    console.log(data);
     
     // console.log(dat);
     // // "application/zip"
@@ -67,7 +67,7 @@ class VideoWindow extends Component {
     //                 tempLink.click();
     
     // await this.setState({rr:data})
-    // FileSaver.saveAs(data, 'com.svg');
+    FileSaver.saveAs(data, 'com.svg');
     // FileDownload(data, 'com.svg');
   
      //for chrome in apple devices
@@ -112,13 +112,15 @@ class VideoWindow extends Component {
               </a>
             </div>
             <div className="videoFile">
-
+              <a href="/img/download.png" download>
+                123
+              </a>
+              <a href="http://localhost:5002/images/loop.zip" download target="_blank">Download</a>
               <Link
                 // to={FilePath.filePath}
                 to={this.state.rr}
                 download
                 target="_blank"
-
               >
                 <Button
                   basic
