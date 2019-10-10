@@ -114,7 +114,7 @@ class Topic extends Component {
             <Modal
               trigger={
                 <Button positive onClick={this.handleOpen}>
-                  edit
+                  Изменить урок
                 </Button>
               }
               closeIcon

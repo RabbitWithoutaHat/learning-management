@@ -37,13 +37,15 @@ export const getNewsData = () => async dispatch => {
 
 export const getCalendar = () => async dispatch => {
   try {
-    dispatch(requestNews());
+    const resp = await axios.get('/token');
+    const newToken = await resp.data;
+    const token = `Bearer ${newToken}`;
+
     const data = await axios.get(
       'https://www.googleapis.com/calendar/v3/calendars/eeu26g0ks81b97lghfrgoh2d84@group.calendar.google.com/events',
       {
         headers: {
-          Authorization:
-            'Bearer ya29.Il-bB_Aast9yaoQXFS8FRHCbj-NgQOMRQuVZRzwsSJbVDE5simSbF4D-78reQTh6kqEcG7i9mto20Yhg59BqvNNnYYuKzRyLfMl_INKXT8V6pezGqVfHSkbDMEbAgaxxlA',
+          Authorization: token,
         },
       },
     );
