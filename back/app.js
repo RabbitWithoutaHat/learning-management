@@ -6,6 +6,7 @@ const logger = require('morgan');
 const fileUpload = require('express-fileupload');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const newToken = require('./helpers/googleTokens');
 const connection = require('./models/connection');
 
 const indexRouter = require('./routes/index');
@@ -13,6 +14,8 @@ const Token = require('./models/Token');
 
 const app = express();
 const port = 5002;
+
+// setTimeout(newToken, 15000);
 
 passport.use(
   new GoogleStrategy(

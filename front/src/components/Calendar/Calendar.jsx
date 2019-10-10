@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getCalendar } from '../../redux/News/action';
-import { link } from 'fs';
 
 class Calendar extends Component {
   state = {
@@ -11,7 +10,7 @@ class Calendar extends Component {
     this.props.getCalendar();
   };
   render() {
-    console.log(this.props.events ? this.props.events[0].summary : 'asdasd');
+    // console.log(this.props.events ? this.props.events[0].summary : 'asdasd');
 
     return (
       <p>

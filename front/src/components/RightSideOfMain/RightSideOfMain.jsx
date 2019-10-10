@@ -31,6 +31,7 @@ class NavBar extends Component {
               <Route exact path="/tests" component={Tests} />
               <Route name="test" path="/tests/:id" component={TestPage} />
               <Route path="/users" component={Users} />
+              <Route path="/calendar" component={Calendar} />
             </>
           ) : (
             <>

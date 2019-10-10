@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getTopicsData } from '../redux/Lections/actions';
-import { Button, Segment, Header, Image, Modal, Form, Icon, eventPool, closeIcon } from 'semantic-ui-react';
+import { Button, Header, Modal, Form } from 'semantic-ui-react';
 
 class Topic extends Component {
   state = {
@@ -42,7 +42,6 @@ class Topic extends Component {
 
   func = async () => {
     let data = {
-      topic: this.state.topicName,
       youtubeLink: this.state.youtubeLink,
       githubLink: this.state.githubLink,
       fileLink: this.state.topicName,
@@ -57,7 +56,6 @@ class Topic extends Component {
       body: JSON.stringify(data),
     });
     let dataresp = await resp.json();
-    console.log(dataresp);
     this.setState({ modalOpen: false });
     // this.setState({buttonClicked:'sdasd'});
   };
@@ -67,12 +65,9 @@ class Topic extends Component {
   };
 
   async componentDidMount() {
-    console.log('mount');
-
     await this.props.getTopics(this.props.selectedGroup);
 
     const topic = this.props.allTopics.find(el => el._id === this.props.match.params.id);
-    console.log('TOPIC NAMEEEEEEEEEEEEEEEEE', topic);
     await this.setState({
       topicName: topic.topicName,
       topicPhase: topic.phase,
@@ -87,17 +82,12 @@ class Topic extends Component {
       videostr = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
     }
     this.setState({ topic: topic, videostr: videostr });
-    console.log(this.state.topic.topicName);
   }
   async componentDidUpdate(prevProps, prevState) {
-    console.log('prev', prevState);
-    console.log('this', this.state);
-
     if (prevState.modalOpen && !this.state.modalOpen) {
       await this.func();
       await this.props.getTopics(this.props.selectedGroup);
       const topic = this.props.allTopics.find(el => el._id === this.props.match.params.id);
-      // console.log(topic.topicName);
       this.setState({
         topicName: topic.topicName,
         topicPhase: topic.phase,
@@ -116,66 +106,69 @@ class Topic extends Component {
   }
 
   render() {
-    console.log('render');
-
     // const { closeOnDocumentClick,closeIcon } = this.state
     return (
       <>
-        {/* {this.props.admin ? */}
-              {/* <> */}
-                <Modal
-        trigger={<Button positive onClick={this.handleOpen}>edit</Button>}
-        closeIcon
-        open={this.state.modalOpen}
-        // onClose={this.get}
-        // basic
-        >
-          <Modal.Header>{this.state.topicName}</Modal.Header>
-          <Modal.Content>
-            <Modal.Description>
-              <Header className="regForm">
-                Фаза:{this.state.topicPhase} Неделя:{this.state.topicWeek} День:{this.state.topicDay}
-              </Header>
-              {/* ФОрма */}
-              <Modal.Actions>
-                <Form className="regForm">
-                  <Form.Field>
-                    <label htmlFor="topicname">TopicName</label>
-                    <input type="text" name="topicname" required onChange={this.topicName} />
-                  </Form.Field>
-                  <Form.Field>
-                    <label htmlFor="youtubelink">YoutubeLink</label>
-                    <input type="text" name="youtubelink" onChange={this.youtubeLink} />
-                  </Form.Field>
-                  <Form.Field>
-                    <label htmlFor="githubLink">githubLink</label>
-                    <input type="text" name="githubLink" onChange={this.githubLink} />
-                  </Form.Field>
-                  <Form.Field>
-                    <label htmlFor="fileLink">fileLink</label>
-                    <input type="text" name="fileLink" onChange={this.fileLink} />
-                  </Form.Field>
-                  <Form.Field>
-                    <label htmlFor="fileupload">FileUpload</label>
-                    <input type="text" name="fileupload" />
-                  </Form.Field>
-                  <div className="form-field">
-                    <Button type="button" className="Button" onClick={this.get}>
-                      Отправить
-                    </Button>{' '}
-                  </div>
-                </Form>
-              </Modal.Actions>
-              {/* форма */}
-            </Modal.Description>
-          </Modal.Content>
-        </Modal>
-        
+        {this.props.admin ? (
+          <>
+            <Modal
+              trigger={
+                <Button positive onClick={this.handleOpen}>
+                  edit
+                </Button>
+              }
+              closeIcon
+              open={this.state.modalOpen}
+              // onClose={this.get}
+              // basic
+            >
+              <Modal.Header>{this.state.topicName}</Modal.Header>
+              <Modal.Content>
+                <Modal.Description>
+                  <Header className="regForm">
+                    Фаза:{this.state.topicPhase} Неделя:{this.state.topicWeek} День:{this.state.topicDay}
+                  </Header>
+                  {/* ФОрма */}
+                  <Modal.Actions>
+                    <Form className="regForm">
+                      <Form.Field>
+                        <label htmlFor="topicname">TopicName</label>
+                        <input type="text" name="topicname" required onChange={this.topicName} />
+                      </Form.Field>
+                      <Form.Field>
+                        <label htmlFor="youtubelink">YoutubeLink</label>
+                        <input type="text" name="youtubelink" onChange={this.youtubeLink} />
+                      </Form.Field>
+                      <Form.Field>
+                        <label htmlFor="githubLink">githubLink</label>
+                        <input type="text" name="githubLink" onChange={this.githubLink} />
+                      </Form.Field>
+                      <Form.Field>
+                        <label htmlFor="fileLink">fileLink</label>
+                        <input type="text" name="fileLink" onChange={this.fileLink} />
+                      </Form.Field>
+                      <Form.Field>
+                        <label htmlFor="fileupload">FileUpload</label>
+                        <input type="text" name="fileupload" />
+                      </Form.Field>
+                      <div className="form-field">
+                        <Button type="button" className="Button" onClick={this.get}>
+                          Отправить
+                        </Button>{' '}
+                      </div>
+                    </Form>
+                  </Modal.Actions>
+                  {/* форма */}
+                </Modal.Description>
+              </Modal.Content>
+            </Modal>
+          </>
+        ) : (
+          <></>
+        )}
 
         <div className="videoContainer">
-          <h1>{this.state.topic.topicName}</h1>
-
-          <h1>Тема урока: {this.state.topic.topicName}</h1>
+          <h1 className="topicHeader">Тема урока: {this.state.topic.topicName}</h1>
 
           <div className="video">
             <iframe
@@ -230,6 +223,7 @@ const mapStateToProps = state => {
   return {
     allTopics: state.Topics.allTopics,
     selectedGroup: state.Topics.selectedGroupName,
+    admin: state.User.user.adminstatus,
   };
 };
 const mapDispatchToProps = dispatch => {

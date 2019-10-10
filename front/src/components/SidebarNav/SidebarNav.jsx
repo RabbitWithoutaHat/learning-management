@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Icon, Menu, Segment, Sidebar, Dimmer, Loader } from 'semantic-ui-react';
+import { Icon, Menu, Sidebar, Dimmer, Loader } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import { addUser } from '../../redux/Users/actions';
-import { getTopicsData } from '../../redux/Lections/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 

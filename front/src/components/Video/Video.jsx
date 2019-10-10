@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 
 export default class Video extends Component {
-  state = {
-    // videoURL: 'https://elbrus-bootcamp.github.io/Elbrus-Bootcamp/images/index.mp4'
-    // videoURL :'https://www.youtube.com/watch?v=aYnybphDpeA'
-  };
   render() {
-    console.log(this.props);
-
     return (
       <div>
         {/* <video className="video" autoplay="" muted loop>
