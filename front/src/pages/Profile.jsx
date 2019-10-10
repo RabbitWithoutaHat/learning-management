@@ -20,11 +20,6 @@ class Profile extends Component {
   componentDidMount() {
     this.props.updateProfile({ data: this.state });
   }
-  // componentDidUpdate() {
-  //   if (prevProps.data !== this.props.data) {
-
-  //   }
-  // }
 
   onClickHandler = e => {
     this.props.updateAvatar(this.props.photo);

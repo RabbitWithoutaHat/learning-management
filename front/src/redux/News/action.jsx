@@ -48,6 +48,7 @@ export const getCalendar = () => async dispatch => {
       },
     );
     dispatch(addEvents(data.data));
+    // console.log(data.data);
   } catch (err) {
     dispatch(requestError());
   }

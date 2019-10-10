@@ -8,6 +8,7 @@ import {
   AVATAR_TO_STATE,
   REQUESTED_FAILED,
   REQUEST_ALL_USERS,
+  GET_SELECTED_USERS,
 } from './types';
 import axios from 'axios';
 
@@ -72,8 +73,23 @@ const requestUsers = data => {
     users: data,
   };
 };
+const requestSelectedUsers = data => {
+  return {
+    type: GET_SELECTED_USERS,
+    selectedGroupList: data.groupNames,
+    selectedGroupItems: data.selectedGroupItems,
+  };
+};
 
 //thunk
+const getSelectedUsers = selectedGroup => async dispatch => {
+  try {
+    const resp = await axios.post('/get-users', { groupName: selectedGroup });
+    console.log(resp.data);
+    dispatch(requestSelectedUsers(resp.data));
+  } catch (error) {}
+};
+
 const updateProfile = data => async dispatch => {
   try {
     const resp = await axios.post(
@@ -115,4 +131,4 @@ const getAllUsers = () => async dispatch => {
   }
 };
 
-export { updateProfile, updateAvatar, getAllUsers };
+export { updateProfile, updateAvatar, getAllUsers, getSelectedUsers };
