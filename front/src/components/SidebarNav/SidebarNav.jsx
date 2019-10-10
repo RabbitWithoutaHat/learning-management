@@ -5,18 +5,50 @@ import { addUser } from '../../redux/Users/actions';
 import { connect } from 'react-redux';
 import { delUser } from '../../redux/Users/actions';
 import { Link } from 'react-router-dom';
+import { getCalendar } from '../../redux/News/action';
+import moment from 'moment';
+import 'moment/locale/ru';
 
 class SidebarNav extends Component {
   state = {
     date: new Date(),
+    eventMessage: '',
+  };
+  onChange = async date => {
+    await this.setState({ date });
+
+    const eventsObj = {};
+    const nowDate = this.state.date;
+    const dateStr = moment(nowDate).format('YYYY-MM-DD');
+    this.props.events.map(e => {
+      if (e.start.dateTime) {
+        const newDate = new Date(Date.parse(e.start.dateTime));
+        const time = moment(e.start.dateTime)
+          .locale('ru')
+          .format('LT');
+        const dateStr = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
+        eventsObj[dateStr] = `${time} - ${e.summary}`;
+      } else {
+        eventsObj[e.start.date] = e.summary;
+      }
+    });
+    const event = {};
+    for (let prop in eventsObj) {
+      if (prop === dateStr) {
+        event['summary'] = `${eventsObj[prop]}`;
+      }
+    }
+    console.log(event);
+    this.setState({ eventMessage: event.summary });
   };
   async componentDidMount() {
+    this.props.getCalendar();
     let resp = await fetch('/authcheck');
     let user = await resp.json();
     if (user.user) {
       this.props.add(user.user, user.email, user.status, user.photo, user.group, user.groupName);
     } else {
-     this.props.del();
+      this.props.del();
     }
   }
   render() {
@@ -58,7 +90,10 @@ class SidebarNav extends Component {
                     </Menu.Item>
                   </Link>
 
-                  <Calendar onChange={this.onChange} value={this.state.date} />
+                  <div className="calendarContainer">
+                    <p className="eventMessage">{this.state.eventMessage}</p>
+                    <Calendar onChange={this.onChange} value={this.state.date} />
+                  </div>
 
                   <Link className="logoutItem" to="/logout">
                     <Menu.Item>
@@ -107,10 +142,12 @@ function mapStateToProps(state) {
     status: state.User.user.status,
     justregister: state.User.user.justregister,
     loading: state.User.user.loading,
+    events: state.News.events.items,
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
+    getCalendar: () => dispatch(getCalendar()),
     del: () => dispatch(delUser()),
     add: (user, email, status, photo, group, groupName) =>
       dispatch(addUser(user, email, status, photo, group, groupName)),

@@ -10,8 +10,6 @@ class Calendar extends Component {
     this.props.getCalendar();
   };
   render() {
-    // console.log(this.props.events ? this.props.events[0].summary : 'asdasd');
-
     return (
       <p>
         {this.props.events ? (
