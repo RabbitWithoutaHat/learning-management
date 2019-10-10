@@ -42,8 +42,8 @@ class PhaseBar extends Component {
       console.log('AAAAAAAAAADDDD PHAEEEEEE', dataresp);
       await this.props.getTopics(dataresp.group);
     }
-  }
-  getSelectedGroup = async (event, { value }) => {
+  };
+  getSelecetedGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupName: selectedGroup });
     console.log('text!!', selectedGroup);
@@ -123,8 +123,7 @@ class PhaseBar extends Component {
                 className="select"
                 placeholder={this.props.selectedGroupName}
                 options={this.props.groupNames}
-                onChange={this.getSelectedGroup}
-
+                onChange={this.getSelecetedGroup}
               />
               {this.state.groupNotSelectedStatus ? (
                 <>
