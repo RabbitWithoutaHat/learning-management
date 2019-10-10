@@ -13,7 +13,19 @@ const TokenSchema = new Schema({
   },
 });
 
-TokenSchema.statics.findOrCreate = async function(Tokens, callback) {
+TokenSchema.statics.refresh = async function (newToken) {
+  console.log(newToken);
+  await this.updateOne(
+    {},
+    {
+      $set: {
+        accessToken: newToken.accessToken,
+      },
+    },
+  );
+};
+
+TokenSchema.statics.findOrCreate = async function (Tokens, callback) {
   const token = await this.find();
   if (token.length === 0) {
     await this.create({
