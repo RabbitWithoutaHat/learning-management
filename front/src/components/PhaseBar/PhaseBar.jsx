@@ -39,9 +39,8 @@ class PhaseBar extends Component {
       body: JSON.stringify({ group }),
     });
     let dataresp = await resp.json();
-
-    let data = await resp.json();
-    await this.props.getTopics();
+    console.log('AAAAAAAAAADDDD PHAEEEEEE',dataresp);
+    await this.props.getTopics(dataresp.group);
   };
   getSelecetedGroup = async (event, { value }) => {
     console.log('VALUE!!', value);
