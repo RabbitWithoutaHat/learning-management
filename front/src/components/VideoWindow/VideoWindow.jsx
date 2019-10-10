@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getTopicData } from '../../redux/MainPageTopic/action';
 
-import FileSaver from 'file-saver';
-import FileDownload from 'js-file-download';
+// import FileSaver from 'file-saver';
+// import FileDownload from 'js-file-download';
 
-import { Button, Segment } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 
 class VideoWindow extends Component {
   state = {
@@ -38,20 +38,20 @@ class VideoWindow extends Component {
   // }
 
   but = async e => {
-    const File = this.state.File;
+    // const File = this.state.File;
     e.preventDefault();
-    let resp = await fetch('/download', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ File }),
-    });
+    // let resp = await fetch('/download', {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ File }),
+    // });
 
-    // const data = await resp.blob();
-    // console.log(data);
-
+    const data = await resp.blob();
+    console.log(data);
+    
     // console.log(dat);
     // // "application/zip"
     // const data = new Blob([dat], {type: 'image/svg+xml'});
@@ -65,7 +65,7 @@ class VideoWindow extends Component {
     //                 tempLink.click();
 
     // await this.setState({rr:data})
-    // FileSaver.saveAs(data, 'com.svg');
+    FileSaver.saveAs(data, 'com.svg');
     // FileDownload(data, 'com.svg');
 
     //for chrome in apple devices
@@ -98,14 +98,18 @@ class VideoWindow extends Component {
         <div className="videoLinksFilesSegment">
           <div className="videoLinksFiles">
             <div className="videoLinks">
-              <a target="_blank" href={this.state.GhLink}>
+              <a target="_blank" rel="noopener noreferrer" href={this.state.GhLink}>
                 Задания на GitHub
               </a>
-              <a target="_blank" href={this.state.FileLink}>
+              <a target="_blank" rel="noopener noreferrer" href={this.state.FileLink}>
                 Ссылка на код
               </a>
             </div>
             <div className="videoFile">
+              <a href="/img/download.png" download>
+                123
+              </a>
+              <a href="http://localhost:5002/images/loop.zip" download target="_blank">Download</a>
               <Link
                 // to={FilePath.filePath}
                 to={this.state.rr}

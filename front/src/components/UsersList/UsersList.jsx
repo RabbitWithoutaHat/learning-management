@@ -15,7 +15,7 @@ class UsersList extends Component {
     this.setState({ selectedGroupName: selectedGroup });
     await this.props.getSelectedUsers(selectedGroup);
   };
-
+  
   render() {
     return (
       <>

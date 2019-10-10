@@ -30,8 +30,8 @@ class TestPage extends Component {
             Загрузка...
           </iframe>
         ) : (
-          <></>
-        )}
+            <></>
+          )}
       </>
     );
   }

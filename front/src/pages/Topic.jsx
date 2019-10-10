@@ -9,7 +9,6 @@ class Topic extends Component {
     topic: {},
     videostr: '',
     str: '',
-    topicName: '',
     topicPhase: '',
     topicWeek: '',
     topicDay: '',
@@ -184,10 +183,10 @@ class Topic extends Component {
           <div className="videoLinksFilesSegment">
             <div className="videoLinksFiles">
               <div className="videoLinks">
-                <a target="_blank" href={this.state.topic.githubLink}>
+                <a target="_blank" rel="noopener noreferrer" href={this.state.topic.githubLink}>
                   Задания на GitHub
                 </a>
-                <a target="_blank" href={this.state.FileLink}>
+                <a target="_blank" rel="noopener noreferrer" href={this.state.FileLink}>
                   Код урока
                 </a>
               </div>
@@ -195,7 +194,7 @@ class Topic extends Component {
                 <p className="fileTitle">Файл к уроку</p>
                 <Link
                   // to={FilePath.filePath}
-                  to="./imag  es/IMG_7778.jpg"
+                  to="./images/IMG_7778.jpg"
                   download
                   target="_blank"
                 >

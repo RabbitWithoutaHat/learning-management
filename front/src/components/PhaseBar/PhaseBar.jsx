@@ -14,44 +14,92 @@ class PhaseBar extends Component {
     active: false,
     values: [],
     search: '',
-    countryOptions: [
-      { key: 'af', value: 'af', text: 'Afghanistan' },
-      { key: 'ax', value: 'ax', text: 'Aland Islands' },
-    ],
     selectedGroupName: '',
     groupNames: '',
+    currentDaysOfClickedWeek: 0,
+    groupNotSelectedStatus: false,
   };
   async componentDidMount() {
     await this.props.getTopics();
+    this.setState({ selectedGroupName: this.props.selectedGroupName });
+    console.log(this.props.topics.length);
   }
   addPhase = async () => {
-    let group = this.state.selectedGroupName;
-    let resp = await fetch('/addphase', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ group }),
-    });
-    let dataresp = await resp.json();
-    await this.props.getTopics(dataresp.group);
+    if (this.state.selectedGroupName === '') {
+      this.setState({ groupNotSelectedStatus: true });
+    } else {
+      this.setState({ groupNotSelectedStatus: false });
+      let group = this.state.selectedGroupName;
+      let resp = await fetch('/addphase', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ group }),
+      });
+      let dataresp = await resp.json();
+      console.log('AAAAAAAAAADDDD PHAEEEEEE', dataresp);
+      await this.props.getTopics(dataresp.group);
+    }
   };
   getSelecetedGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupName: selectedGroup });
+    console.log('text!!', selectedGroup);
+    this.setState({ groupNotSelectedStatus: false });
     await this.props.getTopics(selectedGroup);
   };
 
+  addDay = async e => {
+    e.preventDefault();
+    if (this.state.selectedGroupName === '') {
+      this.setState({ groupNotSelectedStatus: true });
+    } else {
+      const plus = document.querySelector('.plus');
+      let numberOfDays = 0;
+      let numberOfWeek = 0;
+      if (e.target.className === plus.className) {
+        numberOfDays = e.target.parentNode.parentNode.childElementCount - 1;
+        console.log('Неделя номер =', e.target.parentNode.id);
+        numberOfWeek = e.target.parentNode.id;
+      } else {
+        numberOfDays = e.target.parentNode.childElementCount - 1;
+        numberOfWeek = e.target.id;
+      }
+      let data = {
+        phase: this.state.tabIndex,
+        group: this.state.selectedGroupName,
+        day: numberOfDays,
+        week: numberOfWeek,
+      };
+      await this.setState({ currentDaysOfClickedWeek: numberOfDays });
+      let resp = await fetch('/addday', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      let dataresp = await resp.json();
+      console.log('DDDDDDDDDDAAATATTA', dataresp.group);
+      await this.props.getTopics(dataresp.group);
+    }
+  };
   addWeek = async e => {
     e.preventDefault();
-    this.func();
+    if (this.state.selectedGroupName === '') {
+      this.setState({ groupNotSelectedStatus: true });
+    } else {
+      this.func();
+    }
   };
   func = async () => {
     let data = {
       phase: this.state.tabIndex,
+      group: this.state.selectedGroupName,
     };
-    let group = this.state.selectedGroupName;
     let resp = await fetch('/addweek', {
       method: 'POST',
       headers: {
@@ -61,7 +109,8 @@ class PhaseBar extends Component {
       body: JSON.stringify(data),
     });
     let dataresp = await resp.json();
-    await this.props.getTopics(dataresp);
+
+    await this.props.getTopics(dataresp.group);
   };
   render() {
     console.log(this.props.groupNames);
@@ -69,12 +118,21 @@ class PhaseBar extends Component {
       <>
         {this.props.admin && this.props.groupNames ? (
           <>
-            <Select
-              className="select"
-              placeholder="Группа"
-              options={this.props.groupNames}
-              onChange={this.getSelecetedGroup}
-            />
+            <div className="select selectDiv">
+              <Select
+                className="select"
+                placeholder={this.props.selectedGroupName}
+                options={this.props.groupNames}
+                onChange={this.getSelecetedGroup}
+              />
+              {this.state.groupNotSelectedStatus ? (
+                <>
+                  <div className="">Выбери группу</div>
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
           </>
         ) : (
           <></>
@@ -112,18 +170,20 @@ class PhaseBar extends Component {
                       {week.map((day, i) => (
                         <List.Item key={`${i}day`}>
                           <Link params={{ desc: day.description }} to={`/lections/${day._id}`}>
+                            День:{day.day}
                             {day.topicName}
                           </Link>
                         </List.Item>
                       ))}
+                      <Button id={`${week[0].week}`} basic color="violet" icon="plus" onClick={this.addDay}></Button>
                     </List>
-                    {this.props.admin ? (
+                    {/* {this.props.admin ? (
                       <>
                         <Button basic color="violet" icon="plus"></Button>
                       </>
                     ) : (
                       <></>
-                    )}
+                    )} */}
                   </>
                 ))}
               </TabPanel>
@@ -133,7 +193,7 @@ class PhaseBar extends Component {
           )}
           {this.props.admin ? (
             <>
-              <Button className="addWeek" basic color="violet">
+              <Button className="addWeek" basic color="violet" icon="plus" onClick={this.addWeek}>
                 Добавить неделю
               </Button>
             </>
