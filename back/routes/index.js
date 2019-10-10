@@ -11,6 +11,7 @@ const { getUserNickname } = require('../helpers/reqHelpers');
 const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
 const Topic = require('../models/Topic');
+const Token = require('../models/Token');
 const Test = require('../models/Test');
 
 const router = express.Router();
@@ -508,6 +509,8 @@ router.get('/auth-page', async (req, res) => {
 });
 
 router.post('/get-users', async (req, res) => {
+  console.log(req.body.groupName);
+
   const groupNames = [];
   let selectedGroupItems = [];
   if (req.body.groupName) {
@@ -661,6 +664,12 @@ router.post('/update-profile', async (req, res) => {
     group: newData.group,
     groupName: newData.groupName,
   });
+});
+
+router.get('/token', async (req, res) => {
+  const token = await Token.findOne({});
+  console.log(token.accessToken);
+  res.json(token.accessToken);
 });
 
 module.exports = router;

@@ -26,9 +26,9 @@ class PhaseBar extends Component {
   }
   addPhase = async () => {
     if (this.state.selectedGroupName === '') {
-      this.setState({ groupNotSelectedStatus: true })
+      this.setState({ groupNotSelectedStatus: true });
     } else {
-      this.setState({ groupNotSelectedStatus: false })
+      this.setState({ groupNotSelectedStatus: false });
       let group = this.state.selectedGroupName;
       let resp = await fetch('/addphase', {
         method: 'POST',
@@ -47,14 +47,14 @@ class PhaseBar extends Component {
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupName: selectedGroup });
     console.log('text!!', selectedGroup);
-    this.setState({ groupNotSelectedStatus: false })
+    this.setState({ groupNotSelectedStatus: false });
     await this.props.getTopics(selectedGroup);
   };
 
-  addDay = async (e) => {
+  addDay = async e => {
     e.preventDefault();
     if (this.state.selectedGroupName === '') {
-      this.setState({ groupNotSelectedStatus: true })
+      this.setState({ groupNotSelectedStatus: true });
     } else {
       const plus = document.querySelector('.plus');
       let numberOfDays = 0;
@@ -63,18 +63,16 @@ class PhaseBar extends Component {
         numberOfDays = e.target.parentNode.parentNode.childElementCount - 1;
         console.log('Неделя номер =', e.target.parentNode.id);
         numberOfWeek = e.target.parentNode.id;
-
       } else {
         numberOfDays = e.target.parentNode.childElementCount - 1;
         numberOfWeek = e.target.id;
-
       }
       let data = {
         phase: this.state.tabIndex,
         group: this.state.selectedGroupName,
         day: numberOfDays,
         week: numberOfWeek,
-      }
+      };
       await this.setState({ currentDaysOfClickedWeek: numberOfDays });
       let resp = await fetch('/addday', {
         method: 'POST',
@@ -92,7 +90,7 @@ class PhaseBar extends Component {
   addWeek = async e => {
     e.preventDefault();
     if (this.state.selectedGroupName === '') {
-      this.setState({ groupNotSelectedStatus: true })
+      this.setState({ groupNotSelectedStatus: true });
     } else {
       this.func();
     }
@@ -113,7 +111,7 @@ class PhaseBar extends Component {
     let dataresp = await resp.json();
 
     await this.props.getTopics(dataresp.group);
-  }
+  };
   render() {
     console.log(this.props.groupNames);
     return (
@@ -128,20 +126,18 @@ class PhaseBar extends Component {
                 onChange={this.getSelectedGroup}
 
               />
-              {this.state.groupNotSelectedStatus ?
+              {this.state.groupNotSelectedStatus ? (
                 <>
                   <div className="">Выбери группу</div>
                 </>
-                :
-                <>
-                </>
-              }
-
+              ) : (
+                <></>
+              )}
             </div>
           </>
         ) : (
-            <></>
-          )}
+          <></>
+        )}
         {/* <div>{this.state.tabIndex}</div> */}
         <Tabs
           selectedIndex={this.state.tabIndex}
@@ -153,15 +149,15 @@ class PhaseBar extends Component {
             {this.props.topics ? (
               this.props.topics.map((phase, i) => <Tab key={`${i}tabs`}>Фаза {i + 1}</Tab>)
             ) : (
-                <p></p>
-              )}
+              <p></p>
+            )}
             {this.props.admin ? (
               <>
                 <Tab onClick={this.addPhase}>+</Tab>
               </>
             ) : (
-                <></>
-              )}
+              <></>
+            )}
           </TabList>
           {this.props.topics ? (
             this.props.topics.map((phase, i) => (
@@ -175,12 +171,12 @@ class PhaseBar extends Component {
                       {week.map((day, i) => (
                         <List.Item key={`${i}day`}>
                           <Link params={{ desc: day.description }} to={`/lections/${day._id}`}>
-                            День:{day.day}{day.topicName}
+                            День:{day.day}
+                            {day.topicName}
                           </Link>
                         </List.Item>
                       ))}
                       <Button id={`${week[0].week}`} basic color="violet" icon="plus" onClick={this.addDay}></Button>
-
                     </List>
                     {/* {this.props.admin ? (
                       <>
@@ -194,8 +190,8 @@ class PhaseBar extends Component {
               </TabPanel>
             ))
           ) : (
-              <p></p>
-            )}
+            <p></p>
+          )}
           {this.props.admin ? (
             <>
               <Button className="addWeek" basic color="violet" icon="plus" onClick={this.addWeek}>
@@ -203,8 +199,8 @@ class PhaseBar extends Component {
               </Button>
             </>
           ) : (
-              <></>
-            )}
+            <></>
+          )}
         </Tabs>
       </>
     );
