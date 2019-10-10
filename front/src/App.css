@@ -276,7 +276,7 @@ footer {
   opacity: 1;
 }
 .react-tabs__tab-panel .ui.list {
-  margin: 10px;
+  margin: 15px;
 }
 .addWeek.ui.button {
   margin-top: 30px;
@@ -286,6 +286,8 @@ footer {
 
 .usersTitle.ui.header:first-child {
   margin-top: 60px;
+  width: 100%;
+  text-align: center;
 }
 .itemUser {
   flex-basis: 33%;
@@ -311,5 +313,9 @@ footer {
   padding: 0;
 }
 .testFrame {
+  margin-top: 60px;
+}
+
+h1:first-child.topicHeader {
   margin-top: 60px;
 }

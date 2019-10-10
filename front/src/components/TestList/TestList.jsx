@@ -12,8 +12,6 @@ class TestList extends Component {
   render() {
     return (
       <>
-        {console.log(this.props)}
-
         <List className="ui massive  list testsList">
           {this.props.tests ? (
             this.props.tests.map((e, i) => (

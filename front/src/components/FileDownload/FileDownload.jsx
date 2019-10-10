@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
- class FileDownload extends Component {
-   but = async e => {
+class FileDownload extends Component {
+  but = async e => {
     e.preventDefault();
     const resp = await fetch('/downloadtest');
     const data = await resp;
-    console.log('data.body');
-
-  }
+  };
   render() {
     return (
       <div>
         {/* {uploadedFile} */}
         File
-      <div>
+        <div>
           <button onClick={this.but}>
             Download
-          <Link
+            <Link
               // to={FilePath.filePath}
               to="./images/IMG_7778.jpg"
               download
@@ -39,8 +37,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     // getNews: () => dispatch(getNewsData())
-
-  }
+  };
 };
 export default connect(
   mapStateToProps,

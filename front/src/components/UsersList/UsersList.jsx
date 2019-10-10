@@ -1,19 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getAllUsers } from '../../redux/Users/actions';
-import { Image, List, Header } from 'semantic-ui-react';
+import { getSelectedUsers } from '../../redux/Users/actions';
+import { Image, List, Header, Select } from 'semantic-ui-react';
 
 class UsersList extends Component {
+  state = {
+    getSelecetedGroup: '',
+  };
   componentDidMount() {
-    this.props.getUsers();
+    this.props.getSelectedUsers();
   }
+  getSelecetedGroup = async (event, { value }) => {
+    let selectedGroup = event.target.textContent;
+    this.setState({ selectedGroupName: selectedGroup });
+    await this.props.getSelectedUsers(selectedGroup);
+  };
 
   render() {
     return (
       <>
+        <>
+          <Select
+            className="select"
+            placeholder="Все пользователи"
+            options={this.props.selectedGroupList}
+            onChange={this.getSelecetedGroup}
+          />
+        </>
         <List className="ui massive relaxed animated list usersList">
-          {this.props.users ? (
-            this.props.users.map((e, i) => (
+          {this.props.selectedGroupItems ? (
+            this.props.selectedGroupItems.map((e, i) => (
               <List.Item key={`${i}user`} className="item itemUser">
                 <List.Content className="content">
                   <Header as="a">
@@ -42,13 +58,14 @@ class UsersList extends Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.User.users,
+    selectedGroupItems: state.User.selectedGroupItems,
+    selectedGroupList: state.User.selectedGroupList,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUsers: () => dispatch(getAllUsers()),
+    getSelectedUsers: selectedGroup => dispatch(getSelectedUsers(selectedGroup)),
   };
 };
 
