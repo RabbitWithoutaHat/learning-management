@@ -14,10 +14,6 @@ class PhaseBar extends Component {
     active: false,
     values: [],
     search: '',
-    countryOptions: [
-      { key: 'af', value: 'af', text: 'Afghanistan' },
-      { key: 'ax', value: 'ax', text: 'Aland Islands' },
-    ],
     selectedGroupName: '',
     groupNames: '',
   };
@@ -51,7 +47,6 @@ class PhaseBar extends Component {
     let data = {
       phase: this.state.tabIndex,
     };
-    let group = this.state.selectedGroupName;
     let resp = await fetch('/addweek', {
       method: 'POST',
       headers: {

@@ -110,7 +110,6 @@ function mapDispatchToProps(dispatch) {
   return {
     add: (user, email, status, photo, group, groupName) =>
       dispatch(addUser(user, email, status, photo, group, groupName)),
-    // getTopics: () => dispatch(getTopicsData()),
   };
 }
 export default connect(

@@ -6,7 +6,7 @@ const initialState = {
   error: '', //error Topics status
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case REQUESTED_TOPICS: {
       return {
