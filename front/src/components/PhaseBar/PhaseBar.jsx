@@ -43,7 +43,7 @@ class PhaseBar extends Component {
       await this.props.getTopics(dataresp.group);
     }
   }
-  getSelecetedGroup = async (event, { value }) => {
+  getSelectedGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupName: selectedGroup });
     console.log('text!!', selectedGroup);
@@ -91,10 +91,10 @@ class PhaseBar extends Component {
   };
   addWeek = async e => {
     e.preventDefault();
-    if(this.state.selectedGroupName==='') {
-      this.setState({groupNotSelectedStatus:true})
+    if (this.state.selectedGroupName === '') {
+      this.setState({ groupNotSelectedStatus: true })
     } else {
-    this.func();
+      this.func();
     }
   };
   func = async () => {
@@ -125,7 +125,7 @@ class PhaseBar extends Component {
                 className="select"
                 placeholder={this.props.selectedGroupName}
                 options={this.props.groupNames}
-                onChange={this.getSelecetedGroup}
+                onChange={this.getSelectedGroup}
 
               />
               {this.state.groupNotSelectedStatus ?
