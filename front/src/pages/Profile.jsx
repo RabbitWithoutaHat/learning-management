@@ -20,11 +20,6 @@ class Profile extends Component {
   componentDidMount() {
     this.props.updateProfile({ data: this.state });
   }
-  // componentDidUpdate() {
-  //   if (prevProps.data !== this.props.data) {  
-
-  //   }
-  // }
 
   onClickHandler = e => {
     this.props.updateAvatar(this.props.photo);
@@ -71,7 +66,14 @@ class Profile extends Component {
           </Form.Field>
           <Form.Field>
             <label htmlFor="password">Пароль</label>
-            <input value={this.state.password} type="password" name="password" required onChange={this.onChange} />
+            <input
+              value={this.state.password}
+              autoComplete="password"
+              type="password"
+              name="password"
+              required
+              onChange={this.onChange}
+            />
           </Form.Field>
           <Form.Field>
             <label htmlFor="phone">Телефон</label>
@@ -121,7 +123,6 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state) {
-
   return {
     email: state.User.user.email,
     login: state.User.user.login,

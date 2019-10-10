@@ -7,6 +7,7 @@ import {
   UPDATE_PROFILE,
   AVATAR_TO_STATE,
   REQUEST_ALL_USERS,
+  GET_SELECTED_USERS,
 } from './types';
 
 const initialState = {
@@ -23,6 +24,9 @@ const initialState = {
     photoSrc: '',
     adminstatus: false,
     loading: false,
+    selectedGroupName: '',
+    selectedGroupList: [],
+    selectedGroupItems: [],
   },
 };
 export default function(state = initialState, action) {
@@ -90,6 +94,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         users: action.users,
+      };
+    }
+    case GET_SELECTED_USERS: {
+      return {
+        ...state,
+        selectedGroupList: action.selectedGroupList,
+        selectedGroupItems: action.selectedGroupItems,
       };
     }
     default:

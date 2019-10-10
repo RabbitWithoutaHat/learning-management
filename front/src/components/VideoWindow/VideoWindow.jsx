@@ -8,7 +8,6 @@ import { getTopicData } from '../../redux/MainPageTopic/action';
 
 import { Button } from 'semantic-ui-react';
 
-
 class VideoWindow extends Component {
   state = {
     videoSrc: '',
@@ -16,7 +15,7 @@ class VideoWindow extends Component {
     FileLink: 'https://github.com/RabbitWithoutaHat/learning-management/pull/25',
     File: 'lenin.svg',
     link: false,
-    rr:'',
+    rr: '',
   };
   async componentDidMount() {
     await this.props.getTopic();
@@ -39,7 +38,6 @@ class VideoWindow extends Component {
   // }
 
   but = async e => {
-    // console.log(this.state.File);
     // const File = this.state.File;
     e.preventDefault();
     // let resp = await fetch('/download', {
@@ -53,10 +51,10 @@ class VideoWindow extends Component {
 
     // const data = await resp.blob();
     // console.log(data);
-    
+
     // console.log(dat);
     // // "application/zip"
-    // const data = new Blob([dat], {type: 'image/svg+xml'}); 
+    // const data = new Blob([dat], {type: 'image/svg+xml'});
     //                 const csvURL = window.URL.createObjectURL(data);
     //                 //window.open(csvURL);
     //                 // then commenting out the window.open & replacing
@@ -65,12 +63,12 @@ class VideoWindow extends Component {
     //                 tempLink.href = csvURL;
     //                 tempLink.setAttribute('download', 'com.svg');
     //                 tempLink.click();
-    
+
     // await this.setState({rr:data})
     // FileSaver.saveAs(data, 'com.svg');
     // FileDownload(data, 'com.svg');
-  
-     //for chrome in apple devices
+
+    //for chrome in apple devices
     //  let url = window.URL.createObjectURL(data);
     //  let a = document.createElement('a');
     //  a.href = url;
@@ -80,11 +78,9 @@ class VideoWindow extends Component {
     // if(data) {
     //  await this.setState({link:true})
     // }
-
   };
   render() {
     return (
-
       <div className="videoContainer">
         <h1>Тема урока: {this.props.topic.topicName}</h1>
         <div className="video">
@@ -110,13 +106,11 @@ class VideoWindow extends Component {
               </a>
             </div>
             <div className="videoFile">
-
               <Link
                 // to={FilePath.filePath}
                 to={this.state.rr}
                 download
                 target="_blank"
-
               >
                 <Button
                   basic
@@ -132,7 +126,6 @@ class VideoWindow extends Component {
             </div>
           </div>
         </div>
-
       </div>
     );
   }

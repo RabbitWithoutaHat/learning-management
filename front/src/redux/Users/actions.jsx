@@ -8,20 +8,19 @@ import {
   AVATAR_TO_STATE,
   REQUESTED_FAILED,
   REQUEST_ALL_USERS,
+  GET_SELECTED_USERS,
 } from './types';
 import axios from 'axios';
 
-export const addUser = (login, email,status,photo,group,groupName) => {
+export const addUser = (login, email, status, photo, group, groupName) => {
   return {
     type: ADD_USER,
     login: login,
     email: email,
-    status:status,
-    photo:photo,
-    group:group,
-    groupName:groupName,
-  
-
+    status: status,
+    photo: photo,
+    group: group,
+    groupName: groupName,
   };
 };
 export const addMsg = message => {
@@ -72,10 +71,25 @@ const requestUsers = data => {
   return {
     type: REQUEST_ALL_USERS,
     users: data,
-  }
-}
+  };
+};
+const requestSelectedUsers = data => {
+  return {
+    type: GET_SELECTED_USERS,
+    selectedGroupList: data.groupNames,
+    selectedGroupItems: data.selectedGroupItems,
+  };
+};
 
 //thunk
+const getSelectedUsers = selectedGroup => async dispatch => {
+  try {
+    const resp = await axios.post('/get-users', { groupName: selectedGroup });
+    console.log(resp.data);
+    dispatch(requestSelectedUsers(resp.data));
+  } catch (error) {}
+};
+
 const updateProfile = data => async dispatch => {
   try {
     const resp = await axios.post(
@@ -109,13 +123,12 @@ const updateAvatar = photo => async dispatch => {
 
 const getAllUsers = () => async dispatch => {
   try {
-    const resp = await fetch('/get-users')
+    const resp = await fetch('/get-users');
     const data = await resp.json();
     dispatch(requestUsers(data));
-
   } catch (error) {
     dispatch(requestErrorAC());
   }
-}
+};
 
-export { updateProfile, updateAvatar, getAllUsers };
+export { updateProfile, updateAvatar, getAllUsers, getSelectedUsers };

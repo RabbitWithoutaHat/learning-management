@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Label, Image, Form, Button } from 'semantic-ui-react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const FileUpload = () => {
   const [file, setFile] = useState('');
   const [filename, setFilename] = useState('Choose File');
@@ -27,9 +27,7 @@ const FileUpload = () => {
     e.preventDefault();
     const resp = await fetch('/downloadtest');
     const data = await resp;
-    console.log(data.body);
-
-  }
+  };
   const onSubmit = async e => {
     e.preventDefault();
     const formData = new FormData();
@@ -38,19 +36,17 @@ const FileUpload = () => {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-
       },
       body: formData,
     });
     try {
-    let { fileName, filePath } = await resp.json();
-    setUploadedFilePath({ filePath });
-    console.log('sssss', FilePath);
-
+      let { fileName, filePath } = await resp.json();
+      setUploadedFilePath({ filePath });
+      console.log('sssss', FilePath);
     } catch (err) {
-    console.log(err);
+      console.log(err);
     }
-  }
+  };
   //   let { fileName, filePath } = await resp.data.json();
   //   setUploadedFile({ fileName, filePath });
   // } catch (err) {
@@ -74,27 +70,20 @@ const FileUpload = () => {
         <input type="submit" value="Upload" className="btn btn-primary btn-block mt-4"></input>
       </form>
       {/* {uploadedFile} */}
-      <Image
-        src={FilePath.filePath}
-        size="small"
-        circular
-      />
+      <Image src={FilePath.filePath} size="small" circular />
       <div>
-      
         {/* <a src='/images/lenin.svg' download="lenin.svg" target="_blank"> </a> */}
-      <Link
-      to={FilePath.filePath}
-      // to="./images/IMG_7778.jpg"
-      download
-      target="_blank"
-        >download</Link>
+        <Link
+          to={FilePath.filePath}
+          // to="./images/IMG_7778.jpg"
+          download
+          target="_blank"
+        >
+          download
+        </Link>
         {/* <a href= '/home/oleg-lasttry/Final Project/learning-management/back/public/images/lenin.svg' download> Click */}
         {/* <img src='/images/lenin.svg' alt='xx' /> */}
         {/* </a> */}
-
-
-
-
       </div>
     </div>
   );

@@ -58,7 +58,14 @@ class Registration extends Component {
           </Form.Field>
           <Form.Field>
             <label htmlFor="password">password</label>
-            <input value={this.state.password} type="password" name="password" required onChange={this.password} />
+            <input
+              value={this.state.password}
+              autoComplete="password"
+              type="password"
+              name="password"
+              required
+              onChange={this.password}
+            />
           </Form.Field>
           <div className="form-field">
             <Button type="submit">Отправить</Button>{' '}
