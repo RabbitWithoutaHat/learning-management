@@ -427,6 +427,40 @@ router.get('/downloadtest', (req, res, next) => {
   res.json({ message: 'Something good happened' });
   // res.json({user:"hi"})
 });
+
+router.post('/changegroup', async(req, res, next) => {
+  console.log('ADDDDDD NEWWWW GROYUUUPP',req.body);
+  groups = req.body.groups;
+  newgroup = req.body.newGroup;
+  
+
+  const groupId = await Group.findOne({name:newgroup})
+for(let i = 0 ; i < groups.length;i++) {
+  const user = await User.findOneAndUpdate(
+    { _id: groups[i] },
+    { groupName: newgroup,group:groupId._id },
+  );
+}
+ res.json({status:'done'})
+});
+router.post('/addnewgroup', async(req, res, next) => {
+  console.log('ADDDDDD NEWWWW GROYUUUPP',req.body);
+  groups = req.body.groups;
+  newgroup = req.body.newGroup;
+  
+  const group = new Group({
+    name:newgroup
+  });
+  await group.save();
+  const groupId = await Group.findOne({name:newgroup})
+for(let i = 0 ; i < groups.length;i++) {
+  const user = await User.findOneAndUpdate(
+    { _id: groups[i] },
+    { groupName: newgroup,group:groupId._id },
+  );
+}
+ res.json({status:'done'})
+});
 router.post('/download', (req, res, next) => {
   res.download('/home/oleg-lasttry/FinalProject/learning-management/back/public/com.svg');
   // res.sendFile('/home/oleg-lasttry/FinalProject/learning-management/back/public/com.svg');
@@ -434,9 +468,11 @@ router.post('/download', (req, res, next) => {
 
 router.get('/getDayData', async (req, res, next) => {
   // Добавляю хардкодом группу т.к при реге её нет
+  console.log('REQQQQQQQQQQQQQQQQ',req.user);
+  
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
-    { group: '5d9da4b6d895365403c3d4cc' },
+    { group: req.user.group },
   );
 
   // 5d9ce8472a0cbe13a7048fea
