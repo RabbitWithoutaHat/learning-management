@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { getNewsData } from '../../redux/News/action';
 import { connect } from 'react-redux';
-import { Route, Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getTopicsData } from '../../redux/Lections/actions';
 import { List } from 'semantic-ui-react';
-import { Tabs, TabList, Tab, TabPanel, CustomTab } from 'react-tabs';
+import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import { Button } from 'semantic-ui-react';
 import { Select } from 'semantic-ui-react';
@@ -15,10 +14,6 @@ class PhaseBar extends Component {
     active: false,
     values: [],
     search: '',
-    countryOptions: [
-      { key: 'af', value: 'af', text: 'Afghanistan' },
-      { key: 'ax', value: 'ax', text: 'Aland Islands' },
-    ],
     selectedGroupName: '',
     groupNames: '',
     currentDaysOfClickedWeek: 0,
@@ -49,7 +44,6 @@ class PhaseBar extends Component {
     }
   }
   getSelecetedGroup = async (event, { value }) => {
-    console.log('VALUE!!', value);
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupName: selectedGroup });
     console.log('text!!', selectedGroup);
@@ -108,7 +102,6 @@ class PhaseBar extends Component {
       phase: this.state.tabIndex,
       group: this.state.selectedGroupName,
     };
-    // let group = this.state.selectedGroupName;
     let resp = await fetch('/addweek', {
       method: 'POST',
       headers: {
@@ -118,14 +111,14 @@ class PhaseBar extends Component {
       body: JSON.stringify(data),
     });
     let dataresp = await resp.json();
-    console.log('DDDDDDDDDDAAATATTA', dataresp.group);
+
     await this.props.getTopics(dataresp.group);
   }
   render() {
-    // console.log(this.state.data);
+    console.log(this.props.groupNames);
     return (
       <>
-        {this.props.admin ? (
+        {this.props.admin && this.props.groupNames ? (
           <>
             <div className="select selectDiv">
               <Select
@@ -219,8 +212,6 @@ class PhaseBar extends Component {
 }
 
 const mapStateToProps = state => {
-  // console.log(state);
-
   return {
     topics: state.Topics.topics,
     groupNames: state.Topics.groupNames,

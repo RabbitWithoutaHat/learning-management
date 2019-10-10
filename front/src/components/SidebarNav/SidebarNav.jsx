@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Icon, Menu, Segment, Sidebar, Dimmer, Loader } from 'semantic-ui-react';
+import { Icon, Menu, Sidebar, Dimmer, Loader } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
 import { addUser } from '../../redux/Users/actions';
-import { getTopicsData } from '../../redux/Lections/actions';
 import { connect } from 'react-redux';
+import { delUser } from '../../redux/Users/actions';
 import { Link } from 'react-router-dom';
 
 class SidebarNav extends Component {
@@ -15,6 +15,8 @@ class SidebarNav extends Component {
     let user = await resp.json();
     if (user.user) {
       this.props.add(user.user, user.email, user.status, user.photo, user.group, user.groupName);
+    } else {
+     this.props.del();
     }
   }
   render() {
@@ -109,9 +111,9 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
+    del: () => dispatch(delUser()),
     add: (user, email, status, photo, group, groupName) =>
       dispatch(addUser(user, email, status, photo, group, groupName)),
-    // getTopics: () => dispatch(getTopicsData()),
   };
 }
 export default connect(

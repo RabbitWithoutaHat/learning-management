@@ -6,7 +6,7 @@ const initialState = {
   error: '', //error Topics status
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
     case REQUESTED_TOPICS: {
       return {
@@ -21,8 +21,8 @@ export default function(state = initialState, action) {
         ...state,
         topics: action.topics,
         allTopics: action.allTopics,
-        groupNames:action. groupNames,
-        selectedGroupName:action.selectedGroupName,
+        groupNames: action.groupNames,
+        selectedGroupName: action.selectedGroupName,
         loading: true,
         error: false,
       };

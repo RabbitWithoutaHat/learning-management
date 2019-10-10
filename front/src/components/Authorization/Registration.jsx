@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addMsg, addUser } from '../../redux/Users/actions';
 import { Button, Form } from 'semantic-ui-react';
+import { delUser } from '../../redux/Users/actions';
 
 class Registration extends Component {
   state = {
@@ -36,11 +37,15 @@ class Registration extends Component {
     });
     let user = await resp.json();
     if (user.user) {
-      this.props.add(user.user);
+      console.log('UUUUUUUUUSERR',user);
+      
+      this.props.add(user.user, user.email, user.status, user.photo, user.group, user.groupName);
       this.setState({ nickname: '', email: '', password: '' });
       this.props.history.push('/');
     } else {
-      this.props.addMsg(user.message);
+      // this.props.del();
+      this.props.a(user.message);
+
     }
   };
   render() {
@@ -58,7 +63,14 @@ class Registration extends Component {
           </Form.Field>
           <Form.Field>
             <label htmlFor="password">password</label>
-            <input value={this.state.password} type="password" name="password" required onChange={this.password} />
+            <input
+              value={this.state.password}
+              autoComplete="password"
+              type="password"
+              name="password"
+              required
+              onChange={this.password}
+            />
           </Form.Field>
           <div className="form-field">
             <Button type="submit">Отправить</Button>{' '}
@@ -77,7 +89,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    add: user => dispatch(addUser(user)),
+    del: () => dispatch(delUser()),
+    add: (user, email, status, photo, group, groupName) => dispatch(addUser(user, email, status, photo, group, groupName)),
     addMsg: message => dispatch(addMsg(message)),
   };
 }

@@ -32,11 +32,10 @@ class Login extends Component {
       body: JSON.stringify(data),
     });
     let user = await resp.json();
-console.log('uuuuuuuuuuuuuuuuuuuuuuu',user);
 
     if (user.user) {
       this.setState({ dataLoaded: true });
-      this.props.add(user.user, user.email,user.status,user.photo,user.group,user.groupName);
+      this.props.add(user.user, user.email, user.status, user.photo, user.group, user.groupName);
       this.props.history.push('/');
     } else {
       this.props.addLogMsg(user.message);
@@ -53,7 +52,14 @@ console.log('uuuuuuuuuuuuuuuuuuuuuuu',user);
           </Form.Field>
           <Form.Field className="form-field">
             <label htmlFor="password">password</label>
-            <input value={this.state.password} type="password" name="password" required onChange={this.password} />
+            <input
+              value={this.state.password}
+              autoComplete="password"
+              type="password"
+              name="password"
+              required
+              onChange={this.password}
+            />
           </Form.Field>
           <div className="form-field">
             <Button type="submit">Войти</Button>
@@ -72,7 +78,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: (user, email,status,photo,group,groupName) => dispatch(addUser(user, email,status,photo,group,groupName)),
+    add: (user, email, status, photo, group, groupName) =>
+      dispatch(addUser(user, email, status, photo, group, groupName)),
     addLogMsg: loginMessage => dispatch(addLogMsg(loginMessage)),
   };
 }
