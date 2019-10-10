@@ -36,19 +36,21 @@ class NavBar extends Component {
               <Route path="/calendar" component={Calendar} />
             </>
           ) : (
-              <>
-                <Route exact path="/" component={PageWithoutGroup} />
-                <Route path="/profile" component={Profile} />
-                <Route path="/logout" component={Logout} />
-                <Route path="/login" component={Login} />
-                <Route path="/registration" component={Registration} />
-                <Route exact path="/lections" component={PageWithoutGroup} />
-                <Route name="lection" path="/lections/:id" component={PageWithoutGroup} />
-                <Route exact path="/tests" component={PageWithoutGroup} />
-                <Route name="test" path="/tests/:id" component={TestPage} />
-                <Route path="/users" component={PageWithoutGroup} />
-              </>
-            )}
+            <>
+              <Route exact path="/" component={PageWithoutGroup} />
+              <Route path="/profile" component={Profile} />
+              <Route path="/logout" component={Logout} />
+              <Route path="/login" component={Login} />
+              <Route path="/registration" component={Registration} />
+              <Route exact path="/lections" component={PageWithoutGroup} />
+              <Route name="lection" path="/lections/:id" component={PageWithoutGroup} />
+              <Route exact path="/tests" component={Tests} />
+              <Route name="test" path="/tests/:id" component={TestPage} />
+              <Route path="/users" component={Users} />
+                <Route name="calendar" path="/calendar" component={Calendar} />
+
+            </>
+          )}
         </>
         {/* <Route exact path="/" component={Home} />
         <Route path="/logout" component={Logout} />
