@@ -98,7 +98,6 @@ router.get('/authcheck', async (req, res) => {
 
     res.json({
       user: req.user.nickname,
-      status: req.user.status,
       email: req.user.email,
       status: req.user.status,
       photo: req.user.photo,
@@ -106,6 +105,7 @@ router.get('/authcheck', async (req, res) => {
       groupName: req.user.groupName,
     });
   } else {
+    console.log('aaaaaaaaaaa', req.user);
     res.json({
       message: 'You are not authenticated, please log-in or register',
     });
@@ -225,6 +225,9 @@ router.post('/reg', async (req, res, next) => {
       nickname,
       email,
       password: hash,
+      //без группы
+      group:'5d9f1b73e7e77e0fa391d58d',
+      groupName:'Без группы',
     });
     return passport.authenticate('local', async (err, user) => {
       const thisUser = await User.findOne({ email: req.body.email });
@@ -235,9 +238,15 @@ router.post('/reg', async (req, res, next) => {
         if (err) {
           return res.json({ message: err });
         }
-        // console.log(thisUser.nickname);
-
-        return res.json({ user: thisUser.nickname });
+        console.log(thisUser);
+        return res.json({
+          user: thisUser.nickname,
+          email: thisUser.email,
+          status: 'user',
+          photo: '',
+          group: thisUser.group,
+          groupName: thisUser.groupName,
+        });
       });
     })(req, res, next);
   }
@@ -459,6 +468,11 @@ router.post('/get-users', async (req, res) => {
   }
   if (!req.body.groupName || req.body.groupName === 'Все пользователи') {
     selectedGroupItems = await User.find();
+  }
+  if (req.body.groupName === '') {
+    selectedGroupItems = await User.find({ groupName: '' });
+    console.log('without group', selectedGroupItems);
+
   }
 
   const groupList = await Group.find();

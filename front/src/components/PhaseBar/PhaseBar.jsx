@@ -22,7 +22,7 @@ class PhaseBar extends Component {
   }
   addPhase = async () => {
     let group = this.state.selectedGroupName;
-    await fetch('/addphase', {
+    let resp =await fetch('/addphase', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -30,8 +30,9 @@ class PhaseBar extends Component {
       },
       body: JSON.stringify({ group }),
     });
-
-    await this.props.getTopics();
+    let dataresp = await resp.json();
+    // console.log('AAAAAAAAAADDDD PHAEEEEEE',dataresp);
+    await this.props.getTopics(dataresp.group);
   };
   getSelecetedGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;

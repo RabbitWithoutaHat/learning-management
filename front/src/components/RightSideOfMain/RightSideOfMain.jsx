@@ -13,13 +13,15 @@ import Tests from '../../pages/Tests';
 import TestPage from '../../pages/TestPage';
 import PageWithoutGroup from '../PageWithoutGroup/PageWithoutGroup';
 import { connect } from 'react-redux';
+
+
 class NavBar extends Component {
-  async componentDidMount() {}
+  async componentDidMount() { }
   render() {
     return (
       <>
         <>
-          {this.props.userWithGroup || this.props.admin ? (
+          {(this.props.userWithGroup !== 'Без группы'&&this.props.userWithGroup) || this.props.admin ? (
             <>
               <Route exact path="/" component={Home} />
               <Route path="/logout" component={Logout} />
