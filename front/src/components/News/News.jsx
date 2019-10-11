@@ -20,9 +20,7 @@ class News extends Component {
           onDismiss={this.handleDismiss}
           className="newsMessage"
           info
-          header={this.props.news}
-          content="
-    "
+          header={this.props.event.summary}
           color="violet"
         />
       );
@@ -34,6 +32,7 @@ class News extends Component {
 const mapStateToProps = state => {
   return {
     news: state.News.news,
+    event: state.News.event,
   };
 };
 const mapDispatchToProps = dispatch => {

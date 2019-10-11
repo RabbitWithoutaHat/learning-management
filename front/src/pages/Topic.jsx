@@ -18,51 +18,9 @@ class Topic extends Component {
     topicName: '',
     modalOpen: false,
     buttonClicked: '',
+    closedStatus:false,
+    changeData:true,
   };
-  youtubeLink = e => {
-    this.setState({ youtubeLink: e.target.value });
-  };
-  topicName = e => {
-    this.setState({ topicName: e.target.value });
-  };
-  githubLink = e => {
-    this.setState({ githubLink: e.target.value });
-  };
-  fileLink = e => {
-    this.setState({ fileLink: e.target.value });
-  };
-
-  handleOpen = e => {
-    this.setState({ modalOpen: true });
-  };
-  handleClose = e => {
-    this.setState({ modalOpen: false });
-  };
-
-  func = async () => {
-    let data = {
-      youtubeLink: this.state.youtubeLink,
-      githubLink: this.state.githubLink,
-      fileLink: this.state.topicName,
-      id: this.props.match.params.id,
-    };
-    let resp = await fetch('/edittopic', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    let dataresp = await resp.json();
-    this.setState({ modalOpen: false });
-    // this.setState({buttonClicked:'sdasd'});
-  };
-  get = async e => {
-    e.preventDefault();
-    this.func();
-  };
-
   async componentDidMount() {
     await this.props.getTopics(this.props.selectedGroup);
 
@@ -82,9 +40,60 @@ class Topic extends Component {
     }
     this.setState({ topic: topic, videostr: videostr });
   }
+  youtubeLink = e => {
+    this.setState({ youtubeLink: e.target.value });
+  };
+  topicName = e => {
+    this.setState({ topicName: e.target.value });
+  };
+  githubLink = e => {
+    this.setState({ githubLink: e.target.value });
+  };
+  fileLink = e => {
+    this.setState({ fileLink: e.target.value });
+  };
+
+  handleOpen = e => {
+    this.setState({ modalOpen: true });
+  };
+  handleClose = e => {
+    this.setState({ modalOpen: false });
+    // this.setState({closedStatus:true})
+  };
+
+  func = async () => {
+    let data = {
+      youtubeLink: this.state.youtubeLink,
+      githubLink: this.state.githubLink,
+      fileLink: this.state.topicName,
+      id: this.props.match.params.id,
+    };
+    let resp = await fetch('/edittopic', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    let dataresp = await resp.json();
+    this.setState({ modalOpen: false ,changeData:false});
+    this.setState({ changeData:false});
+    // this.setState({buttonClicked:'sdasd'});
+  };
+  get = async e => {
+    e.preventDefault();
+    this.setState({changeData:true})
+    this.func();
+  };
+
+
   async componentDidUpdate(prevProps, prevState) {
-    if (prevState.modalOpen && !this.state.modalOpen) {
-      await this.func();
+    // if (prevState.modalOpen && !this.state.modalOpen) {
+      if (prevState.changeData && !this.state.changeData) {
+     console.log("STATE CHANGED");
+     
+        await this.func();
       await this.props.getTopics(this.props.selectedGroup);
       const topic = this.props.allTopics.find(el => el._id === this.props.match.params.id);
       this.setState({
@@ -101,6 +110,7 @@ class Topic extends Component {
         videostr = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
       }
       this.setState({ topic: topic, videostr: videostr });
+      // this.setState({changeData:true})
     }
   }
 
@@ -118,7 +128,8 @@ class Topic extends Component {
               }
               closeIcon
               open={this.state.modalOpen}
-              // onClose={this.get}
+              // close={this.state.modalOpen}
+              onClose={this.handleClose}
               // basic
             >
               <Modal.Header>{this.state.topicName}</Modal.Header>

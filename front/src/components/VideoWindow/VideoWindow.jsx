@@ -21,11 +21,14 @@ class VideoWindow extends Component {
     await this.props.getTopic();
 
     let videoSrc = this.props.topic.video;
+    // if(this.props.topic.video) {
+
     if (videoSrc.includes('watch')) {
       videoSrc = videoSrc.replace('watch?v=', 'embed/');
     } else {
       videoSrc = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
     }
+    // }
 
     this.setState({ videoSrc: videoSrc });
     const GhLink = this.props.topic.githubLink;
@@ -49,9 +52,9 @@ class VideoWindow extends Component {
       body: JSON.stringify({ File }),
     });
 
-    const data = await resp.blob();
-    console.log(data);
-    
+    // const data = await resp.blob();
+    // console.log(data);
+
     // console.log(dat);
     // // "application/zip"
     // const data = new Blob([dat], {type: 'image/svg+xml'});
@@ -65,7 +68,7 @@ class VideoWindow extends Component {
     //                 tempLink.click();
 
     // await this.setState({rr:data})
-    FileSaver.saveAs(data, 'com.svg');
+    // FileSaver.saveAs(data, 'com.svg');
     // FileDownload(data, 'com.svg');
 
     //for chrome in apple devices
@@ -109,7 +112,9 @@ class VideoWindow extends Component {
               <a href="/img/download.png" download>
                 123
               </a>
-              <a href="http://localhost:5002/images/loop.zip" download target="_blank">Download</a>
+              <a href="http://localhost:5002/images/loop.zip" download target="_blank">
+                Download
+              </a>
               <Link
                 // to={FilePath.filePath}
                 to={this.state.rr}

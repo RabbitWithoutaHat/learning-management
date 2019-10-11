@@ -31,12 +31,16 @@
   margin-top: 10px;
 }
 
-.react-calendar {
+.calendarContainer {
   position: absolute;
   bottom: 80px;
   border: none;
   width: 90%;
   margin-left: 5%;
+}
+.eventMessage {
+  color: #29edff;
+  font-weight: bold;
 }
 
 .logoutItem {
@@ -314,11 +318,10 @@ footer {
 }
 
 .selectDiv {
-/* 
+  /*
   display:flex; */
   text-align-last: center;
-  color:red;
-  
+  color: red;
 }
 h1:first-child.topicHeader {
   margin-top: 60px;
@@ -343,4 +346,20 @@ h1:first-child.topicHeader {
 .ui.header > img {
   width: 100px;
   height: 100px;
+}
+
+.react-tabs__tab-panel .ui.list.weekList {
+  display: flex;
+  margin-left: 0;
+}
+.react-tabs__tab-panel .ui.icon.button.addDayButton {
+  margin-left: 10px;
+  margin-right: 10px;
+  align-self: flex-end;
+  margin-bottom: 8px;
+}
+
+.topicListItem {
+  margin: 15px;
+  margin-left: 5px;
 }

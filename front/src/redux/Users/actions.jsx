@@ -85,7 +85,7 @@ const requestSelectedUsers = data => {
 const getSelectedUsers = selectedGroup => async dispatch => {
   try {
     const resp = await axios.post('/get-users', { groupName: selectedGroup });
-    console.log(resp.data);
+    // console.log(resp.data);
     dispatch(requestSelectedUsers(resp.data));
   } catch (error) {}
 };

@@ -11,6 +11,7 @@ const initialState = {
   loading: '', //loading News data status
   error: '', //error News status
   events: [],
+  event: {},
 };
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -26,6 +27,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         events: action.events,
+        event: action.event,
         loading: true,
         error: false,
       };
