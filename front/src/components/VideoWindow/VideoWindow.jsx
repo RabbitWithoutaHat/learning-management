@@ -16,6 +16,8 @@ class VideoWindow extends Component {
     File: 'lenin.svg',
     link: false,
     rr: '',
+    fileLink: './img/Very_Secret.zip',
+    fileName: 'Very_Secret.zip',
   };
   async componentDidMount() {
     await this.props.getTopic();
@@ -24,7 +26,7 @@ class VideoWindow extends Component {
 
     // await this.setState({ videoSrc: videoSrc });
     const GhLink = this.props.topic.githubLink;
-    this.setState({ GhLink: GhLink });
+    await this.setState({ GhLink: GhLink });
   }
   componentWillUnmount() {}
   // async componentDidUpdate(prevProps) {
@@ -45,7 +47,7 @@ class VideoWindow extends Component {
       body: JSON.stringify({ File }),
     });
 
-    // const data = await resp.blob();
+    const data = await resp.json;
     // console.log(data);
 
     // console.log(dat);
@@ -102,47 +104,39 @@ class VideoWindow extends Component {
                 title="video"
               />
             </div>
-
-            <div className="videoLinksFilesSegment">
-              <div className="videoLinksFiles">
-                <div className="videoLinks">
-                  <a target="_blank" rel="noopener noreferrer" href={this.state.GhLink}>
-                    Задания на GitHub
-                  </a>
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://github.com/Elbrus-Bootcamp/skeleton-express-session"
-                  >
-                    Код урока
-                  </a>
-                </div>
-                <div className="videoFile">
-                  <a href="/img/download.png" download>
-                    123
-                  </a>
-                  <a href="http://localhost:5002/images/loop.zip" download target="_blank">
-                    Download
-                  </a>
-                  <Link
-                    // to={FilePath.filePath}
-                    to={this.state.rr}
-                    download
-                    target="_blank"
-                  >
-                    <Button
-                      basic
-                      type="button"
-                      color="violet"
-                      className="btn btn-success btn-block"
-                      content={this.state.File}
-                      onClick={this.but}
-                      icon="download"
-                      fluid
-                    ></Button>
-                  </Link>
-                </div>
-              </div>
+            <div className="videoFile">
+              {/* <a href='./img/Very_Secret.zip' download>
+                123
+              </a> */}
+              <a href={this.state.fileLink} download target="_blank">
+                <Button
+                  basic
+                  type="button"
+                  color="violet"
+                  className="btn btn-success btn-block"
+                  content={this.state.fileName}
+                  // onClick={this.but}
+                  icon="download"
+                  fluid
+                ></Button>
+              </a>
+              {/* <Link
+                // to={FilePath.filePath}
+                to='./img/Very_Secret.zip'
+                download
+                target="_blank"
+              >
+                <Button
+                  basic
+                  type="button"
+                  color="violet"
+                  className="btn btn-success btn-block"
+                  content={this.state.File}
+                  onClick={this.but}
+                  icon="download"
+                  fluid
+                ></Button>
+              </Link> */}
             </div>
           </div>
         ) : (

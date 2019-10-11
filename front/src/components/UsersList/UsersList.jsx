@@ -17,6 +17,7 @@ class UsersList extends Component {
     selectedGroupNameModalChangeGroup: '',
     selectedGroupName: '',
     groupNotSelectedStatus: false,
+    checkedStatus: true,
   };
   componentDidMount() {
     this.props.getSelectedUsers();
@@ -24,6 +25,24 @@ class UsersList extends Component {
   newGroupName = e => {
     this.setState({ newGroupName: e.target.value });
   };
+  // check = (e) => {
+  //   e.preventDefault();
+  //   if(this.state.checkedStatus){
+
+  //     const elements = document.querySelectorAll('.checked');
+  //     console.log('Class============',elements[0].className);
+  //     for(let i = 0 ; i < elements.length;i++) {
+  //       if (elements[i].className.includes('checked')) {
+  //         elements[i].className = elements[i].className.replace('checked', '');
+  //       } else {
+
+  //       }
+  //     }
+  //    this.setState({checkedStatus:false})
+  //   } else {
+
+  //   }
+  // }
   getCheckedusers = async () => {
     const element = document.querySelectorAll('.checked');
     const usersId = [];
@@ -81,6 +100,7 @@ class UsersList extends Component {
     this.setState({ changedData: true });
     this.changeGroup();
   };
+
   changeGroup = async () => {
     let data = {
       groups: this.state.chosedUsers,
@@ -201,6 +221,10 @@ class UsersList extends Component {
             </>
             {this.props.admin === 'admin' ? (
               <>
+                {/* <Button type="button" className="Button" onClick={this.check}>
+                             Check
+                        </Button>
+                           */}
                 <Modal
                   trigger={
                     <Button className="userslistButton select" basic color="violet" onClick={this.openAdd}>
