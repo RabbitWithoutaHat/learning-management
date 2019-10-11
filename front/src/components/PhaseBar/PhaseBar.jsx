@@ -22,7 +22,7 @@ class PhaseBar extends Component {
   async componentDidMount() {
     await this.props.getTopics();
     this.setState({ selectedGroupName: this.props.selectedGroupName });
-    console.log(this.props.topics.length);
+    // console.log(this.props.topics.length);
   }
   addPhase = async () => {
     if (this.state.selectedGroupName === '') {
@@ -60,11 +60,10 @@ class PhaseBar extends Component {
       let numberOfDays = 0;
       let numberOfWeek = 0;
       if (e.target.className === plus.className) {
-        numberOfDays = e.target.parentNode.parentNode.childElementCount - 1;
-        console.log('Неделя номер =', e.target.parentNode.id);
+        numberOfDays = e.target.parentNode.parentNode.firstChild.childElementCount;
         numberOfWeek = e.target.parentNode.id;
       } else {
-        numberOfDays = e.target.parentNode.childElementCount - 1;
+        numberOfDays = e.target.parentNode.firstChild.childElementCount;
         numberOfWeek = e.target.id;
       }
       let data = {
@@ -83,7 +82,7 @@ class PhaseBar extends Component {
         body: JSON.stringify(data),
       });
       let dataresp = await resp.json();
-      console.log('DDDDDDDDDDAAATATTA', dataresp.group);
+      // console.log('DDDDDDDDDDAAATATTA', dataresp.group);
       await this.props.getTopics(dataresp.group);
     }
   };
@@ -113,7 +112,7 @@ class PhaseBar extends Component {
     await this.props.getTopics(dataresp.group);
   };
   render() {
-    console.log(this.props.groupNames);
+    // console.log(this.props.groupNames);
     return (
       <>
         {this.props.admin && this.props.groupNames ? (
@@ -166,16 +165,25 @@ class PhaseBar extends Component {
                     <h3 className="weekTitle" key={`${i}week`}>
                       Неделя {week[0].week}
                     </h3>
-                    <List>
-                      {week.map((day, i) => (
-                        <List.Item key={`${i}day`}>
-                          <Link params={{ desc: day.description }} to={`/lections/${day._id}`}>
-                            День:{day.day}
-                            {day.topicName}
-                          </Link>
-                        </List.Item>
-                      ))}
-                      <Button id={`${week[0].week}`} basic color="violet" icon="plus" onClick={this.addDay}></Button>
+                    <List className="weekList">
+                      <div className="daysList">
+                        {week.map((day, i) => (
+                          <List.Item className="topicListItem" key={`day`}>
+                            <Link params={{ desc: day.description }} to={`/lections/${day._id}`}>
+                              День:{day.day}
+                              {day.topicName}
+                            </Link>
+                          </List.Item>
+                        ))}
+                      </div>
+                      <Button
+                        className="addDayButton"
+                        id={`${week[0].week}`}
+                        basic
+                        color="violet"
+                        icon="plus"
+                        onClick={this.addDay}
+                      ></Button>
                     </List>
                     {/* {this.props.admin ? (
                       <>

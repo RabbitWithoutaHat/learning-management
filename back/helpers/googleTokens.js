@@ -10,7 +10,12 @@ const refreshToken = async () => {
     client_secret: 'J20xLC9i0yNPGwjHSXk54UcO',
     grant_type: 'refresh_token',
   });
-  console.log(res.data.access_token);
+  const date = new Date();
+  console.log(
+    '======================REFRESH TOKEN========================',
+    res.data.access_token,
+    date,
+  );
   Token.refresh({ accessToken: res.data.access_token });
 };
 
