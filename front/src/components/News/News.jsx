@@ -19,9 +19,9 @@ class News extends Component {
           floating
           onDismiss={this.handleDismiss}
           className="newsMessage"
-          info
+          // info
           header={this.props.event.summary}
-          color="violet"
+          color="blue"
         />
       );
     }

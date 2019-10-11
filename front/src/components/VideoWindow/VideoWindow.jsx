@@ -20,20 +20,13 @@ class VideoWindow extends Component {
   async componentDidMount() {
     await this.props.getTopic();
 
-    let videoSrc = this.props.topic.video;
-    // if(this.props.topic.video) {
-
-    if (videoSrc.includes('watch')) {
-      videoSrc = videoSrc.replace('watch?v=', 'embed/');
-    } else {
-      videoSrc = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
-    }
     // }
 
-    this.setState({ videoSrc: videoSrc });
+    // await this.setState({ videoSrc: videoSrc });
     const GhLink = this.props.topic.githubLink;
     this.setState({ GhLink: GhLink });
   }
+  componentWillUnmount() {}
   // async componentDidUpdate(prevProps) {
   //   if (prevProps !== this.props) {
   //     // this.setState({FileLink:FileLink});
@@ -83,59 +76,79 @@ class VideoWindow extends Component {
     // }
   };
   render() {
-    return (
-      <div className="videoContainer">
-        <h1>Тема урока: {this.props.topic.topicName}</h1>
-        <div className="video">
-          <iframe
-            src={this.state.videoSrc}
-            width="960"
-            height="540"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            title="video"
-          />
-        </div>
+    let videoSrc;
+    if (this.props.topic.video) {
+      videoSrc = this.props.topic.video;
+      if (videoSrc.includes('watch')) {
+        videoSrc = videoSrc.replace('watch?v=', 'embed/');
+      } else {
+        videoSrc = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
+      }
+    }
 
-        <div className="videoLinksFilesSegment">
-          <div className="videoLinksFiles">
-            <div className="videoLinks">
-              <a target="_blank" rel="noopener noreferrer" href={this.state.GhLink}>
-                Задания на GitHub
-              </a>
-              <a target="_blank" rel="noopener noreferrer" href={this.state.FileLink}>
-                Ссылка на код
-              </a>
+    return (
+      <>
+        {videoSrc ? (
+          <div className="videoContainer">
+            <h1>Тема урока: {this.props.topic.topicName}</h1>
+            <div className="video">
+              <iframe
+                src={videoSrc}
+                width="960"
+                height="540"
+                frameBorder="0"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                title="video"
+              />
             </div>
-            <div className="videoFile">
-              <a href="/img/download.png" download>
-                123
-              </a>
-              <a href="http://localhost:5002/images/loop.zip" download target="_blank">
-                Download
-              </a>
-              <Link
-                // to={FilePath.filePath}
-                to={this.state.rr}
-                download
-                target="_blank"
-              >
-                <Button
-                  basic
-                  type="button"
-                  color="violet"
-                  className="btn btn-success btn-block"
-                  content={this.state.File}
-                  onClick={this.but}
-                  icon="download"
-                  fluid
-                ></Button>
-              </Link>
+
+            <div className="videoLinksFilesSegment">
+              <div className="videoLinksFiles">
+                <div className="videoLinks">
+                  <a target="_blank" rel="noopener noreferrer" href={this.state.GhLink}>
+                    Задания на GitHub
+                  </a>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://github.com/Elbrus-Bootcamp/skeleton-express-session"
+                  >
+                    Код урока
+                  </a>
+                </div>
+                <div className="videoFile">
+                  <a href="/img/download.png" download>
+                    123
+                  </a>
+                  <a href="http://localhost:5002/images/loop.zip" download target="_blank">
+                    Download
+                  </a>
+                  <Link
+                    // to={FilePath.filePath}
+                    to={this.state.rr}
+                    download
+                    target="_blank"
+                  >
+                    <Button
+                      basic
+                      type="button"
+                      color="violet"
+                      className="btn btn-success btn-block"
+                      content={this.state.File}
+                      onClick={this.but}
+                      icon="download"
+                      fluid
+                    ></Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        ) : (
+          <div></div>
+        )}
+      </>
     );
   }
 }

@@ -14,14 +14,13 @@ import TestPage from '../../pages/TestPage';
 import PageWithoutGroup from '../PageWithoutGroup/PageWithoutGroup';
 import { connect } from 'react-redux';
 
-
 class NavBar extends Component {
-  async componentDidMount() { }
+  async componentDidMount() {}
   render() {
     return (
       <>
         <>
-          {(this.props.userWithGroup !== 'Без группы'&&this.props.userWithGroup) || this.props.admin ? (
+          {(this.props.userWithGroup !== 'Без группы' && this.props.userWithGroup) || this.props.admin === 'admin' ? (
             <>
               <Route exact path="/" component={Home} />
               <Route path="/logout" component={Logout} />
@@ -47,8 +46,7 @@ class NavBar extends Component {
               <Route exact path="/tests" component={Tests} />
               <Route name="test" path="/tests/:id" component={TestPage} />
               <Route path="/users" component={Users} />
-                <Route name="calendar" path="/calendar" component={Calendar} />
-
+              <Route name="calendar" path="/calendar" component={Calendar} />
             </>
           )}
         </>
