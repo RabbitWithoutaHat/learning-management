@@ -23,16 +23,18 @@ export const addUser = (login, email, status, photo, group, groupName) => {
     groupName: groupName,
   };
 };
-export const addMsg = message => {
+export const addMsg = (message,loading) => {
   return {
     type: ADD_MSG,
     message: message,
+    loading:loading,
   };
 };
-export const addLogMsg = loginMessage => {
+export const addLogMsg = (loginMessage,loading) => {
   return {
     type: ADD_LOGMSG,
     loginMessage: loginMessage,
+    loading:loading,
   };
 };
 export const delUser = () => {

@@ -38,7 +38,7 @@ class Login extends Component {
       this.props.add(user.user, user.email, user.status, user.photo, user.group, user.groupName);
       this.props.history.push('/');
     } else {
-      this.props.addLogMsg(user.message);
+      this.props.addLogMsg(user.message,user.loading);
     }
   };
   render() {
@@ -64,9 +64,10 @@ class Login extends Component {
           <div className="form-field">
             <Button type="submit">Войти</Button>
           </div>
+          {this.props.dataLoaded ? <></> : <></>}
+        <h3 className="Error">{this.props.loginMessage ? <>{this.props.loginMessage}</> : <></>}</h3>
         </Form>
-        {this.props.dataLoaded ? <></> : <></>}
-        <h3>{this.props.loginMessage ? <>{this.props.loginMessage}</> : <></>}</h3>
+       
       </>
     );
   }
@@ -80,7 +81,7 @@ function mapDispatchToProps(dispatch) {
   return {
     add: (user, email, status, photo, group, groupName) =>
       dispatch(addUser(user, email, status, photo, group, groupName)),
-    addLogMsg: loginMessage => dispatch(addLogMsg(loginMessage)),
+    addLogMsg: (loginMessage,loading) => dispatch(addLogMsg(loginMessage,loading)),
   };
 }
 export default connect(

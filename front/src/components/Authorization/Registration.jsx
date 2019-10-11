@@ -44,7 +44,7 @@ class Registration extends Component {
       this.props.history.push('/');
     } else {
       // this.props.del();
-      this.props.a(user.message);
+      this.props.addMsg(user.message,user.loading);
 
     }
   };
@@ -75,8 +75,8 @@ class Registration extends Component {
           <div className="form-field">
             <Button type="submit">Отправить</Button>{' '}
           </div>
+          <h3 className="Error">{this.props.message ? <>{this.props.message}</> : <></>}</h3>
         </Form>
-        <h3>{this.props.message ? <>{this.props.message}</> : <></>}</h3>
       </>
     );
   }
@@ -91,7 +91,7 @@ function mapDispatchToProps(dispatch) {
   return {
     del: () => dispatch(delUser()),
     add: (user, email, status, photo, group, groupName) => dispatch(addUser(user, email, status, photo, group, groupName)),
-    addMsg: message => dispatch(addMsg(message)),
+    addMsg: (message,loading) => dispatch(addMsg(message,loading)),
   };
 }
 
