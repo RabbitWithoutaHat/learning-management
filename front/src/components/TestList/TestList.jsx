@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAllTests } from '../../redux/Tests/actions';
-import { getSelectedUsers } from '../../redux/Tests/actions';
-import { Icon, List, Select } from 'semantic-ui-react';
+import { getSelectedTests } from '../../redux/Tests/actions';
+import { Icon, List, Select, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class TestList extends Component {
@@ -12,14 +12,40 @@ class TestList extends Component {
 
   componentDidMount() {
     this.props.getTests();
-    this.props.admin === 'admin' ? this.props.getSelectedUsers() : this.props.getSelectedUsers(this.props.userGroup);
+    this.props.admin === 'admin' ? this.props.getSelectedTests() : this.props.getSelectedTests(this.props.userGroup);
   }
 
   getSelectedGroup = async (event) => {
     let selectedGroup = event.target.textContent;
 
     this.setState({ selectedGroupName: selectedGroup });
-    await this.props.getSelectedUsers(selectedGroup);
+    await this.props.getSelectedTests(selectedGroup);
+  };
+
+  addTest = async e => {
+    e.preventDefault();
+    if (this.state.selectedGroupName === '') {
+      this.setState({ groupNotSelectedStatus: true });
+    } else {
+      this.func();
+    }
+  };
+
+  func = async () => {
+    let data = {
+      group: this.state.selectedGroupName,
+    };
+    let resp = await fetch('/addtest', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    let dataresp = await resp.json();
+
+    await this.props.getSelectedTests(dataresp.group);
   };
 
   render() {
@@ -57,6 +83,15 @@ class TestList extends Component {
           ) : (
               <></>
             )}
+        {this.props.admin ? (
+          <>
+              <Button className="addWeek" basic color="violet" icon="plus" onClick={this.addTest}>
+              Добавить тест
+              </Button>
+          </>
+        ) : (
+            <></>
+          )}
         </List>
       </>
     );
@@ -78,8 +113,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getTests: () => dispatch(getAllTests()),
-    getSelectedUsers: selectedGroup => dispatch(getSelectedUsers(selectedGroup)),
+    getTests: (group) => dispatch(getAllTests(group)),
+    getSelectedTests: selectedGroup => dispatch(getSelectedTests(selectedGroup)),
   };
 };
 

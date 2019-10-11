@@ -126,6 +126,29 @@ router.post('/edittopic', async (req, res) => {
 
   res.json({ status: 'done' });
 });
+// Edit test
+router.post('/edittest', async (req, res) => {
+  let googleFormLink = req.body.googleFormsLink;
+  if (googleFormLink.includes('https://docs.google.com/forms/d/e/')) {
+    googleFormLink = googleFormLink.replace('https://docs.google.com/forms/d/e/', '');
+  }
+  if (googleFormLink.includes('/viewform?usp=sf_link')) {
+    googleFormLink = googleFormLink.replace('/viewform?usp=sf_link', '');
+  }
+  console.log('googleFormLink', googleFormLink);
+
+  await Test.findOneAndUpdate(
+    { googleFormsLink: req.body.id },
+    {
+      title: req.body.title,
+      googleFormsLink: googleFormLink,
+      // visible: req.body.visible,
+    },
+  );
+
+
+  res.json({ status: 'done' });
+});
 // Add Phase
 router.post('/addphase', async (req, res) => {
   // console.log('tyt', req.body);
@@ -378,12 +401,16 @@ router.post('/addday', async (req, res) => {
   res.json({ group });
 });
 
-router.post('/add-test', async (req, res) => {
+router.post('/addtest', async (req, res) => {
+  // console.log('БАДИИИИ', req.body.group);
   const newTest = new Test({
-    title: '',
-    googleFormsLink: '',
+    title: '___',
+    googleFormsLink: '___',
     groupName: req.body.group,
+    visible: false,
   });
+  await newTest.save();
+  res.json({ group: req.body.group });
 });
 
 // Add week
@@ -427,7 +454,7 @@ router.post('/addweek', async (req, res) => {
 });
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const filePath = '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
 
   const fileName = 'lenin.svg'; // The default name the browser will use
 
@@ -633,8 +660,6 @@ router.get('/get-tests', async (req, res) => {
 });
 
 router.post('/get-tests', async (req, res) => {
-
-  
   const groupNames = [];
   let selectedGroupTests = [];
   if (req.body.groupName) {
@@ -665,14 +690,14 @@ router.post('/get-tests', async (req, res) => {
       groupNames.push(allUser);
     }
   }
-console.log('OKOKOKOKOK', selectedGroupTests);
+  console.log('OKOKOKOKOK', selectedGroupTests);
   res.json({ groupNames, selectedGroupTests });
 });
 
 router.post('/update-profile', async (req, res) => {
   let {
- email, password, nickname, phone, photo 
-} = req.body;
+    email, password, nickname, phone, photo,
+  } = req.body;
 
   const { id } = req.user;
 
