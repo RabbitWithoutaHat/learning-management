@@ -275,7 +275,7 @@ router.post('/gettopics', async (req, res) => {
     selectedGroupName = req.body.selectedGroup;
   } else {
     // console.log('НЕТ В БАДИ');
-    selectedGroupName = allGroups[allGroups.length - 1].name;
+    selectedGroupName = allGroups[1].name;
   }
   // let selectedGroupName = allGroups[allGroups.length-1].name;
   // console.log('selectedGroupName====', selectedGroupName);
@@ -594,6 +594,8 @@ router.get('/get-tests', async (req, res) => {
 });
 
 router.post('/get-tests', async (req, res) => {
+
+  
   const groupNames = [];
   let selectedGroupTests = [];
   if (req.body.groupName) {

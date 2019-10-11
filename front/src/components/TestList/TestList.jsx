@@ -12,7 +12,7 @@ class TestList extends Component {
 
   componentDidMount() {
     this.props.getTests();
-    this.props.getSelectedUsers();
+    this.props.admin === 'admin' ? this.props.getSelectedUsers() : this.props.getSelectedUsers(this.props.userGroup);
   }
 
   getSelectedGroup = async (event) => {
@@ -26,15 +26,21 @@ class TestList extends Component {
     return (
       <>
         <>
-          <Select
-            className="select"
-            placeholder="Все пользователи"
-            options={this.props.selectedGroupList}
-            onChange={this.getSelectedGroup}
-          />
+          {this.props.admin ?
+            <Select
+              className="select"
+              placeholder="Все пользователи"
+              options={this.props.selectedGroupList}
+              onChange={this.getSelectedGroup}
+            /> : <></>}
+
+
         </>
         <List className="ui massive  list testsList">
-          {console.log('OKOOKSODKSODSOD',this.props.selectedGroupTests)}
+          {console.log('OKOOKSODKSODSOD', this.props.selectedGroupTests)}
+          {
+            
+          }
           {this.props.selectedGroupTests ? (
             this.props.selectedGroupTests.map((e, i) => (
               <List.Item key={`${i}test`} className="item testItem">
@@ -43,7 +49,8 @@ class TestList extends Component {
                   <Link onClick={formId => this.setState({ formId })} to={`/tests/${e.googleFormsLink}`}>
                     {e.title}
                   </Link>
-                  {this.props.user.status ? <p>admin</p> : <p>NET!</p>}
+                  {/* {console.log('POPOPOOP', this.props.user.admin)} */}
+                  {this.props.admin ? <p>{`for ${e.groupName}`}</p> : <></>}
                 </List.Content>
               </List.Item>
             ))
@@ -57,11 +64,13 @@ class TestList extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('OLLLLLLO', state)
+  // console.log('OLLLLLLO', state)
 
-  return {  
+  return {
     tests: state.Test.tests,
     user: state.User.user,
+    userGroup: state.User.user.groupName,
+    admin: state.User.user.adminstatus,
     selectedGroupTests: state.Test.selectedGroupTests,
     selectedGroupList: state.Test.selectedGroupList,
   };
