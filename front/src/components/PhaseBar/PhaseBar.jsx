@@ -115,7 +115,7 @@ class PhaseBar extends Component {
     // console.log(this.props.groupNames);
     return (
       <>
-        {this.props.admin==='admin' && this.props.groupNames ? (
+        {this.props.admin === 'admin' && this.props.groupNames ? (
           <>
             <div className="select selectDiv">
               <Select
@@ -149,7 +149,7 @@ class PhaseBar extends Component {
             ) : (
               <p></p>
             )}
-            {this.props.admin==='admin' ? (
+            {this.props.admin === 'admin' ? (
               <>
                 <Tab onClick={this.addPhase}>+</Tab>
               </>
@@ -199,7 +199,7 @@ class PhaseBar extends Component {
           ) : (
             <p></p>
           )}
-          {this.props.admin==='admin' ? (
+          {this.props.admin === 'admin' ? (
             <>
               <Button className="addWeek" basic color="violet" icon="plus" onClick={this.addWeek}>
                 Добавить неделю
