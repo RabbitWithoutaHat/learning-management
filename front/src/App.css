@@ -65,6 +65,7 @@
 .pushable > .pusher {
   width: calc(100% - 350px);
 }
+
 .container {
   max-width: 1200px;
   margin-left: auto;
@@ -363,3 +364,71 @@ h1:first-child.topicHeader {
   margin: 15px;
   margin-left: 5px;
 }
+
+/* .videoPlaceholderWrapper {
+  position: relative;
+  width: 1200px;
+  height: 100vh;
+} */
+.videoPlaceholder {
+  /* position: absolute; */
+  width: 1200px;
+  height: 100px;
+  opacity: 0.6;
+}
+
+.nonGroup h1:first-child {
+  margin-top: 60px;
+  margin-bottom: 100px;
+  text-align: center;
+  max-width: 600px;
+  color: #5053aa;
+}
+.nonGroup h1:first-child:hover:after {
+  content: 'Классное видео';
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+.nonGroup {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-direction: column;
+}
+
+.userslistButton.ui.button {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.usersSendButton.ui.button {
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.userSendForm {
+  display: flex;
+  justify-content: center;
+}
+.regForm.ui.header:first-child {
+  margin-left: 50px;
+}
+.changeGroupSelect {
+  height: 40px;
+}
+.changeButtonWrapper {
+  width: 100%;
+  display: flex;
+  text-align: center;
+}
+.changeTopic.ui.button {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4px;
+}
+
+/* .regForm.ui.header {
+} */

@@ -16,26 +16,19 @@ class VideoWindow extends Component {
     File: 'lenin.svg',
     link: false,
     rr: '',
-    fileLink:"./img/Very_Secret.zip",
-    fileName:'Very_Secret.zip',
+    fileLink: './img/Very_Secret.zip',
+    fileName: 'Very_Secret.zip',
   };
   async componentDidMount() {
     await this.props.getTopic();
 
-    let videoSrc = this.props.topic.video;
-    // if(this.props.topic.video) {
-
-    if (videoSrc.includes('watch')) {
-      videoSrc = videoSrc.replace('watch?v=', 'embed/');
-    } else {
-      videoSrc = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
-    }
     // }
 
-   await this.setState({ videoSrc: videoSrc });
+    // await this.setState({ videoSrc: videoSrc });
     const GhLink = this.props.topic.githubLink;
     await this.setState({ GhLink: GhLink });
   }
+  componentWillUnmount() {}
   // async componentDidUpdate(prevProps) {
   //   if (prevProps !== this.props) {
   //     // this.setState({FileLink:FileLink});
@@ -53,7 +46,7 @@ class VideoWindow extends Component {
       },
       body: JSON.stringify({ File }),
     });
-    
+
     const data = await resp.json;
     // console.log(data);
 
@@ -85,50 +78,65 @@ class VideoWindow extends Component {
     // }
   };
   render() {
-    return (
-      <div className="videoContainer">
-        <h1>Тема урока: {this.props.topic.topicName}</h1>
-        <div className="video">
-          <iframe
-            src={this.state.videoSrc}
-            width="960"
-            height="540"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-            title="video"
-          />
-        </div>
+    let videoSrc;
+    if (this.props.topic.video) {
+      videoSrc = this.props.topic.video;
+      if (videoSrc.includes('watch')) {
+        videoSrc = videoSrc.replace('watch?v=', 'embed/');
+      } else {
+        videoSrc = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
+      }
+    }
 
-        <div className="videoLinksFilesSegment">
-          <div className="videoLinksFiles">
-            <div className="videoLinks">
-              <a target="_blank" rel="noopener noreferrer" href={this.state.GhLink}>
-                Задания на GitHub
-              </a>
-              <a target="_blank" rel="noopener noreferrer" href={this.state.FileLink}>
-                Ссылка на код
-              </a>
+    return (
+      <>
+        {videoSrc ? (
+          <div className="videoContainer">
+            <h1>Тема урока: {this.props.topic.topicName}</h1>
+            <div className="video">
+              <iframe
+                src={videoSrc}
+                width="960"
+                height="540"
+                frameBorder="0"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                title="video"
+              />
             </div>
-            <div className="videoFile">
-              {/* <a href='./img/Very_Secret.zip' download>
+            <div className="videoLinksFilesSegment">
+              <div className="videoLinksFiles">
+                <div className="videoLinks">
+                  <a target="_blank" href={this.state.GhLink} rel="noopener noreferrer">
+                    Задания на GitHub
+                  </a>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://github.com/Elbrus-Bootcamp/skeleton-express-session"
+                  >
+                    Код урока
+                  </a>
+                </div>
+                <div className="videoFile">
+                  {/* <a href="./img/Very_Secret.zip" download>
                 123
               </a> */}
-               <a href={this.state.fileLink} download target="_blank">
-                <Button
-                  basic
-                  type="button"
-                  color="violet"
-                  className="btn btn-success btn-block"
-                  content={this.state.fileName}
-                  // onClick={this.but}
-                  icon="download"
-                  fluid
-                ></Button>
-              </a>
-              {/* <Link
+                  <a href={this.state.fileLink} download target="_blank">
+                    <Button
+                      basic
+                      type="button"
+                      color="violet"
+                      className="btn btn-success btn-block"
+                      content={this.state.fileName}
+                      // onClick={this.but}
+                      icon="download"
+                      fluid
+                    ></Button>
+                  </a>
+                  {/* <Link
                 // to={FilePath.filePath}
-                to='./img/Very_Secret.zip'
+                to="./img/Very_Secret.zip"
                 download
                 target="_blank"
               >
@@ -143,10 +151,14 @@ class VideoWindow extends Component {
                   fluid
                 ></Button>
               </Link> */}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        ) : (
+          <div></div>
+        )}
+      </>
     );
   }
 }
