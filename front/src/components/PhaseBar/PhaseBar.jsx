@@ -109,7 +109,7 @@ class PhaseBar extends Component {
     });
     let dataresp = await resp.json();
 
-    await this.props.getTopics(dataresp.group);
+    await this.props(dataresp.group);
   };
   render() {
     // console.log(this.props.groupNames);

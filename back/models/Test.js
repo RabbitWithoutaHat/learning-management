@@ -15,6 +15,11 @@ const TestSchema = new Schema({
     type: String,
     required: true,
   },
+  visible: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
 });
 
 module.exports = model('Test', TestSchema);

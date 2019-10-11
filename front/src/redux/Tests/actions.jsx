@@ -1,4 +1,4 @@
-import { GET_SELECTED_USERS, REQUEST_ALL_TESTS, REQUESTED_FAILED } from './types';
+import { GET_SELECTED_TESTS, REQUEST_ALL_TESTS, REQUESTED_FAILED } from './types';
 import axios from 'axios';
 
 const requestTests = data => {
@@ -8,11 +8,11 @@ const requestTests = data => {
   };
 };
 
-const requestSelectedUsers = data => {
+const requestSelectedTests = data => {
   return {
-    type: GET_SELECTED_USERS,
+    type: GET_SELECTED_TESTS,
     selectedGroupList: data.groupNames,
-    selectedGroupItems: data.selectedGroupItems,
+    selectedGroupTests: data.selectedGroupTests,
   };
 };
 
@@ -20,15 +20,14 @@ const requestErrorAC = () => {
   return { type: REQUESTED_FAILED };
 };
 
-const getSelectedUsers = selectedGroup => async dispatch => {
+const getSelectedTests = selectedGroup => async dispatch => {
   try {
     const resp = await axios.post('/get-tests', { groupName: selectedGroup });
-    console.log(resp.data);
-    dispatch(requestSelectedUsers(resp.data));
+    dispatch(requestSelectedTests(resp.data));
   } catch (error) { }
 };
 
-const getAllTests = () => async dispatch => {
+const getAllTests = (group) => async dispatch => {
   try {
     const resp = await fetch('/get-tests');
     const data = await resp.json();
@@ -38,4 +37,4 @@ const getAllTests = () => async dispatch => {
   }
 };
 
-export { getAllTests, getSelectedUsers };
+export { getAllTests, getSelectedTests };
