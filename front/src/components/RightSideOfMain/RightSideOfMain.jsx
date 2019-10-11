@@ -21,7 +21,7 @@ class NavBar extends Component {
     return (
       <>
         <>
-          {(this.props.userWithGroup !== 'Без группы'&&this.props.userWithGroup) || this.props.admin ? (
+          {(this.props.userWithGroup !== 'Без группы'&&this.props.userWithGroup) || this.props.admin==='admin' ? (
             <>
               <Route exact path="/" component={Home} />
               <Route path="/logout" component={Logout} />

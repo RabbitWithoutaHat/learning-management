@@ -118,7 +118,7 @@ class Topic extends Component {
     // const { closeOnDocumentClick,closeIcon } = this.state
     return (
       <>
-        {this.props.admin ? (
+        {this.props.admin==='admin' ? (
           <>
             <Modal
               trigger={
