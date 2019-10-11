@@ -226,8 +226,8 @@ router.post('/reg', async (req, res, next) => {
       email,
       password: hash,
       //без группы
-      group:'5d9f1b73e7e77e0fa391d58d',
-      groupName:'Без группы',
+      group: '5d9f1b73e7e77e0fa391d58d',
+      groupName: 'Без группы',
     });
     return passport.authenticate('local', async (err, user) => {
       const thisUser = await User.findOne({ email: req.body.email });
@@ -262,10 +262,7 @@ router.get('/getnews', async (req, res) => {
 });
 // Get TOpics from BD for users exact group!
 router.post('/gettopics', async (req, res) => {
-  // Добавляю хардкодом группу т.к при реге её нет
-  // console.log(req.user);
-  // Все группы
-  // console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm?!?', req.body.selectedGroup);
+  console.log('UUUUUUUUUUUUUUUUUSERRR', req.user.groupName);
 
   const allGroups = await Group.find();
   // Последняя группа
@@ -273,8 +270,7 @@ router.post('/gettopics', async (req, res) => {
   if (req.body.selectedGroup) {
     selectedGroupName = req.body.selectedGroup;
   } else {
-    // console.log('НЕТ В БАДИ');
-    selectedGroupName = allGroups[allGroups.length - 1].name;
+    selectedGroupName = allGroups[1].name;
   }
   // let selectedGroupName = allGroups[allGroups.length-1].name;
   // console.log('selectedGroupName====', selectedGroupName);
@@ -282,8 +278,12 @@ router.post('/gettopics', async (req, res) => {
   // Массив из имён всех групп
   const groupNames = [];
   for (let i = 0; i < allGroups.length; i++) {
-    const obj = { key: `${i + 1}`, value: `${i + 1}`, text: allGroups[i].name };
-    groupNames.push(obj);
+    if (allGroups[i].name === 'Без группы' || allGroups[i].name === 'admin') {
+      continue;
+    } else {
+      const obj = { key: `${i + 1}`, value: `${i + 1}`, text: allGroups[i].name };
+      groupNames.push(obj);
+    }
   }
   // если нет групп вообще
   if (allGroups.length === 0) {
@@ -295,8 +295,6 @@ router.post('/gettopics', async (req, res) => {
   if (req.user.status === 'admin') {
     console.log('admin');
     topics = await Topic.find({ groupName: selectedGroupName });
-    console.log('topic.length===', topics.length);
-    console.log('ТОПИКИ ГРУППЫ ', topics[0].groupName);
   } else {
     topics = await Topic.find({ groupName: req.user.groupName });
   }
@@ -354,10 +352,10 @@ router.get('/getgroups', (req, res) => {
 // Add day
 router.post('/addday', async (req, res) => {
   // console.log('addday!!!!!!!!!!!!!!!!!!!!!!!!!1',req.body);
-  const phase = req.body.phase+1;
+  const phase = req.body.phase + 1;
   const group = req.body.group;
   const week = req.body.week;
-  const day = req.body.day+1;
+  const day = req.body.day + 1;
   // console.log(phase,group,week,day);
   const newTopic = new Topic(
     {
@@ -373,16 +371,16 @@ router.post('/addday', async (req, res) => {
     }
   )
   await newTopic.save();
-  res.json({group:group});
+  res.json({ group: group });
 });
 
 //Add week
-router.post('/addweek', async(req, res) => {
-  console.log('группа',req.body.group);
-  const Phase = req.body.phase+1;
-  const topics = await Topic.find({phase:Phase,groupName:req.body.group});
+router.post('/addweek', async (req, res) => {
+  console.log('группа', req.body.group);
+  const Phase = req.body.phase + 1;
+  const topics = await Topic.find({ phase: Phase, groupName: req.body.group });
   // console.log('TOPIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIC',topics);
-  
+
   // let Phase = 0;
   let Week = 0;
   if (topics.length !== 0) {
@@ -391,11 +389,11 @@ router.post('/addweek', async(req, res) => {
       Week = Math.max(Week, topics[i].week);
     }
   } else {
-    res.send({status:'hi'});
+    res.send({ status: 'hi' });
   }
-// console.log('GROUP!!', req.body.group);
-Week = Week+1;
-console.log('Weeekkkkkkkkkkkkkkkkkkkk',Week);
+  // console.log('GROUP!!', req.body.group);
+  Week = Week + 1;
+  console.log('Weeekkkkkkkkkkkkkkkkkkkk', Week);
 
   // phase = req.body.phase+1;
   const newTopic = new Topic(
@@ -413,8 +411,8 @@ console.log('Weeekkkkkkkkkkkkkkkkkkkk',Week);
   )
   await newTopic.save();
   // console.log(req.body);
-  
-  res.json({group:req.body.group});
+
+  res.json({ group: req.body.group });
 });
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
@@ -428,38 +426,38 @@ router.get('/downloadtest', (req, res, next) => {
   // res.json({user:"hi"})
 });
 
-router.post('/changegroup', async(req, res, next) => {
-  console.log('ADDDDDD NEWWWW GROYUUUPP',req.body);
+router.post('/changegroup', async (req, res, next) => {
+  console.log('ADDDDDD NEWWWW GROYUUUPP', req.body);
   groups = req.body.groups;
   newgroup = req.body.newGroup;
-  
 
-  const groupId = await Group.findOne({name:newgroup})
-for(let i = 0 ; i < groups.length;i++) {
-  const user = await User.findOneAndUpdate(
-    { _id: groups[i] },
-    { groupName: newgroup,group:groupId._id },
-  );
-}
- res.json({status:'done'})
+
+  const groupId = await Group.findOne({ name: newgroup })
+  for (let i = 0; i < groups.length; i++) {
+    const user = await User.findOneAndUpdate(
+      { _id: groups[i] },
+      { groupName: newgroup, group: groupId._id },
+    );
+  }
+  res.json({ status: 'done' })
 });
-router.post('/addnewgroup', async(req, res, next) => {
-  console.log('ADDDDDD NEWWWW GROYUUUPP',req.body);
+router.post('/addnewgroup', async (req, res, next) => {
+  console.log('ADDDDDD NEWWWW GROYUUUPP', req.body);
   groups = req.body.groups;
   newgroup = req.body.newGroup;
-  
+
   const group = new Group({
-    name:newgroup
+    name: newgroup
   });
   await group.save();
-  const groupId = await Group.findOne({name:newgroup})
-for(let i = 0 ; i < groups.length;i++) {
-  const user = await User.findOneAndUpdate(
-    { _id: groups[i] },
-    { groupName: newgroup,group:groupId._id },
-  );
-}
- res.json({status:'done'})
+  const groupId = await Group.findOne({ name: newgroup })
+  for (let i = 0; i < groups.length; i++) {
+    const user = await User.findOneAndUpdate(
+      { _id: groups[i] },
+      { groupName: newgroup, group: groupId._id },
+    );
+  }
+  res.json({ status: 'done' })
 });
 router.post('/download', (req, res, next) => {
   res.download('/home/oleg-lasttry/FinalProject/learning-management/back/public/com.svg');
@@ -468,8 +466,8 @@ router.post('/download', (req, res, next) => {
 
 router.get('/getDayData', async (req, res, next) => {
   // Добавляю хардкодом группу т.к при реге её нет
-  console.log('REQQQQQQQQQQQQQQQQ',req.user);
-  
+  // console.log('REQQQQQQQQQQQQQQQQ', req.user);
+
   const user = await User.findOneAndUpdate(
     { nickname: req.user.nickname },
     { group: req.user.group },
@@ -477,8 +475,11 @@ router.get('/getDayData', async (req, res, next) => {
 
   // 5d9ce8472a0cbe13a7048fea
   // Все топики
-  const topics = await Topic.find({ group: user.group });
-  // console.log('ETI TOPIKI!', topics);
+  const groups = await Group.find();
+  console.log('ETI GROUOOPI!!!',groups);
+  
+  const topics = await Topic.find({ groupName: groups[1].name });
+  console.log('ETI TOPIKI!', topics);
   const mainPageTopic = topics
     // .sort((el) => (el.phase) ? 1 : -1)
     .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
@@ -545,6 +546,8 @@ router.get('/auth-page', async (req, res) => {
 });
 
 router.post('/get-users', async (req, res) => {
+  console.log('USERRRSSSS', req.user.groupName);
+
   const groupNames = [];
   let selectedGroupItems = [];
   if (req.body.groupName) {
@@ -558,26 +561,25 @@ router.post('/get-users', async (req, res) => {
     console.log('without group', selectedGroupItems);
 
   }
+    const groupList = await Group.find();
+    for (let i = 0; i < groupList.length; i++) {
 
-  const groupList = await Group.find();
-  for (let i = 0; i < groupList.length; i++) {
-    const obj = {
-      key: `${i + 1}`,
-      value: `${i + 1}`,
-      text: groupList[i].name,
-    };
-    groupNames.push(obj);
-    if (i === groupList.length - 1) {
-      const allUser = {
-        key: `${i + 2}`,
-        value: `${i + 2}`,
-        text: 'Все пользователи',
+      const obj = {
+        key: `${i + 1}`,
+        value: `${i + 1}`,
+        text: groupList[i].name,
       };
-      groupNames.push(allUser);
+      groupNames.push(obj);
+      if (i === groupList.length - 1) {
+        const allUser = {
+          key: `${i + 2}`,
+          value: `${i + 2}`,
+          text: 'Все пользователи',
+        };
+        groupNames.push(allUser);
+      }
     }
-  }
-
-  res.json({ groupNames, selectedGroupItems });
+    res.json({ groupNames, selectedGroupItems });
 });
 
 router.post('/upload-avatar', async (req, res) => {
