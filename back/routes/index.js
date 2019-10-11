@@ -31,7 +31,7 @@ router.post('/login', (req, res, next) => {
       // console.log('Login POST  auth ER 1');
       return res.render('login', { [notifications.error]: err });
     }
-    req.logIn(user, (err) => {
+    req.logIn(user, err => {
       if (err) {
         // console.log('Login POST LOGIN ER 1');
         return res.render('login', { [notifications.error]: err });
@@ -52,7 +52,7 @@ router.post('/log', async (req, res, next) => {
     if (err) {
       return res.json({ message: err });
     }
-    req.logIn(user, async (err) => {
+    req.logIn(user, async err => {
       if (err) {
         return res.json({ message: err });
       }
@@ -177,9 +177,9 @@ router.post('/addphase', async (req, res) => {
     const phase = [];
     for (let w = 1; w < Week + 1; w++) {
       const week = updatedTopics
-        .filter((el) => el.phase === `${p}`)
-        .filter((el) => el.week === `${w}`)
-        .sort((el) => (el.day ? 1 : -1));
+        .filter(el => el.phase === `${p}`)
+        .filter(el => el.week === `${w}`)
+        .sort(el => (el.day ? 1 : -1));
       if (week.length === 0) {
         continue;
       } else {
@@ -235,7 +235,7 @@ router.post('/reg', async (req, res, next) => {
       if (err) {
         return res.json({ message: err });
       }
-      req.logIn(user, (err) => {
+      req.logIn(user, err => {
         if (err) {
           return res.json({ message: err });
         }
@@ -275,7 +275,7 @@ router.post('/gettopics', async (req, res) => {
     selectedGroupName = req.body.selectedGroup;
   } else {
     // console.log('НЕТ В БАДИ');
-    selectedGroupName = allGroups[allGroups.length - 1].name;
+    selectedGroupName = allGroups[1].name;
   }
   // let selectedGroupName = allGroups[allGroups.length-1].name;
   // console.log('selectedGroupName====', selectedGroupName);
@@ -314,9 +314,9 @@ router.post('/gettopics', async (req, res) => {
     const phase = [];
     for (let w = 1; w < Week + 1; w++) {
       const week = topics
-        .filter((el) => el.phase === `${p}`)
-        .filter((el) => el.week === `${w}`)
-        .sort((el) => (el.day ? 1 : -1));
+        .filter(el => el.phase === `${p}`)
+        .filter(el => el.week === `${w}`)
+        .sort(el => (el.day ? 1 : -1));
       if (week.length === 0) {
         continue;
       } else {
@@ -356,8 +356,8 @@ router.get('/getgroups', (req, res) => {
 router.post('/addday', async (req, res) => {
   // console.log('addday!!!!!!!!!!!!!!!!!!!!!!!!!1',req.body);
   const phase = req.body.phase + 1;
-  const {group} = req.body;
-  const {week} = req.body;
+  const { group } = req.body;
+  const { week } = req.body;
   const day = req.body.day + 1;
   // console.log(phase,group,week,day);
   const newTopic = new Topic({
@@ -417,7 +417,8 @@ router.post('/addweek', async (req, res) => {
 });
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const filePath =
+    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
 
   const fileName = 'lenin.svg'; // The default name the browser will use
 
@@ -466,7 +467,7 @@ router.post('/upload', async (req, res) => {
 
   file.mv(
     `/home/oleg-lasttry/Final Project/learning-management/front/public/img/${file.name}`,
-    (err) => {
+    err => {
       if (err) {
         console.log(err);
         // return res.status(500).send(err);
@@ -586,9 +587,7 @@ router.get('/get-tests', async (req, res) => {
 });
 
 router.post('/update-profile', async (req, res) => {
-  let {
- email, password, nickname, phone, photo 
-} = req.body;
+  let { email, password, nickname, phone, photo } = req.body;
 
   const { id } = req.user;
 
