@@ -15,7 +15,7 @@ const Token = require('./models/Token');
 const app = express();
 const port = 5002;
 
-// setTimeout(newToken, 15000);
+setTimeout(newToken, 1000 * 60 * 45);
 
 passport.use(
   new GoogleStrategy(

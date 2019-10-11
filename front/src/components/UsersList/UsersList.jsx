@@ -259,8 +259,8 @@ class UsersList extends Component {
                     {e.photo ? (
                       <Image className="ui avatar image" src={`/images/${e.photo}`} />
                     ) : (
-                        <Image className="ui avatar image" src={`/images/elbrus.png`} />
-                      )}
+                      <Image className="ui avatar image" src={`/images/elb.svg`} />
+                    )}
 
                     <Header.Content>
                       {e.nickname}
