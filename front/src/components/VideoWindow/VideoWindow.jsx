@@ -104,25 +104,39 @@ class VideoWindow extends Component {
                 title="video"
               />
             </div>
-            <div className="videoFile">
-              {/* <a href='./img/Very_Secret.zip' download>
+            <div className="videoLinksFilesSegment">
+              <div className="videoLinksFiles">
+                <div className="videoLinks">
+                  <a target="_blank" href={this.state.GhLink} rel="noopener noreferrer">
+                    Задания на GitHub
+                  </a>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://github.com/Elbrus-Bootcamp/skeleton-express-session"
+                  >
+                    Код урока
+                  </a>
+                </div>
+                <div className="videoFile">
+                  {/* <a href="./img/Very_Secret.zip" download>
                 123
               </a> */}
-              <a href={this.state.fileLink} download target="_blank">
-                <Button
-                  basic
-                  type="button"
-                  color="violet"
-                  className="btn btn-success btn-block"
-                  content={this.state.fileName}
-                  // onClick={this.but}
-                  icon="download"
-                  fluid
-                ></Button>
-              </a>
-              {/* <Link
+                  <a href={this.state.fileLink} download target="_blank">
+                    <Button
+                      basic
+                      type="button"
+                      color="violet"
+                      className="btn btn-success btn-block"
+                      content={this.state.fileName}
+                      // onClick={this.but}
+                      icon="download"
+                      fluid
+                    ></Button>
+                  </a>
+                  {/* <Link
                 // to={FilePath.filePath}
-                to='./img/Very_Secret.zip'
+                to="./img/Very_Secret.zip"
                 download
                 target="_blank"
               >
@@ -137,6 +151,8 @@ class VideoWindow extends Component {
                   fluid
                 ></Button>
               </Link> */}
+                </div>
+              </div>
             </div>
           </div>
         ) : (
