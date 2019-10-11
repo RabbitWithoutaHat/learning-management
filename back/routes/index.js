@@ -428,13 +428,13 @@ router.get('/downloadtest', (req, res, next) => {
 
 router.post('/changegroup', async (req, res, next) => {
   console.log('ADDDDDD NEWWWW GROYUUUPP', req.body);
-  groups = req.body.groups;
-  newgroup = req.body.newGroup;
+  let groups = req.body.groups;
+  let  newgroup = req.body.newGroup;
 
 
   const groupId = await Group.findOne({ name: newgroup })
   for (let i = 0; i < groups.length; i++) {
-    const user = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { _id: groups[i] },
       { groupName: newgroup, group: groupId._id },
     );
