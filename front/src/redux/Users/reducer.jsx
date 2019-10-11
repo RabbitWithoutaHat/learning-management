@@ -49,13 +49,13 @@ export default function(state = initialState, action) {
     case ADD_MSG: {
       return {
         ...state,
-        user: { message: action.message },
+        user: { message: action.message,loading:action.loading },
       };
     }
     case ADD_LOGMSG: {
       return {
         ...state,
-        user: { loginMessage: action.loginMessage },
+        user: { loginMessage: action.loginMessage,loading:action.loading },
       };
     }
     case DEL_USER: {

@@ -50,11 +50,11 @@ router.post('/log', async (req, res, next) => {
 
   passport.authenticate('local', (err, user) => {
     if (err) {
-      return res.json({ message: err });
+      return res.json({ message: err,loading:true });
     }
     req.logIn(user, async (err) => {
       if (err) {
-        return res.json({ message: err });
+        return res.json({ message: err,loading:true });
       }
       // console.log("user statXXXXXXXXXXXXXXXXXXXXXushhfherh====", req.user);
 
@@ -162,7 +162,7 @@ router.post('/addphase', async (req, res) => {
   // console.log(user);
   // Все топики для конкретной группы
   const topics = await Topic.find({ groupName: req.body.group });
-  // console.log('ooooooooooooooooooooooooooooooooooooooooooo', topics.length);
+  console.log('ooooooooooooooooooooooooooooooooooooooooooo', topics.length);
   // Максимальное кол-во фаз !
   let Phase = 0;
   let Week = 0;
@@ -174,7 +174,10 @@ router.post('/addphase', async (req, res) => {
   } else {
     Phase = 1;
   }
-  Phase += 1;
+  if (topics.length !== 0) {
+    Phase += 1;
+  }
+  console.log('PPHASEooooooooooooooooooooooooooooooooooooooooooo', Phase);
   const { group } = req.body;
   // console.log('FAZA+LOGIN', Phase, group);
 
@@ -202,7 +205,7 @@ router.post('/addphase', async (req, res) => {
       const week = updatedTopics
         .filter((el) => el.phase === `${p}`)
         .filter((el) => el.week === `${w}`)
-        .sort((el) => (el.day ? 1 : -1));
+        .sort((el) => (el.day ? -1 : 1));
       if (week.length === 0) {
         continue;
       } else {
@@ -256,11 +259,11 @@ router.post('/reg', async (req, res, next) => {
     return passport.authenticate('local', async (err, user) => {
       const thisUser = await User.findOne({ email: req.body.email });
       if (err) {
-        return res.json({ message: err });
+        return res.json({ message: err,loading:true});
       }
       req.logIn(user, (err) => {
         if (err) {
-          return res.json({ message: err });
+          return res.json({ message: err,loading:true });
         }
         console.log(thisUser);
         return res.json({
@@ -274,7 +277,7 @@ router.post('/reg', async (req, res, next) => {
       });
     })(req, res, next);
   }
-  return res.json({ message: 'This email is already used' });
+  return res.json({ message: 'This email is already used',loading:true });
 });
 
 // Get NEws from BD
@@ -286,7 +289,7 @@ router.get('/getnews', async (req, res) => {
 });
 // Get TOpics from BD for users exact group!
 router.post('/gettopics', async (req, res) => {
-  console.log('UUUUUUUUUUUUUUUUUSERRR', req.user.groupName);
+  // console.log('UUUUUUUUUUUUUUUUUSERRR', req.user.groupName);
 
   const allGroups = await Group.find();
   // Последняя группа
@@ -341,7 +344,7 @@ router.post('/gettopics', async (req, res) => {
       const week = topics
         .filter((el) => el.phase === `${p}`)
         .filter((el) => el.week === `${w}`)
-        .sort((el) => (el.day ? 1 : -1));
+        .sort((el) => (el.day ? -1 : 1));
       if (week.length === 0) {
         continue;
       } else {
@@ -360,11 +363,11 @@ router.post('/gettopics', async (req, res) => {
       groupNames,
       selectedGroupName,
     });
-    console.log(
-      '888888888888888888888888888888888888888888888888',
-      groupNames,
-      selectedGroupName,
-    );
+    // console.log(
+    //   '888888888888888888888888888888888888888888888888',
+    //   groupNames,
+    //   selectedGroupName,
+    // );
   } else {
     // console.log('WTFFFFFFFFFFFFFFFFFFFFFFFFFFFF?!?');
 
@@ -468,12 +471,22 @@ router.post('/changegroup', async (req, res, next) => {
   const { groups } = req.body;
   const newgroup = req.body.newGroup;
 
+  //добавить логику изменения админа на обычного пользователя!!
   const groupId = await Group.findOne({ name: newgroup });
   for (let i = 0; i < groups.length; i++) {
-    await User.findOneAndUpdate(
-      { _id: groups[i] },
-      { groupName: newgroup, group: groupId._id },
-    );
+    if (newgroup === 'admin') {
+
+      await User.findOneAndUpdate(
+        { _id: groups[i] },
+        { groupName: newgroup, group: groupId._id, status: 'admin' },
+      );
+    } else {
+
+      await User.findOneAndUpdate(
+        { _id: groups[i] },
+        { groupName: newgroup, group: groupId._id },
+      );
+    }
   }
   res.json({ status: 'done' });
 });
@@ -696,7 +709,7 @@ router.post('/get-tests', async (req, res) => {
 
 router.post('/update-profile', async (req, res) => {
   let {
-    email, password, nickname, phone, photo,
+    email, password, nickname, phone, photo
   } = req.body;
 
   const { id } = req.user;

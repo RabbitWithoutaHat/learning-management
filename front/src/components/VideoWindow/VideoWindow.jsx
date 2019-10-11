@@ -16,6 +16,8 @@ class VideoWindow extends Component {
     File: 'lenin.svg',
     link: false,
     rr: '',
+    fileLink:"./img/Very_Secret.zip",
+    fileName:'Very_Secret.zip',
   };
   async componentDidMount() {
     await this.props.getTopic();
@@ -30,9 +32,9 @@ class VideoWindow extends Component {
     }
     // }
 
-    this.setState({ videoSrc: videoSrc });
+   await this.setState({ videoSrc: videoSrc });
     const GhLink = this.props.topic.githubLink;
-    this.setState({ GhLink: GhLink });
+    await this.setState({ GhLink: GhLink });
   }
   // async componentDidUpdate(prevProps) {
   //   if (prevProps !== this.props) {
@@ -51,8 +53,8 @@ class VideoWindow extends Component {
       },
       body: JSON.stringify({ File }),
     });
-
-    // const data = await resp.blob();
+    
+    const data = await resp.json;
     // console.log(data);
 
     // console.log(dat);
@@ -109,15 +111,24 @@ class VideoWindow extends Component {
               </a>
             </div>
             <div className="videoFile">
-              <a href="/img/download.png" download>
+              {/* <a href='./img/Very_Secret.zip' download>
                 123
+              </a> */}
+               <a href={this.state.fileLink} download target="_blank">
+                <Button
+                  basic
+                  type="button"
+                  color="violet"
+                  className="btn btn-success btn-block"
+                  content={this.state.fileName}
+                  // onClick={this.but}
+                  icon="download"
+                  fluid
+                ></Button>
               </a>
-              <a href="http://localhost:5002/images/loop.zip" download target="_blank">
-                Download
-              </a>
-              <Link
+              {/* <Link
                 // to={FilePath.filePath}
-                to={this.state.rr}
+                to='./img/Very_Secret.zip'
                 download
                 target="_blank"
               >
@@ -131,7 +142,7 @@ class VideoWindow extends Component {
                   icon="download"
                   fluid
                 ></Button>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
