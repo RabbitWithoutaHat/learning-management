@@ -11,6 +11,10 @@ const TestSchema = new Schema({
     type: String,
     required: true,
   },
+  groupName: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = model('Test', TestSchema);

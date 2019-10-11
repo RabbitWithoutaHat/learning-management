@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getTopicData } from '../../redux/MainPageTopic/action';
 
-// import FileSaver from 'file-saver';
+import FileSaver from 'file-saver';
 // import FileDownload from 'js-file-download';
 
 import { Button } from 'semantic-ui-react';
@@ -21,11 +21,14 @@ class VideoWindow extends Component {
     await this.props.getTopic();
 
     let videoSrc = this.props.topic.video;
+    // if(this.props.topic.video) {
+
     if (videoSrc.includes('watch')) {
       videoSrc = videoSrc.replace('watch?v=', 'embed/');
     } else {
       videoSrc = videoSrc.replace('youtu.be/', 'youtube.com/embed/');
     }
+    // }
 
     this.setState({ videoSrc: videoSrc });
     const GhLink = this.props.topic.githubLink;
@@ -40,14 +43,14 @@ class VideoWindow extends Component {
   but = async e => {
     // const File = this.state.File;
     e.preventDefault();
-    // let resp = await fetch('/download', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ File }),
-    // });
+    let resp = await fetch('/download', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ File }),
+    });
 
     // const data = await resp.blob();
     // console.log(data);
