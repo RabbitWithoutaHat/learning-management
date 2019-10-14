@@ -14,12 +14,13 @@ class Topic extends Component {
     topicDay: '',
     youtubeLink: '',
     githubLink: '',
-    fileLink: '',
     topicName: '',
     modalOpen: false,
     buttonClicked: '',
     closedStatus: false,
     changeData: true,
+    fileLink: './img/Very_Secret.zip',
+    fileName: 'Very_Secret.zip',
   };
   async componentDidMount() {
     await this.props.getTopics(this.props.selectedGroup);
@@ -205,23 +206,19 @@ class Topic extends Component {
               </div>
               <div className="videoFile">
                 <p className="fileTitle">Файл к уроку</p>
-                <Link
-                  // to={FilePath.filePath}
-                  to="./images/IMG_7778.jpg"
-                  download
-                  target="_blank"
-                >
+
+                <a href={this.state.fileLink} download target="_blank">
                   <Button
                     basic
                     type="button"
                     color="violet"
                     className="btn btn-success btn-block"
-                    content={this.state.File}
-                    onClick={this.but}
+                    content={this.state.fileName}
+                    // onClick={this.but}
                     icon="download"
                     fluid
                   ></Button>
-                </Link>
+                </a>
               </div>
             </div>
           </div>

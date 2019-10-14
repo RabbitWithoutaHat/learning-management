@@ -50,11 +50,11 @@ router.post('/log', async (req, res, next) => {
 
   passport.authenticate('local', (err, user) => {
     if (err) {
-      return res.json({ message: err,loading:true });
+      return res.json({ message: err, loading: true });
     }
     req.logIn(user, async (err) => {
       if (err) {
-        return res.json({ message: err,loading:true });
+        return res.json({ message: err, loading: true });
       }
       // console.log("user statXXXXXXXXXXXXXXXXXXXXXushhfherh====", req.user);
 
@@ -130,7 +130,10 @@ router.post('/edittopic', async (req, res) => {
 router.post('/edittest', async (req, res) => {
   let googleFormLink = req.body.googleFormsLink;
   if (googleFormLink.includes('https://docs.google.com/forms/d/e/')) {
-    googleFormLink = googleFormLink.replace('https://docs.google.com/forms/d/e/', '');
+    googleFormLink = googleFormLink.replace(
+      'https://docs.google.com/forms/d/e/',
+      '',
+    );
   }
   if (googleFormLink.includes('/viewform?usp=sf_link')) {
     googleFormLink = googleFormLink.replace('/viewform?usp=sf_link', '');
@@ -145,7 +148,6 @@ router.post('/edittest', async (req, res) => {
       // visible: req.body.visible,
     },
   );
-
 
   res.json({ status: 'done' });
 });
@@ -259,11 +261,11 @@ router.post('/reg', async (req, res, next) => {
     return passport.authenticate('local', async (err, user) => {
       const thisUser = await User.findOne({ email: req.body.email });
       if (err) {
-        return res.json({ message: err,loading:true});
+        return res.json({ message: err, loading: true });
       }
       req.logIn(user, (err) => {
         if (err) {
-          return res.json({ message: err,loading:true });
+          return res.json({ message: err, loading: true });
         }
         console.log(thisUser);
         return res.json({
@@ -277,7 +279,7 @@ router.post('/reg', async (req, res, next) => {
       });
     })(req, res, next);
   }
-  return res.json({ message: 'This email is already used',loading:true });
+  return res.json({ message: 'This email is already used', loading: true });
 });
 
 // Get NEws from BD
@@ -344,7 +346,7 @@ router.post('/gettopics', async (req, res) => {
       const week = topics
         .filter((el) => el.phase === `${p}`)
         .filter((el) => el.week === `${w}`)
-        .sort((el) => (el.day ? -1 : 1));
+        .sort((el) => (el.day ? 1 : -1));
       if (week.length === 0) {
         continue;
       } else {
@@ -407,8 +409,8 @@ router.post('/addday', async (req, res) => {
 router.post('/addtest', async (req, res) => {
   // console.log('БАДИИИИ', req.body.group);
   const newTest = new Test({
-    title: '___',
-    googleFormsLink: '___',
+    title: 'Заполни меня',
+    googleFormsLink: '1FAIpQLSeiNk3uwPxYZvsA8WS16lNOeJQEf5MTdkKpu63yrAlIuZ3rEw',
     groupName: req.body.group,
     visible: false,
   });
@@ -457,7 +459,7 @@ router.post('/addweek', async (req, res) => {
 });
 // Download File тестовая ручка.Не стрирайте.
 router.get('/downloadtest', (req, res, next) => {
-  const filePath = '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
+  const filePath =    '/home/oleg-lasttry/Final Project/learning-management/back/public/images/...'; // Or format the path using the `id` rest param
 
   const fileName = 'lenin.svg'; // The default name the browser will use
 
@@ -471,17 +473,15 @@ router.post('/changegroup', async (req, res, next) => {
   const { groups } = req.body;
   const newgroup = req.body.newGroup;
 
-  //добавить логику изменения админа на обычного пользователя!!
+  // добавить логику изменения админа на обычного пользователя!!
   const groupId = await Group.findOne({ name: newgroup });
   for (let i = 0; i < groups.length; i++) {
     if (newgroup === 'admin') {
-
       await User.findOneAndUpdate(
         { _id: groups[i] },
         { groupName: newgroup, group: groupId._id, status: 'admin' },
       );
     } else {
-
       await User.findOneAndUpdate(
         { _id: groups[i] },
         { groupName: newgroup, group: groupId._id },
@@ -709,8 +709,8 @@ router.post('/get-tests', async (req, res) => {
 
 router.post('/update-profile', async (req, res) => {
   let {
-    email, password, nickname, phone, photo
-  } = req.body;
+ email, password, nickname, phone, photo 
+} = req.body;
 
   const { id } = req.user;
 

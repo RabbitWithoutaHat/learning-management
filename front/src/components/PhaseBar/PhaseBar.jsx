@@ -109,7 +109,7 @@ class PhaseBar extends Component {
     });
     let dataresp = await resp.json();
 
-    await this.props(dataresp.group);
+    await this.props.getTopics(dataresp.group);
   };
   render() {
     // console.log(this.props.groupNames);
@@ -170,7 +170,7 @@ class PhaseBar extends Component {
                         {week.map((day, i) => (
                           <List.Item className="topicListItem" key={`day`}>
                             <Link params={{ desc: day.description }} to={`/lections/${day._id}`}>
-                              День:{day.day}
+                              {/* День:{day.day} */}
                               {day.topicName}
                             </Link>
                           </List.Item>
