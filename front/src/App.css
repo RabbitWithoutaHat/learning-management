@@ -1,0 +1,436 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+.Error{
+  color:red;
+}
+.App-link {
+  color: #09d3ac;
+}
+.pushable {
+  min-height: 100vh;
+  border: none;
+  box-shadow: none;
+}
+
+.ui[class*='left floated'].button {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.calendarContainer {
+  position: absolute;
+  bottom: 80px;
+  border: none;
+  width: 90%;
+  margin-left: 5%;
+}
+.eventMessage {
+  color: #29edff;
+  font-weight: bold;
+}
+
+.logoutItem {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+}
+
+.ui.vertical.menu > .item:last-child {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+.ui.inverted.menu {
+  background: #4520ab;
+}
+
+.pushable > .pusher {
+  width: calc(100% - 350px);
+}
+
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.col-6 {
+  flex-basis: 40%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+.col-8 {
+  flex-basis: 50%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+.col-4 {
+  flex-basis: 20%;
+  margin-right: 5%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ui.ribbon.label {
+  margin-bottom: 20px;
+}
+
+.regForm {
+  width: 50%;
+}
+.avatar {
+  margin-top: 60px;
+}
+.avatar > .ui.button {
+  margin-top: 10px;
+}
+
+.usersList {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.lections {
+  width: 100%;
+}
+.lectionsTitle {
+  text-align: center;
+}
+.lections h1:first-child {
+  margin-top: 60px;
+}
+
+h3:first-child {
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+.ui.list {
+  font-size: 1em;
+}
+.ui.sidebar {
+  margin-right: 20px !important;
+  min-height: 100vh;
+}
+.weekTitle {
+  font-size: 24px;
+}
+.phaseTabs {
+  font-weight: 600;
+  font-size: 21px;
+}
+
+.react-tabs__tab {
+  padding: 12px 26px;
+}
+.ui.menu {
+  font-family: inherit;
+  font-size: 1.2rem;
+}
+.ui.menu .item {
+  padding-top: 35px;
+  padding-bottom: 0;
+}
+
+.columnContainer {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.videoContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+.videoContainer h1 {
+  margin-bottom: 30px;
+  color: #5053aa;
+}
+.video {
+  align-self: center;
+  margin-bottom: 30px;
+  box-shadow: 0px 0px 35px -5px rgba(34, 36, 38, 0.15);
+}
+
+.profileForm {
+  margin-top: 60px;
+}
+
+.newsMessage {
+  width: 100%;
+  margin-top: 20px;
+}
+.ui.message:first-child {
+  margin-top: 20px;
+}
+
+footer {
+  margin-top: 60px;
+}
+.videoLinksFiles {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-size: 25px;
+
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.videoLinksFiles a {
+  margin-top: 7px;
+  margin-bottom: 7px;
+  color: #4520ab;
+  text-decoration: underline;
+}
+.videoLinksFiles a:hover {
+  color: #3a8eed;
+}
+.videoLinksFiles .ui.button {
+  font-size: 18px;
+}
+.videoLinks {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.videoFile {
+  text-align: right;
+}
+.videoLinksFilesSegment {
+  width: 80%;
+  align-self: center;
+  margin-top: 30px;
+}
+.ui.segment.videoLinksFilesSegment {
+  box-shadow: 0px 0px 25px -5px rgba(34, 36, 38, 0.15);
+  border: none;
+}
+.videoFile .ui.button {
+  margin-right: 0;
+}
+.videoFile .fileTitle {
+  margin-bottom: 7px;
+}
+
+.info.ui.message {
+  margin-bottom: 0;
+}
+.videoLinksFiles p {
+  margin-top: 10px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.regForm {
+  margin-left: auto;
+  margin-right: auto;
+}
+.ButPhase {
+  color: green;
+}
+.select {
+  float: right;
+}
+
+.react-tabs__tab-panel .ui.icon.button {
+  padding: 10px;
+  background: white;
+  color: #4520ab;
+  font-size: 10px;
+  /* width: 10%; */
+  opacity: 0.6;
+  margin-top: -5px;
+  margin-left: 10px;
+  /* height: 20px; */
+}
+.react-tabs__tab-panel .ui.icon.button:hover {
+  opacity: 1;
+}
+.react-tabs__tab-panel .ui.list {
+  margin: 15px;
+}
+.addWeek.ui.button {
+  margin-top: 30px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.usersTitle.ui.header:first-child {
+  margin-top: 60px;
+  width: 100%;
+  text-align: center;
+}
+.itemUser {
+  flex-basis: 33%;
+  min-height: 130px;
+}
+
+.testHeader.ui.header:first-child {
+  margin-top: 60px;
+  width: 100%;
+  text-align: center;
+}
+
+.testsList {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.testItem {
+  flex-basis: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.testItem.ui.list > .item {
+  padding: 0;
+}
+.testFrame {
+  margin-top: 60px;
+}
+
+.selectDiv {
+  /*
+  display:flex; */
+  text-align-last: center;
+  color: red;
+}
+h1:first-child.topicHeader {
+  margin-top: 60px;
+}
+
+.avatar.ui.image {
+  object-fit: cover;
+}
+.profileAvatar.ui.image {
+  object-fit: cover;
+}
+.profileAvatar.ui.small.image {
+  max-width: 150px;
+  max-height: 150px;
+}
+.ui.small.image {
+  width: 100%;
+  height: 100%;
+}
+
+.ui.header > .image:not(.icon),
+.ui.header > img {
+  width: 100px;
+  height: 100px;
+}
+
+.react-tabs__tab-panel .ui.list.weekList {
+  display: flex;
+  margin-left: 0;
+}
+.react-tabs__tab-panel .ui.icon.button.addDayButton {
+  margin-left: 10px;
+  margin-right: 10px;
+  align-self: flex-end;
+  margin-bottom: 8px;
+}
+
+.topicListItem {
+  margin: 15px;
+  margin-left: 5px;
+}
+
+/* .videoPlaceholderWrapper {
+  position: relative;
+  width: 1200px;
+  height: 100vh;
+} */
+.videoPlaceholder {
+  /* position: absolute; */
+  width: 1200px;
+  height: 100px;
+  opacity: 0.6;
+}
+
+.nonGroup h1:first-child {
+  margin-top: 60px;
+  margin-bottom: 100px;
+  text-align: center;
+  max-width: 600px;
+  color: #5053aa;
+}
+.nonGroup h1:first-child:hover:after {
+  content: 'Классное видео';
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+.nonGroup {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-direction: column;
+}
+
+.userslistButton.ui.button {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.usersSendButton.ui.button {
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.userSendForm {
+  display: flex;
+  justify-content: center;
+}
+.regForm.ui.header:first-child {
+  margin-left: 50px;
+}
+.changeGroupSelect {
+  height: 40px;
+}
+.changeButtonWrapper {
+  width: 100%;
+  display: flex;
+  text-align: center;
+}
+.changeTopic.ui.button {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 4px;
+}
+
+/* .regForm.ui.header {
+} */

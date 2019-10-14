@@ -1,0 +1,10 @@
+export const ADD_USER = 'ADD_USER';
+export const DEL_USER = 'DEL_USER';
+export const ADD_MSG = 'ADD_MSG';
+export const ADD_LOGMSG = 'ADD_LOGMSG';
+export const AVATAR_TO_STATE = 'AVATAR_TO_STATE';
+export const UPDATE_AVATAR = 'UPDATE_AVATAR';
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const GET_SELECTED_USERS = 'GET_SELECTED_USERS';
+export const REQUEST_ALL_USERS = 'REQUEST_ALL_USERS';
+export const REQUESTED_FAILED = 'REQUESTED_FAILED';
