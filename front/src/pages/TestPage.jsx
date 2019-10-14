@@ -4,7 +4,6 @@ import { getAllTests, getSelectedTests } from '../redux/Tests/actions';
 
 import { Button, Header, Modal, Form } from 'semantic-ui-react';
 
-
 class TestPage extends Component {
   state = {
     changeData: true,
@@ -39,14 +38,14 @@ class TestPage extends Component {
 
   get = async e => {
     e.preventDefault();
-    this.setState({ changeData: true })
+    this.setState({ changeData: true });
     this.func();
   };
 
   async componentDidUpdate(prevProps, prevState) {
     // if (prevState.modalOpen && !this.state.modalOpen) {
     if (prevState.changeData && !this.state.changeData) {
-      console.log("STATE CHANGED");
+      console.log('STATE CHANGED');
 
       await this.func();
       await this.props.getSelectedTests(this.props.selectedGroup);
@@ -55,7 +54,7 @@ class TestPage extends Component {
         title: test.title,
         googleFormsLink: test.googleFormsLink,
       });
-      
+
       this.setState({ test: test });
       // this.setState({changeData:true})
       this.props.history.push('/tests');
@@ -82,10 +81,10 @@ class TestPage extends Component {
     return (
       <>
         {this.props.admin === 'admin' ? (
-          <>
+          <div className="testsModalWrapper">
             <Modal
               trigger={
-                <Button positive onClick={this.handleOpen}>
+                <Button className="testsButton" basic color="violet" onClick={this.handleOpen}>
                   Изменить тест
                 </Button>
               }
@@ -93,7 +92,7 @@ class TestPage extends Component {
               open={this.state.modalOpen}
               // close={this.state.modalOpen}
               onClose={this.handleClose}
-            // basic
+              // basic
             >
               <Modal.Header>{this.state.topicName}</Modal.Header>
               <Modal.Content>
@@ -116,7 +115,7 @@ class TestPage extends Component {
                         <label htmlFor="githubLink">githubLink</label>
                         <input type="text" name="githubLink" onChange={this.githubLink} />
                       </Form.Field> */}
-                    
+
                       <div className="form-field">
                         <Button type="button" className="Button" onClick={this.get}>
                           Отправить
@@ -128,10 +127,10 @@ class TestPage extends Component {
                 </Modal.Description>
               </Modal.Content>
             </Modal>
-          </>
+          </div>
         ) : (
-            <></>
-          )}
+          <></>
+        )}
 
         {this.state.test ? (
           <iframe
@@ -147,8 +146,8 @@ class TestPage extends Component {
             Загрузка...
           </iframe>
         ) : (
-            <></>
-          )}
+          <></>
+        )}
       </>
     );
   }
