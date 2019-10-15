@@ -23,18 +23,18 @@ export const addUser = (login, email, status, photo, group, groupName) => {
     groupName: groupName,
   };
 };
-export const addMsg = (message,loading) => {
+export const addMsg = (message, loading) => {
   return {
     type: ADD_MSG,
     message: message,
-    loading:loading,
+    loading: loading,
   };
 };
-export const addLogMsg = (loginMessage,loading) => {
+export const addLogMsg = (loginMessage, loading) => {
   return {
     type: ADD_LOGMSG,
     loginMessage: loginMessage,
-    loading:loading,
+    loading: loading,
   };
 };
 export const delUser = () => {
@@ -87,7 +87,6 @@ const requestSelectedUsers = data => {
 const getSelectedUsers = selectedGroup => async dispatch => {
   try {
     const resp = await axios.post('/get-users', { groupName: selectedGroup });
-    // console.log(resp.data);
     dispatch(requestSelectedUsers(resp.data));
   } catch (error) {}
 };
@@ -132,5 +131,18 @@ const getAllUsers = () => async dispatch => {
     dispatch(requestErrorAC());
   }
 };
+const authcheck = () => async dispatch => {
+  try {
+    let resp = await fetch('/authcheck');
+    let user = await resp.json();
+    if (user.user) {
+      dispatch(addUser(user.user, user.email, user.status, user.photo, user.group, user.groupName));
+    } else {
+      dispatch(delUser());
+    }
+  } catch (error) {
+    dispatch(requestErrorAC());
+  }
+};
 
-export { updateProfile, updateAvatar, getAllUsers, getSelectedUsers };
+export { updateProfile, updateAvatar, getAllUsers, getSelectedUsers, authcheck };

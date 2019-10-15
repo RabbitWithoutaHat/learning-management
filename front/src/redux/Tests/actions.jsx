@@ -24,10 +24,10 @@ const getSelectedTests = selectedGroup => async dispatch => {
   try {
     const resp = await axios.post('/get-tests', { groupName: selectedGroup });
     dispatch(requestSelectedTests(resp.data));
-  } catch (error) { }
+  } catch (error) {}
 };
 
-const getAllTests = (group) => async dispatch => {
+const getAllTests = group => async dispatch => {
   try {
     const resp = await fetch('/get-tests');
     const data = await resp.json();
@@ -36,5 +36,19 @@ const getAllTests = (group) => async dispatch => {
     dispatch(requestErrorAC());
   }
 };
+const addTest = data => async dispatch => {
+  try {
+    await fetch('/addtest', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    dispatch(requestErrorAC());
+  }
+};
 
-export { getAllTests, getSelectedTests };
+export { getAllTests, getSelectedTests, addTest };
