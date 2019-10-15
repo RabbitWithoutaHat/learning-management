@@ -114,6 +114,8 @@ router.get('/authcheck', async (req, res) => {
 });
 // Edit exactly Topic
 router.post('/edittopic', async (req, res) => {
+  console.log(req.body);
+
   const topic = await Topic.findOneAndUpdate(
     { _id: req.body.id },
     {

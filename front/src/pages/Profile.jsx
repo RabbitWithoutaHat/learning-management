@@ -110,12 +110,7 @@ class Profile extends Component {
             size="small"
             circular
           />
-          <Button
-            content="Выбрать фото"
-            labelPosition="left"
-            // icon="file"
-            onClick={() => this.fileInputRef.current.click()}
-          />
+          <Button content="Выбрать фото" labelPosition="left" onClick={() => this.fileInputRef.current.click()} />
           <input ref={this.fileInputRef} name="photo" type="file" hidden onChange={this.uploadPhoto} />
         </div>
       </>

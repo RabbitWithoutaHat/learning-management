@@ -10,7 +10,6 @@ class TestPage extends Component {
   };
 
   async componentDidMount() {
-    // await this.getTests();
     await this.props.getSelectedTests(this.props.selectedGroup);
     const test = this.props.tests.find(e => e.googleFormsLink === this.props.match.params.id);
     await this.setState({ test: test });
@@ -33,7 +32,6 @@ class TestPage extends Component {
     let dataresp = await resp.json();
     this.setState({ modalOpen: false, changeData: false });
     this.setState({ changeData: false });
-    // this.setState({buttonClicked:'sdasd'});
   };
 
   get = async e => {
@@ -43,10 +41,7 @@ class TestPage extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    // if (prevState.modalOpen && !this.state.modalOpen) {
     if (prevState.changeData && !this.state.changeData) {
-      console.log('STATE CHANGED');
-
       await this.func();
       await this.props.getSelectedTests(this.props.selectedGroup);
       const test = this.props.tests.find(el => el.googleFormsLink === this.props.match.params.id);
@@ -56,7 +51,6 @@ class TestPage extends Component {
       });
 
       this.setState({ test: test });
-      // this.setState({changeData:true})
       this.props.history.push('/tests');
     }
   }
@@ -74,7 +68,6 @@ class TestPage extends Component {
   };
   handleClose = e => {
     this.setState({ modalOpen: false });
-    // this.setState({closedStatus:true})
   };
 
   render() {
@@ -90,17 +83,11 @@ class TestPage extends Component {
               }
               closeIcon
               open={this.state.modalOpen}
-              // close={this.state.modalOpen}
               onClose={this.handleClose}
-              // basic
             >
               <Modal.Header>{this.state.topicName}</Modal.Header>
               <Modal.Content>
                 <Modal.Description>
-                  {/* <Header className="regForm">
-                    Фаза:{this.state.topicPhase} Неделя:{this.state.topicWeek} День:{this.state.topicDay}
-                  </Header> */}
-                  {/* ФОрма */}
                   <Modal.Actions>
                     <Form className="regForm">
                       <Form.Field>
@@ -111,10 +98,6 @@ class TestPage extends Component {
                         <label htmlFor="googleFormsLink">Google Form Link</label>
                         <input type="text" name="googleFormsLink" onChange={this.googleFormsLink} />
                       </Form.Field>
-                      {/* <Form.Field>
-                        <label htmlFor="githubLink">githubLink</label>
-                        <input type="text" name="githubLink" onChange={this.githubLink} />
-                      </Form.Field> */}
 
                       <div className="form-field">
                         <Button type="button" className="Button" onClick={this.get}>
@@ -123,7 +106,6 @@ class TestPage extends Component {
                       </div>
                     </Form>
                   </Modal.Actions>
-                  {/* форма */}
                 </Modal.Description>
               </Modal.Content>
             </Modal>

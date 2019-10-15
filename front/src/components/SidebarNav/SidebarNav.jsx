@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Icon, Menu, Sidebar, Dimmer, Loader } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
-import { addUser } from '../../redux/Users/actions';
+import { addUser, delUser, authcheck } from '../../redux/Users/actions';
 import { connect } from 'react-redux';
-import { delUser } from '../../redux/Users/actions';
 import { Link } from 'react-router-dom';
 import { getCalendar } from '../../redux/News/action';
 import moment from 'moment';
@@ -38,18 +37,11 @@ class SidebarNav extends Component {
         event['summary'] = `${eventsObj[prop]}`;
       }
     }
-    console.log(event);
     this.setState({ eventMessage: event.summary });
   };
   async componentDidMount() {
     this.props.getCalendar();
-    let resp = await fetch('/authcheck');
-    let user = await resp.json();
-    if (user.user) {
-      this.props.add(user.user, user.email, user.status, user.photo, user.group, user.groupName);
-    } else {
-      this.props.del();
-    }
+    await this.props.authcheck();
   }
   render() {
     return (
@@ -147,10 +139,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
+    authcheck: () => dispatch(authcheck()),
     getCalendar: () => dispatch(getCalendar()),
-    del: () => dispatch(delUser()),
-    add: (user, email, status, photo, group, groupName) =>
-      dispatch(addUser(user, email, status, photo, group, groupName)),
   };
 }
 export default connect(
