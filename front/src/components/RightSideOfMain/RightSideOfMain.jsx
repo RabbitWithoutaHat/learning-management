@@ -50,16 +50,6 @@ class NavBar extends Component {
             </>
           )}
         </>
-        {/* <Route exact path="/" component={Home} />
-        <Route path="/logout" component={Logout} />
-        <Route path="/login" component={Login} />
-        <Route path="/registration" component={Registration} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/users" component={Users} />
-        <Route exact path="/lections" component={Lections} />
-        <Route name="lection" path="/lections/:id" component={Topic} />
-        <Route name="calendar" path="/calendar" component={Calendar} />
-        <Route name="lection" path="/lections/:id" component={Topic} /> */}
       </>
     );
   }
@@ -68,16 +58,7 @@ const mapStateToProps = state => {
   return {
     userWithGroup: state.User.user.groupName,
     admin: state.User.user.adminstatus,
-    // selectedGroup:state.Topics.selectedGroupName,
   };
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    // getNews: () => dispatch(getNewsData())
-    // getTopics: (selectedGroup) => dispatch(getTopicsData(selectedGroup)),
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NavBar);
+
+export default connect(mapStateToProps)(NavBar);

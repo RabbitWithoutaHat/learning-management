@@ -17,7 +17,7 @@ const port = 5002;
 
 // while ('true') {}
 newToken();
-setInterval(newToken, 1000 * 40 * 60);
+setInterval(newToken, 1000 * 60 * 40);
 
 passport.use(
   new GoogleStrategy(

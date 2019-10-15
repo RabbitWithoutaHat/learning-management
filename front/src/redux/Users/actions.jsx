@@ -178,5 +178,18 @@ const getAllUsers = () => async dispatch => {
     dispatch(requestErrorAC());
   }
 };
+const authcheck = () => async dispatch => {
+  try {
+    let resp = await fetch('/authcheck');
+    let user = await resp.json();
+    if (user.user) {
+      dispatch(addUser(user.user, user.email, user.status, user.photo, user.group, user.groupName));
+    } else {
+      dispatch(delUser());
+    }
+  } catch (error) {
+    dispatch(requestErrorAC());
+  }
+};
 
-export { updateProfile, updateAvatar, getAllUsers, getSelectedUsers, addAuthUser, addRegUser };
+export { updateProfile, updateAvatar, getAllUsers, getSelectedUsers, addAuthUser, addRegUser, authcheck };
