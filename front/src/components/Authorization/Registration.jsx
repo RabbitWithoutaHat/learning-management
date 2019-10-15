@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addMsg, addUser } from '../../redux/Users/actions';
 import { Button, Form } from 'semantic-ui-react';
-import { delUser } from '../../redux/Users/actions';
+import { delUser, addRegUser } from '../../redux/Users/actions';
 
 class Registration extends Component {
   state = {
@@ -27,26 +27,13 @@ class Registration extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    let resp = await fetch('/reg', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    let user = await resp.json();
-    if (user.user) {
-      console.log('UUUUUUUUUSERR',user);
-      
-      this.props.add(user.user, user.email, user.status, user.photo, user.group, user.groupName);
+    await this.props.addRegUser(data);
+    if (this.props.loginMessage) {
+    } else {
       this.setState({ nickname: '', email: '', password: '' });
       this.props.history.push('/');
-    } else {
-      // this.props.del();
-      this.props.addMsg(user.message,user.loading);
-
     }
+
   };
   render() {
     return (
@@ -75,7 +62,7 @@ class Registration extends Component {
           <div className="form-field">
             <Button type="submit">Отправить</Button>{' '}
           </div>
-          <h3 className="Error">{this.props.message ? <>{this.props.message}</> : <></>}</h3>
+          <h3 className="Error">{this.props.loginMessage ? <>{this.props.loginMessage}</> : <></>}</h3>
         </Form>
       </>
     );
@@ -83,15 +70,14 @@ class Registration extends Component {
 }
 function mapStateToProps(state) {
   return {
-    message: state.User.user.message,
+    // message: state.User.user.message,
+    loginMessage: state.User.user.loginMessage,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    del: () => dispatch(delUser()),
-    add: (user, email, status, photo, group, groupName) => dispatch(addUser(user, email, status, photo, group, groupName)),
-    addMsg: (message,loading) => dispatch(addMsg(message,loading)),
+    addRegUser: (data) => dispatch(addRegUser(data)),
   };
 }
 
