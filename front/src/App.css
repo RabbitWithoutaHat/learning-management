@@ -16,8 +16,8 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-.Error{
-  color:red;
+.Error {
+  color: red;
 }
 .App-link {
   color: #09d3ac;
@@ -434,3 +434,12 @@ h1:first-child.topicHeader {
 
 /* .regForm.ui.header {
 } */
+
+.testsButton.ui.button {
+  margin-top: 60px;
+}
+.testsModalWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

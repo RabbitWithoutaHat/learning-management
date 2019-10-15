@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getAllTests } from '../../redux/Tests/actions';
-import { getSelectedTests } from '../../redux/Tests/actions';
+import { getAllTests, getSelectedTests, addTest } from '../../redux/Tests/actions';
 import { Icon, List, Select, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
@@ -15,7 +14,7 @@ class TestList extends Component {
     this.props.admin === 'admin' ? this.props.getSelectedTests() : this.props.getSelectedTests(this.props.userGroup);
   }
 
-  getSelectedGroup = async (event) => {
+  getSelectedGroup = async event => {
     let selectedGroup = event.target.textContent;
 
     this.setState({ selectedGroupName: selectedGroup });
@@ -35,38 +34,26 @@ class TestList extends Component {
     let data = {
       group: this.state.selectedGroupName,
     };
-    let resp = await fetch('/addtest', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    let dataresp = await resp.json();
-
-    await this.props.getSelectedTests(dataresp.group);
+    await this.props.addTest(data);
+    await this.props.getSelectedTests(this.state.selectedGroupName);
   };
 
   render() {
     return (
       <>
         <>
-          {this.props.admin ?
+          {this.props.admin ? (
             <Select
               className="select"
               placeholder="Все пользователи"
               options={this.props.selectedGroupList}
               onChange={this.getSelectedGroup}
-            /> : <></>}
-
-
+            />
+          ) : (
+            <></>
+          )}
         </>
         <List className="ui massive  list testsList">
-          {console.log('OKOOKSODKSODSOD', this.props.selectedGroupTests)}
-          {
-            
-          }
           {this.props.selectedGroupTests ? (
             this.props.selectedGroupTests.map((e, i) => (
               <List.Item key={`${i}test`} className="item testItem">
@@ -75,21 +62,20 @@ class TestList extends Component {
                   <Link onClick={formId => this.setState({ formId })} to={`/tests/${e.googleFormsLink}`}>
                     {e.title}
                   </Link>
-                  {/* {console.log('POPOPOOP', this.props.user.admin)} */}
                   {this.props.admin ? <p>{`for ${e.groupName}`}</p> : <></>}
                 </List.Content>
               </List.Item>
             ))
           ) : (
-              <></>
-            )}
-        {this.props.admin ? (
-          <>
+            <></>
+          )}
+          {this.props.admin ? (
+            <>
               <Button className="addWeek" basic color="violet" icon="plus" onClick={this.addTest}>
-              Добавить тест
+                Добавить тест
               </Button>
-          </>
-        ) : (
+            </>
+          ) : (
             <></>
           )}
         </List>
@@ -99,8 +85,6 @@ class TestList extends Component {
 }
 
 const mapStateToProps = state => {
-  // console.log('OLLLLLLO', state)
-
   return {
     tests: state.Test.tests,
     user: state.User.user,
@@ -113,7 +97,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getTests: (group) => dispatch(getAllTests(group)),
+    addTest: data => dispatch(addTest(data)),
+    getTests: group => dispatch(getAllTests(group)),
     getSelectedTests: selectedGroup => dispatch(getSelectedTests(selectedGroup)),
   };
 };

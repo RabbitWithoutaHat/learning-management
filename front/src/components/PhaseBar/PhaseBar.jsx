@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getTopicsData } from '../../redux/Lections/actions';
-import { List } from 'semantic-ui-react';
+import { getTopicsData, addPhase, addDay, addWeek } from '../../redux/Lections/actions';
+import { List, Button, Select } from 'semantic-ui-react';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import { Button } from 'semantic-ui-react';
-import { Select } from 'semantic-ui-react';
 
 class PhaseBar extends Component {
   state = {
@@ -22,7 +20,6 @@ class PhaseBar extends Component {
   async componentDidMount() {
     await this.props.getTopics();
     this.setState({ selectedGroupName: this.props.selectedGroupName });
-    // console.log(this.props.topics.length);
   }
   addPhase = async () => {
     if (this.state.selectedGroupName === '') {
@@ -30,23 +27,13 @@ class PhaseBar extends Component {
     } else {
       this.setState({ groupNotSelectedStatus: false });
       let group = this.state.selectedGroupName;
-      let resp = await fetch('/addphase', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ group }),
-      });
-      let dataresp = await resp.json();
-      console.log('AAAAAAAAAADDDD PHAEEEEEE', dataresp);
-      await this.props.getTopics(dataresp.group);
+      await this.props.addPhase(group);
+      await this.props.getTopics(group);
     }
   };
   getSelecetedGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupName: selectedGroup });
-    console.log('text!!', selectedGroup);
     this.setState({ groupNotSelectedStatus: false });
     await this.props.getTopics(selectedGroup);
   };
@@ -72,18 +59,9 @@ class PhaseBar extends Component {
         day: numberOfDays,
         week: numberOfWeek,
       };
+      await this.props.addDay(data);
       await this.setState({ currentDaysOfClickedWeek: numberOfDays });
-      let resp = await fetch('/addday', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      let dataresp = await resp.json();
-      // console.log('DDDDDDDDDDAAATATTA', dataresp.group);
-      await this.props.getTopics(dataresp.group);
+      await this.props.getTopics(this.state.selectedGroupName);
     }
   };
   addWeek = async e => {
@@ -99,20 +77,10 @@ class PhaseBar extends Component {
       phase: this.state.tabIndex,
       group: this.state.selectedGroupName,
     };
-    let resp = await fetch('/addweek', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    let dataresp = await resp.json();
-
-    await this.props(dataresp.group);
+    await this.props.addWeek(data);
+    await this.props.getTopics(this.state.selectedGroupName);
   };
   render() {
-    // console.log(this.props.groupNames);
     return (
       <>
         {this.props.admin === 'admin' && this.props.groupNames ? (
@@ -136,7 +104,6 @@ class PhaseBar extends Component {
         ) : (
           <></>
         )}
-        {/* <div>{this.state.tabIndex}</div> */}
         <Tabs
           selectedIndex={this.state.tabIndex}
           onSelect={tabIndex => this.setState({ tabIndex })}
@@ -170,7 +137,6 @@ class PhaseBar extends Component {
                         {week.map((day, i) => (
                           <List.Item className="topicListItem" key={`day`}>
                             <Link params={{ desc: day.description }} to={`/lections/${day._id}`}>
-                              День:{day.day}
                               {day.topicName}
                             </Link>
                           </List.Item>
@@ -185,13 +151,6 @@ class PhaseBar extends Component {
                         onClick={this.addDay}
                       ></Button>
                     </List>
-                    {/* {this.props.admin ? (
-                      <>
-                        <Button basic color="violet" icon="plus"></Button>
-                      </>
-                    ) : (
-                      <></>
-                    )} */}
                   </>
                 ))}
               </TabPanel>
@@ -225,6 +184,9 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
+    addPhase: group => dispatch(addPhase(group)),
+    addWeek: data => dispatch(addWeek(data)),
+    addDay: data => dispatch(addDay(data)),
     getTopics: selectedGroup => dispatch(getTopicsData(selectedGroup)),
   };
 };

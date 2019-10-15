@@ -9,6 +9,7 @@ import {
   REQUESTED_FAILED,
   REQUEST_ALL_USERS,
   GET_SELECTED_USERS,
+  ADD_LOAD_STATUS,
 } from './types';
 import axios from 'axios';
 
@@ -23,18 +24,18 @@ export const addUser = (login, email, status, photo, group, groupName) => {
     groupName: groupName,
   };
 };
-export const addMsg = (message,loading) => {
+export const addMsg = (message, loading) => {
   return {
     type: ADD_MSG,
     message: message,
-    loading:loading,
+    loading: loading,
   };
 };
-export const addLogMsg = (loginMessage,loading) => {
+export const addLogMsg = (loginMessage, loading) => {
   return {
     type: ADD_LOGMSG,
     loginMessage: loginMessage,
-    loading:loading,
+    loading: loading,
   };
 };
 export const delUser = () => {
@@ -75,6 +76,12 @@ const requestUsers = data => {
     users: data,
   };
 };
+const addLoadStatus = loading => {
+  return {
+    type: ADD_LOAD_STATUS,
+    loading: loading,
+  };
+};
 const requestSelectedUsers = data => {
   return {
     type: GET_SELECTED_USERS,
@@ -87,9 +94,48 @@ const requestSelectedUsers = data => {
 const getSelectedUsers = selectedGroup => async dispatch => {
   try {
     const resp = await axios.post('/get-users', { groupName: selectedGroup });
-    // console.log(resp.data);
     dispatch(requestSelectedUsers(resp.data));
-  } catch (error) {}
+  } catch (error) { }
+};
+const addRegUser = data => async dispatch => {
+  try {
+    let resp = await fetch('/reg', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    let user = await resp.json();
+    if (user.user) {
+      dispatch(addLoadStatus(true));
+      dispatch(addUser(user.user, user.email, user.status,
+        user.photo, user.group, user.groupName));
+    } else {
+      dispatch(addLogMsg(user.message, user.loading));
+    }
+  } catch (error) { }
+};
+const addAuthUser = data => async dispatch => {
+  try {
+    let resp = await fetch('/log', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    let user = await resp.json();
+    if (user.user) {
+      dispatch(addLoadStatus(true));
+      dispatch(addUser(user.user, user.email, user.status,
+        user.photo, user.group, user.groupName));
+    } else {
+      dispatch(addLogMsg(user.message, user.loading));
+    }
+  } catch (error) { }
 };
 
 const updateProfile = data => async dispatch => {
@@ -132,5 +178,18 @@ const getAllUsers = () => async dispatch => {
     dispatch(requestErrorAC());
   }
 };
+const authcheck = () => async dispatch => {
+  try {
+    let resp = await fetch('/authcheck');
+    let user = await resp.json();
+    if (user.user) {
+      dispatch(addUser(user.user, user.email, user.status, user.photo, user.group, user.groupName));
+    } else {
+      dispatch(delUser());
+    }
+  } catch (error) {
+    dispatch(requestErrorAC());
+  }
+};
 
-export { updateProfile, updateAvatar, getAllUsers, getSelectedUsers };
+export { updateProfile, updateAvatar, getAllUsers, getSelectedUsers, addAuthUser, addRegUser, authcheck };

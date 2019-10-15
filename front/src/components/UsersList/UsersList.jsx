@@ -25,24 +25,6 @@ class UsersList extends Component {
   newGroupName = e => {
     this.setState({ newGroupName: e.target.value });
   };
-  // check = (e) => {
-  //   e.preventDefault();
-  //   if(this.state.checkedStatus){
-
-  //     const elements = document.querySelectorAll('.checked');
-  //     console.log('Class============',elements[0].className);
-  //     for(let i = 0 ; i < elements.length;i++) {
-  //       if (elements[i].className.includes('checked')) {
-  //         elements[i].className = elements[i].className.replace('checked', '');
-  //       } else {
-
-  //       }
-  //     }
-  //    this.setState({checkedStatus:false})
-  //   } else {
-
-  //   }
-  // }
   getCheckedusers = async () => {
     const element = document.querySelectorAll('.checked');
     const usersId = [];
@@ -79,8 +61,6 @@ class UsersList extends Component {
   getSelecetedGroupModalChangeGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupNameModalChangeGroup: selectedGroup });
-
-    // await this.props.getSelectedUsers(selectedGroup);
   };
   getSelecetedGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
@@ -141,10 +121,7 @@ class UsersList extends Component {
     }
   };
   async componentDidUpdate(prevProps, prevState) {
-    console.log('UPDATE');
-
     if (prevState.changeData && !this.state.changeData) {
-      console.log('STATE CHANGED');
       this.props.getSelectedUsers();
     }
   }
@@ -164,13 +141,11 @@ class UsersList extends Component {
                   closeIcon
                   open={this.state.modalOpenChangeGroup}
                   onClose={this.handleCloseChangeGroup}
-                  // basic
                 >
                   <Modal.Header></Modal.Header>
                   <Modal.Content>
                     <Modal.Description>
                       <Header className="regForm">Изменить группу пользователей</Header>
-                      {/* ФОрма */}
                       <Modal.Actions>
                         <Form className="regForm">
                           <Form.Field className="changeGroupSelect">
@@ -194,7 +169,6 @@ class UsersList extends Component {
                           </div>
                         </Form>
                       </Modal.Actions>
-                      {/* форма */}
                     </Modal.Description>
                   </Modal.Content>
                 </Modal>
@@ -221,10 +195,6 @@ class UsersList extends Component {
             </>
             {this.props.admin === 'admin' ? (
               <>
-                {/* <Button type="button" className="Button" onClick={this.check}>
-                             Check
-                        </Button>
-                           */}
                 <Modal
                   trigger={
                     <Button className="userslistButton select" basic color="violet" onClick={this.openAdd}>
@@ -234,13 +204,11 @@ class UsersList extends Component {
                   closeIcon
                   open={this.state.modalOpenAddGroup}
                   onClose={this.handleCloseAddGroup}
-                  // basic
                 >
                   <Modal.Header></Modal.Header>
                   <Modal.Content>
                     <Modal.Description>
                       <Header className="regForm">Добавить в группу</Header>
-                      {/* ФОрма */}
                       <Modal.Actions>
                         <Form className="regForm">
                           <Form.Field>
@@ -260,7 +228,6 @@ class UsersList extends Component {
                           </div>
                         </Form>
                       </Modal.Actions>
-                      {/* форма */}
                     </Modal.Description>
                   </Modal.Content>
                 </Modal>

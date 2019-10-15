@@ -16,6 +16,7 @@ const app = express();
 const port = 5002;
 
 // while ('true') {}
+newToken();
 setInterval(newToken, 1000 * 60 * 40);
 
 passport.use(
@@ -28,7 +29,7 @@ passport.use(
       scope: ['profile', 'https://www.googleapis.com/auth/calendar.readonly'],
     },
     (accessToken, refreshToken, profile, done) => {
-      Token.findOrCreate({ accessToken, refreshToken }, (err, data) => done(err, data),);
+      Token.findOrCreate({ accessToken, refreshToken }, (err, data) => done(err, data));
     },
   ),
 );

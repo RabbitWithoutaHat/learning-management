@@ -8,6 +8,7 @@ import {
   AVATAR_TO_STATE,
   REQUEST_ALL_USERS,
   GET_SELECTED_USERS,
+  ADD_LOAD_STATUS,
 } from './types';
 
 const initialState = {
@@ -56,6 +57,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         user: { loginMessage: action.loginMessage,loading:action.loading },
+      };
+    }
+    case ADD_LOAD_STATUS: {
+      return {
+        ...state,
+        user: {loading:action.loading },
       };
     }
     case DEL_USER: {

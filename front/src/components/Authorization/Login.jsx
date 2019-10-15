@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form } from 'semantic-ui-react';
 import { addLogMsg, addUser } from '../../redux/Users/actions';
+import { addAuthUser } from '../../redux/Users/actions';
 
 class Login extends Component {
   state = {
@@ -23,22 +24,13 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    let resp = await fetch('/log', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    let user = await resp.json();
+    await this.props.addAuthUser(data)
+    if (this.props.loginMessage) {
+      console.log('if', this.props.loginMessage);
 
-    if (user.user) {
-      this.setState({ dataLoaded: true });
-      this.props.add(user.user, user.email, user.status, user.photo, user.group, user.groupName);
-      this.props.history.push('/');
     } else {
-      this.props.addLogMsg(user.message,user.loading);
+      this.props.history.push('/');
+      console.log('else', this.props.loginMessage);
     }
   };
   render() {
@@ -65,9 +57,9 @@ class Login extends Component {
             <Button type="submit">Войти</Button>
           </div>
           {this.props.dataLoaded ? <></> : <></>}
-        <h3 className="Error">{this.props.loginMessage ? <>{this.props.loginMessage}</> : <></>}</h3>
+          <h3 className="Error">{this.props.loginMessage ? <>{this.props.loginMessage}</> : <></>}</h3>
         </Form>
-       
+
       </>
     );
   }
@@ -75,13 +67,15 @@ class Login extends Component {
 function mapStateToProps(state) {
   return {
     loginMessage: state.User.user.loginMessage,
+    loadingStatus: state.User.user.loading
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    add: (user, email, status, photo, group, groupName) =>
-      dispatch(addUser(user, email, status, photo, group, groupName)),
-    addLogMsg: (loginMessage,loading) => dispatch(addLogMsg(loginMessage,loading)),
+    addAuthUser: (data) => dispatch(addAuthUser(data)),
+    // add: (user, email, status, photo, group, groupName) =>
+    // dispatch(addUser(user, email, status, photo, group, groupName)),
+    // addLogMsg: (loginMessage,loading) => dispatch(addLogMsg(loginMessage,loading)),
   };
 }
 export default connect(
