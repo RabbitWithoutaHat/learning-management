@@ -25,12 +25,14 @@ class UsersList extends Component {
   newGroupName = e => {
     this.setState({ newGroupName: e.target.value });
   };
+  // CamelCase съехал
   getCheckedusers = async () => {
     const element = document.querySelectorAll('.checked');
     const usersId = [];
     for (let i = 0; i < element.length; i++) {
       usersId.push(element[i].parentNode.id);
     }
+    // Слово chosed не существует)
     await this.setState({ chosedUsers: usersId });
   };
   openAdd = e => {
@@ -51,6 +53,7 @@ class UsersList extends Component {
       this.getCheckedusers();
     }
   };
+  // методы для open и close называются в разных стилях.
   handleCloseAddGroup = e => {
     this.setState({ modalOpenAddGroup: false });
   };
@@ -60,6 +63,7 @@ class UsersList extends Component {
   };
   getSelecetedGroupModalChangeGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
+    // selectedGroupNameModalChangeGroup можно ли как-то покороче, но не теряя смысл?
     this.setState({ selectedGroupNameModalChangeGroup: selectedGroup });
   };
   getSelecetedGroup = async (event, { value }) => {
@@ -95,6 +99,7 @@ class UsersList extends Component {
       },
       body: JSON.stringify(data),
     });
+    // dataresp?
     let dataresp = await resp.json();
     if (dataresp.status) {
       this.setState({ modalOpenChangeGroup: false, changeData: false });
@@ -127,6 +132,8 @@ class UsersList extends Component {
   }
   render() {
     return (
+      // Очень многа букав, разнесите по компонентам, пожалуйста.
+      // Хотя бы отдельно для админа вынесите.
       <>
         <>
           <div className="select selectDiv">
@@ -224,6 +231,7 @@ class UsersList extends Component {
                               onClick={this.addNewGroup}
                             >
                               Отправить
+                              {/* Что это после кнопки? Пробел? */}
                             </Button>{' '}
                           </div>
                         </Form>
@@ -241,10 +249,12 @@ class UsersList extends Component {
         <List className="ui massive relaxed animated list usersList">
           {this.props.selectedGroupItems ? (
             this.props.selectedGroupItems.map((e, i) => (
+              // А без апострофов и долларов уже не модно писать? Даже в случае с id?)
               <List.Item id={`${e._id}`} key={`${i}user`} className="item itemUser">
                 <Checkbox defaultChecked={true} onChange={this.toggleCheckBox} />
                 <List.Content className="content">
                   <Header as="a">
+                    {/* Вот эту проверку с фото можно сильно сократить */}
                     {e.photo ? (
                       <Image className="ui avatar image" src={`/images/${e.photo}`} />
                     ) : (

@@ -4,6 +4,7 @@ export default class Comments extends Component {
   render() {
     return (
       <div>
+        {/* Полезно :) */}
         Комменты к видео
       </div>
     )

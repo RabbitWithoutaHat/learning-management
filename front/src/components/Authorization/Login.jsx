@@ -17,6 +17,7 @@ class Login extends Component {
   email = e => {
     this.setState({ email: e.target.value });
   };
+  // Почему метод называется get? Он возвращает компонент Login или что-то вроде того?
   get = async e => {
     e.preventDefault();
 
@@ -26,6 +27,7 @@ class Login extends Component {
     };
     await this.props.addAuthUser(data)
     if (this.props.loginMessage) {
+      // Уберите все логи плз.
       console.log('if', this.props.loginMessage);
 
     } else {
@@ -35,6 +37,7 @@ class Login extends Component {
   };
   render() {
     return (
+      // Зачем тут фрагмент? Форма - полноценный элемент.
       <>
         <Form className="regForm" onSubmit={this.get}>
           <h3>Log in</h3>
@@ -56,8 +59,12 @@ class Login extends Component {
           <div className="form-field">
             <Button type="submit">Войти</Button>
           </div>
+          {/* Философская тернарка */}
           {this.props.dataLoaded ? <></> : <></>}
-          <h3 className="Error">{this.props.loginMessage ? <>{this.props.loginMessage}</> : <></>}</h3>
+          <h3 className="Error">
+            {/* Эта тоже. Если есть loginMessage значит он есть. */}
+            {this.props.loginMessage ? <>{this.props.loginMessage}</> : <></>}
+          </h3>
         </Form>
 
       </>
@@ -73,6 +80,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     addAuthUser: (data) => dispatch(addAuthUser(data)),
+    // Закомментированный код уберите
     // add: (user, email, status, photo, group, groupName) =>
     // dispatch(addUser(user, email, status, photo, group, groupName)),
     // addLogMsg: (loginMessage,loading) => dispatch(addLogMsg(loginMessage,loading)),

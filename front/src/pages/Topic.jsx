@@ -61,6 +61,7 @@ class Topic extends Component {
     this.setState({ modalOpen: false });
   };
 
+  // func, get 
   func = async () => {
     let data = {
       youtubeLink: this.state.youtubeLink,

@@ -10,6 +10,7 @@ class VideoWindow extends Component {
     FileLink: 'https://github.com/RabbitWithoutaHat/learning-management/pull/25',
     File: 'lenin.svg',
     link: false,
+    // rr? 
     rr: '',
   };
   async componentDidMount() {

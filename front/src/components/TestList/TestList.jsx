@@ -30,6 +30,7 @@ class TestList extends Component {
     }
   };
 
+  // О, мой любимый метод!
   func = async () => {
     let data = {
       group: this.state.selectedGroupName,
@@ -40,6 +41,7 @@ class TestList extends Component {
 
   render() {
     return (
+      // О! Фрагменты фрагментов фрагментов!
       <>
         <>
           {this.props.admin ? (
@@ -53,7 +55,7 @@ class TestList extends Component {
             <></>
           )}
         </>
-        <List className="ui massive  list testsList">
+        <List className="ui massive list testsList">
           {this.props.selectedGroupTests ? (
             this.props.selectedGroupTests.map((e, i) => (
               <List.Item key={`${i}test`} className="item testItem">

@@ -13,8 +13,10 @@ class Calendar extends Component {
     return (
       <p>
         {this.props.events ? (
-          this.props.events.map((event, i) => <li key={`${i}event`}>{`${event.start.date} - ${event.summary}`}</li>)
+          this.props.events.map((event, i) => 
+            <li key={`${i}event`}>{`${event.start.date} - ${event.summary}`}</li>)
         ) : (
+          // Почему именно span?
           <span></span>
         )}
       </p>

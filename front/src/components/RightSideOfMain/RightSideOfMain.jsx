@@ -14,10 +14,13 @@ import TestPage from '../../pages/TestPage';
 import PageWithoutGroup from '../PageWithoutGroup/PageWithoutGroup';
 import { connect } from 'react-redux';
 
+// Сначала мне не очень понравилось название файла.
+// Потом я увидел название компонента.
 class NavBar extends Component {
   async componentDidMount() {}
   render() {
     return (
+      // Кто-то очень любит фрагменты.
       <>
         <>
           {(this.props.userWithGroup !== 'Без группы' && this.props.userWithGroup) || this.props.admin === 'admin' ? (
