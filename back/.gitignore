@@ -2,3 +2,10 @@ node_modules/
 .DS_Store
 .idea/
 sessions/
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
