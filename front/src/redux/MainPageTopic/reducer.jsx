@@ -1,16 +1,15 @@
-import { REQUESTED_TOPIC,REQUESTED_ERROR, ADD_TOPIC } from './types';
+import { REQUESTED_TOPIC, REQUESTED_ERROR, ADD_TOPIC } from './types';
 
 const initialState = {
   user: {
-    login: '',
+    nickname: '',
     status: false,
     message: '',
     loginMessage: '',
   },
-  topic:'', //TOpic
-  loading:'', //loading Topic data status
-  error:'', //error TOpic status
-  
+  topic: '', //TOpic
+  loading: '', //loading Topic data status
+  error: '', //error TOpic status
 };
 export default function(state = initialState, action) {
   switch (action.type) {

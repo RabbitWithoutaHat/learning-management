@@ -20,16 +20,15 @@ export const requestError = () => {
   };
 };
 // thunk!
-export const getTopicsData = selectedGroup => async dispatch => {
+export const getTopicsData = group => async dispatch => {
   try {
     dispatch(requestTopics());
-    let resp = await fetch('/gettopics', {
-      method: 'POST',
+    let resp = await fetch(`/topic/${group}`, {
+      method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ selectedGroup }),
     });
     const data = await resp.json();
     dispatch(addTopics(data));
@@ -39,8 +38,8 @@ export const getTopicsData = selectedGroup => async dispatch => {
 };
 export const editTopic = data => async dispatch => {
   try {
-    await fetch('/edittopic', {
-      method: 'POST',
+    await fetch(`/topic/${data.id}`, {
+      method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

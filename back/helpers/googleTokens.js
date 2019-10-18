@@ -11,11 +11,6 @@ const refreshToken = async () => {
     grant_type: 'refresh_token',
   });
   const date = new Date();
-  console.log(
-    '======================REFRESH TOKEN========================',
-    res.data.access_token,
-    date,
-  );
   Token.refresh({ accessToken: res.data.access_token });
 };
 

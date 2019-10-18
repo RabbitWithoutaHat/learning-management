@@ -4,13 +4,12 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fileUpload = require('express-fileupload');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const newToken = require('./helpers/googleTokens');
 const connection = require('./models/connection');
 
 const indexRouter = require('./routes/index');
-const Token = require('./models/Token');
+const googleRouter = require('./routes/google');
+const topic = require('./routes/topic');
 
 const app = express();
 const port = 5002;
@@ -18,21 +17,6 @@ const port = 5002;
 // while ('true') {}
 newToken();
 setInterval(newToken, 1000 * 60 * 40);
-
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID:
-        '25492420798-qjo4b8c9nj7p3hibsocb6raf5m91443t.apps.googleusercontent.com',
-      clientSecret: 'J20xLC9i0yNPGwjHSXk54UcO',
-      callbackURL: 'http://localhost:5002/auth/google/callback',
-      scope: ['profile', 'https://www.googleapis.com/auth/calendar.readonly'],
-    },
-    (accessToken, refreshToken, profile, done) => {
-      Token.findOrCreate({ accessToken, refreshToken }, (err, data) => done(err, data));
-    },
-  ),
-);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -46,6 +30,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/auth/google', googleRouter);
+app.use('/topic', topic);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

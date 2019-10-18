@@ -57,7 +57,7 @@ class SidebarNav extends Component {
                       Актуальное
                     </Menu.Item>
                   </Link>
-                  <Link to="/lections">
+                  <Link to="/topics">
                     <Menu.Item>
                       <Icon name="book" />
                       Лекции
@@ -130,7 +130,7 @@ function mapStateToProps(state) {
   return {
     userWithGroup: state.User.user.groupName,
     admin: state.User.user.adminstatus,
-    user: state.User.user.login,
+    user: state.User.user.nickname,
     status: state.User.user.status,
     justregister: state.User.user.justregister,
     loading: state.User.user.loading,

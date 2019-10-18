@@ -2,7 +2,7 @@ import { REQUESTED_NEWS, ADD_NEWS, REQUESTED_ERROR, ADD_EVENTS } from './types';
 
 const initialState = {
   user: {
-    login: '',
+    nickname: '',
     status: false,
     message: '',
     loginMessage: '',

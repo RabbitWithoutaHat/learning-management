@@ -1,15 +1,17 @@
 const mongoose = require('mongoose');
 
 const { Schema, model } = mongoose;
+const { ObjectId } = Schema.Types;
 
 const DaySchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  weekId:{
-    type:Schema.Types.ObjectId,ref:'Week',
-    required:false,
+  weekId: {
+    type: ObjectId,
+    ref: 'Week',
+    required: false,
   },
   description: {
     type: String,
@@ -19,12 +21,13 @@ const DaySchema = new Schema({
     required: true,
   },
   group: {
-    type: Schema.Types.ObjectId, ref: 'Group',
+    type: ObjectId,
+    ref: 'Group',
   },
   // phase: {
   //   type: String,
   // },
-  
+
   githubLink: {
     type: String,
     required: false,

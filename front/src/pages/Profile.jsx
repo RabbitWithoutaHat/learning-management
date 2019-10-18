@@ -8,7 +8,7 @@ class Profile extends Component {
     email: '',
     password: '',
     dataLoaded: false,
-    login: '',
+    nickname: '',
     group: '',
     photo: '',
     phone: '',
@@ -24,7 +24,7 @@ class Profile extends Component {
   onClickHandler = e => {
     this.props.updateAvatar(this.props.photo);
     this.props.updateProfile({ data: this.state });
-    this.setState({ email: '', password: '', login: '', phone: '' });
+    this.setState({ email: '', password: '', nickname: '', phone: '' });
   };
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -54,14 +54,14 @@ class Profile extends Component {
             />
           </Form.Field>
           <Form.Field>
-            <label htmlFor="login">Имя</label>
+            <label htmlFor="nickname">Имя</label>
             <input
-              value={this.state.login}
+              value={this.state.nickname}
               type="text"
-              name="login"
+              name="nickname"
               required
               onChange={this.onChange}
-              placeholder={this.props.login ? this.props.login : ''}
+              placeholder={this.props.nickname ? this.props.nickname : ''}
             />
           </Form.Field>
           <Form.Field>
@@ -121,7 +121,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
   return {
     email: state.User.user.email,
-    login: state.User.user.login,
+    nickname: state.User.user.nickname,
     photo: state.User.user.photo,
     phone: state.User.user.phone,
     group: state.User.user.group,

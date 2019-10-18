@@ -1,14 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const fileUpload = require('express-fileupload');
 const User = require('../models/User');
 const Group = require('../models/Group');
-const homePageWithNotification = require('../helpers/homePageWithNotification');
-const notifications = require('../constants/notification-types');
 const addMiddlewares = require('../middlewares/add-middlewares');
-const { getUserNickname } = require('../helpers/reqHelpers');
-const { bcrypt: saltRounds } = require('../constants/other-constants');
 const News = require('../models/News');
 const Topic = require('../models/Topic');
 const Token = require('../models/Token');
@@ -18,8 +13,8 @@ const router = express.Router();
 
 addMiddlewares(router);
 
-router.post('/log', async (req, res, next) => {
-  const userr = await User.findOne({ email: req.body.email });
+router.post('/login', async (req, res, next) => {
+  const curUser = await User.findOne({ email: req.body.email });
   passport.authenticate('local', (err, user) => {
     if (err) {
       return res.json({ message: err, loading: true });
@@ -28,44 +23,33 @@ router.post('/log', async (req, res, next) => {
       if (err) {
         return res.json({ message: err, loading: true });
       }
-      const userdata = await User.findOne({ _id: req.user.id });
+      const userData = await User.findOne({ _id: req.user.id });
       return res.json({
-        user: user.nickname,
+        nickname: user.nickname,
         email: user.email,
-        status: userr.status,
-        photo: userdata.photo,
-        group: userdata.group,
-        groupName: userdata.groupName,
+        status: curUser.status,
+        photo: userData.photo,
+        group: userData.group,
+        groupName: userData.groupName,
       });
     });
   })(req, res, next);
 });
 
-router.get(
-  '/auth/google',
-  passport.authenticate('google', { accessType: 'offline', prompt: 'consent' }),
-);
-
-router.get(
-  '/auth/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/login',
-    session: false,
-  }),
-  (req, res) => {
-    res.redirect('/');
-  },
-);
-
-router.get('/authcheck', async (req, res) => {
+router.get('/auth-check', async (req, res) => {
+  const {
+ nickname, email, status, photo, group, groupName 
+} = req.user;
   if (req.isAuthenticated()) {
+    console.log(req.user.nickname);
+
     res.json({
-      user: req.user.nickname,
-      email: req.user.email,
-      status: req.user.status,
-      photo: req.user.photo,
-      group: req.user.group,
-      groupName: req.user.groupName,
+      nickname,
+      email,
+      status,
+      photo,
+      group,
+      groupName,
     });
   } else {
     res.json({
@@ -73,22 +57,7 @@ router.get('/authcheck', async (req, res) => {
     });
   }
 });
-// Edit exactly Topic
-router.post('/edittopic', async (req, res) => {
-  console.log(req.body);
 
-  const topic = await Topic.findOneAndUpdate(
-    { _id: req.body.id },
-    {
-      githubLink: req.body.githubLink,
-      video: req.body.youtubeLink,
-      fileLink: req.body.fileLink,
-      topicName: req.body.topic,
-    },
-  );
-
-  res.json({ status: 'done' });
-});
 // Edit test
 router.post('/edittest', async (req, res) => {
   let googleFormLink = req.body.googleFormsLink;
@@ -211,81 +180,6 @@ router.get('/getnews', async (req, res) => {
   res.json({ news: news.name });
 });
 // Get TOpics from BD for users exact group!
-router.post('/gettopics', async (req, res) => {
-  
-  const allGroups = await Group.find();
-  // Последняя группа
-  let selectedGroupName = '';
-  if (req.body.selectedGroup) {
-    selectedGroupName = req.body.selectedGroup;
-  } else {
-    selectedGroupName = allGroups[1].name;
-  }
-  // Массив из имён всех групп
-  const groupNames = [];
-  for (let i = 0; i < allGroups.length; i++) {
-    if (allGroups[i].name === 'Без группы' || allGroups[i].name === 'admin') {
-      continue;
-    } else {
-      const obj = {
-        key: `${i + 1}`,
-        value: `${i + 1}`,
-        text: allGroups[i].name,
-      };
-      groupNames.push(obj);
-    }
-  }
-  // если нет групп вообще
-  if (allGroups.length === 0) {
-    const arr = [];
-    res.json({ arr, arr });
-  }
-  // Для админа составим топики последней группы,а для пользователя его группы
-  let topics = [];
-  if (req.user.status === 'admin') {
-    console.log('admin');
-    topics = await Topic.find({ groupName: selectedGroupName });
-  } else {
-    topics = await Topic.find({ groupName: req.user.groupName });
-  }
-
-  // Максимальное кол-во фаз и недель!
-  let Phase = 0;
-  let Week = 0;
-  for (let i = 0; i < topics.length; i++) {
-    Phase = Math.max(Phase, topics[i].phase);
-    Week = Math.max(Week, topics[i].week);
-  }
-  const result = [];
-  for (let p = 1; p < Phase + 1; p++) {
-    const phase = [];
-    for (let w = 1; w < Week + 1; w++) {
-      const week = topics
-        .filter((el) => el.phase === `${p}`)
-        .filter((el) => el.week === `${w}`)
-        .sort((el) => (el.day ? 1 : -1));
-      if (week.length === 0) {
-        continue;
-      } else {
-        phase.push(week);
-      }
-    }
-
-    result.push(phase);
-  }
-  // Для админа верне топики последней группые ,все группы и поле конкретной группы для Select!
-  // Для юзера вернем топики его группы
-  if (req.user.status === 'admin') {
-    res.json({
-      result,
-      topics,
-      groupNames,
-      selectedGroupName,
-    });
-  } else {
-    res.json({ result, topics });
-  }
-});
 
 // GET ALl Groups for lections page
 router.get('/getgroups', (req, res) => {
@@ -317,7 +211,7 @@ router.post('/addday', async (req, res) => {
 router.post('/addtest', async (req, res) => {
   const newTest = new Test({
     title: 'Заполни меня',
-    googleFormsLink: '1FAIpQLSeiNk3uwPxYZvsA8WS16lNOeJQEf5MTdkKpu63yrAlIuZ3rEw',
+    googleFormsLink: process.env.GFORMSLINK,
     groupName: req.body.group,
     visible: false,
   });
@@ -404,8 +298,9 @@ router.get('/getDayData', async (req, res, next) => {
   // Все топики
   const groups = await Group.find();
   const topics = await Topic.find({ groupName: groups[1].name });
-  const mainPageTopic = topics
-    .sort((a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day);
+  const mainPageTopic = topics.sort(
+    (a, b) => b.phase - a.phase || b.week - a.week || b.day - a.day,
+  );
   if (mainPageTopic.length === null) {
     return res.status(400).json({ message: 'No file uploaded' });
   }
@@ -518,8 +413,8 @@ router.post('/get-tests', async (req, res) => {
 
 router.post('/update-profile', async (req, res) => {
   let {
-    email, password, nickname, phone, photo
-  } = req.body;
+ email, password, nickname, phone, photo 
+} = req.body;
 
   const { id } = req.user;
 
@@ -554,7 +449,7 @@ router.post('/update-profile', async (req, res) => {
 
   res.json({
     email: newData.email,
-    login: newData.nickname,
+    nickname: newData.nickname,
     photo: newData.photo,
     phone: newData.phone,
     group: newData.group,

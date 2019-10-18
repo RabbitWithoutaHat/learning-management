@@ -14,7 +14,6 @@ const TokenSchema = new Schema({
 });
 
 TokenSchema.statics.refresh = async function (newToken) {
-  console.log(newToken);
   await this.updateOne(
     {},
     {
@@ -43,7 +42,6 @@ TokenSchema.statics.findOrCreate = async function (Tokens, callback) {
       },
     );
   }
-  console.log('------------------!!saveDB!!', token[0]);
 
   callback(null, token);
 };
