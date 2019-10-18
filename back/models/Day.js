@@ -7,9 +7,11 @@ const DaySchema = new Schema({
     type: String,
     required: true,
   },
-  weekId:{
-    type:Schema.Types.ObjectId,ref:'Week',
-    required:false,
+  weekId: {
+    // вытащите ObjectId из типов заранее.
+    type: Schema.Types.ObjectId,
+    ref: 'Week',
+    required: false,
   },
   description: {
     type: String,
@@ -24,7 +26,7 @@ const DaySchema = new Schema({
   // phase: {
   //   type: String,
   // },
-  
+
   githubLink: {
     type: String,
     required: false,

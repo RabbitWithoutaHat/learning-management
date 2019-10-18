@@ -339,8 +339,12 @@ router.post('/addday', async (req, res) => {
   res.json({ group });
 });
 
+// `POST /tests/`
 router.post('/addtest', async (req, res) => {
   const newTest = new Test({
+    // Значения по умолчанию вынести в схему.
+    // Ссылку на гугл форму так оставлять нельзя - это хардкод.
+    // Если очень надо - вынести в какую-нибудь константу, а лучше в dotenv.
     title: 'Заполни меня',
     googleFormsLink: '1FAIpQLSeiNk3uwPxYZvsA8WS16lNOeJQEf5MTdkKpu63yrAlIuZ3rEw',
     groupName: req.body.group,
