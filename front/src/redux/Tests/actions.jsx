@@ -20,16 +20,16 @@ const requestErrorAC = () => {
   return { type: REQUESTED_FAILED };
 };
 
-const getSelectedTests = selectedGroup => async dispatch => {
+const getSelectedTests = group => async dispatch => {
   try {
-    const resp = await axios.post('/get-tests', { groupName: selectedGroup });
+    const resp = await axios.get(`/tests/${group}`, { groupName: group });
     dispatch(requestSelectedTests(resp.data));
   } catch (error) {}
 };
 
 const getAllTests = group => async dispatch => {
   try {
-    const resp = await fetch('/get-tests');
+    const resp = await fetch('/tests');
     const data = await resp.json();
     dispatch(requestTests(data));
   } catch (error) {
@@ -38,7 +38,7 @@ const getAllTests = group => async dispatch => {
 };
 const addTest = data => async dispatch => {
   try {
-    await fetch('/addtest', {
+    await fetch('/tests', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -50,5 +50,21 @@ const addTest = data => async dispatch => {
     dispatch(requestErrorAC());
   }
 };
+const editTest = data => async dispatch => {
+  console.log(data);
 
-export { getAllTests, getSelectedTests, addTest };
+  try {
+    await fetch(`/tests/${data.id}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    dispatch(requestErrorAC());
+  }
+};
+
+export { getAllTests, getSelectedTests, addTest, editTest };

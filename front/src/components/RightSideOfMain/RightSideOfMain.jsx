@@ -5,7 +5,7 @@ import Logout from '../Authorization/Logout';
 import Registration from '../Authorization/Registration';
 import Profile from '../../pages/Profile';
 import Home from '../../pages/Home';
-import Lections from '../../pages/Lections';
+import Topics from '../../pages/Topics';
 import Users from '../../pages/Users';
 import Topic from '../../pages/Topic';
 import Calendar from '../../components/Calendar/Calendar';
@@ -27,7 +27,7 @@ class NavBar extends Component {
               <Route path="/login" component={Login} />
               <Route path="/registration" component={Registration} />
               <Route path="/profile" component={Profile} />
-              <Route exact path="/topics" component={Lections} />
+              <Route exact path="/topics" component={Topics} />
               <Route name="lection" path="/topics/:id" component={Topic} />
               <Route exact path="/tests" component={Tests} />
               <Route name="test" path="/tests/:id" component={TestPage} />
@@ -42,6 +42,7 @@ class NavBar extends Component {
               <Route path="/login" component={Login} />
               <Route path="/registration" component={Registration} />
               <Route exact path="/topics" component={PageWithoutGroup} />
+              <Route exact path="/tests" component={PageWithoutGroup} />
               <Route name="lection" path="/topics/:id" component={PageWithoutGroup} />
               <Route exact path="/tests" component={Tests} />
               <Route name="test" path="/tests/:id" component={TestPage} />

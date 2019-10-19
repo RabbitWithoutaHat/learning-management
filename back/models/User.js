@@ -18,10 +18,12 @@ const UserSchema = new Schema({
   group: {
     type: Schema.Types.ObjectId,
     ref: 'Group',
+    default: '5d9f1b73e7e77e0fa391d58d',
   },
   groupName: {
     type: String,
     required: false,
+    default: 'Без группы',
   },
   photo: {
     type: String,
@@ -30,7 +32,7 @@ const UserSchema = new Schema({
   phone: {
     type: String,
     required: false,
-    default: false,
+    default: '',
   },
   status: {
     type: String,
@@ -51,11 +53,11 @@ const UserSchema = new Schema({
   },
 });
 
-UserSchema.statics.getByEmail = async function(email) {
+UserSchema.statics.getByEmail = async function (email) {
   return this.find({ email });
 };
 
-UserSchema.statics.getByUserName = async function(nickname) {
+UserSchema.statics.getByUserName = async function (nickname) {
   return this.find({ nickname });
 };
 

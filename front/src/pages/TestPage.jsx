@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getAllTests, getSelectedTests } from '../redux/Tests/actions';
+import { getAllTests, getSelectedTests, editTest } from '../redux/Tests/actions';
 
-import { Button, Header, Modal, Form } from 'semantic-ui-react';
+import { Button, Modal, Form } from 'semantic-ui-react';
+import { editTopic } from '../redux/Topics/actions';
 
 class TestPage extends Component {
   state = {
@@ -21,15 +22,9 @@ class TestPage extends Component {
       googleFormsLink: this.state.googleFormsLink,
       id: this.props.match.params.id,
     };
-    let resp = await fetch('/edittest', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    let dataresp = await resp.json();
+    console.log(data);
+
+    this.props.editTest(data);
     this.setState({ modalOpen: false, changeData: false });
     this.setState({ changeData: false });
   };
@@ -145,6 +140,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    editTest: data => dispatch(editTest(data)),
     getTests: () => dispatch(getAllTests()),
     getSelectedTests: selectedGroup => dispatch(getSelectedTests(selectedGroup)),
   };

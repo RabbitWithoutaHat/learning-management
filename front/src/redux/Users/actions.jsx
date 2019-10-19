@@ -99,7 +99,7 @@ const getSelectedUsers = selectedGroup => async dispatch => {
 };
 const addRegUser = data => async dispatch => {
   try {
-    let resp = await fetch('/reg', {
+    let resp = await fetch('/registration', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

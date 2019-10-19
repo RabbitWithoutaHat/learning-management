@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getTopicsData, addPhase, addDay, addWeek } from '../../redux/Lections/actions';
+import { getTopicsData, addPhase, addDay, addWeek } from '../../redux/Topics/actions';
 import { List, Button, Select } from 'semantic-ui-react';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';

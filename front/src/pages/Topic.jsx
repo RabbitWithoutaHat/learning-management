@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getTopicsData, editTopic } from '../redux/Lections/actions';
+import { getTopicsData, editTopic } from '../redux/Topics/actions';
 import { Button, Header, Modal, Form } from 'semantic-ui-react';
 
 class Topic extends Component {

@@ -35,6 +35,10 @@ router.post('/login', async (req, res, next) => {
     });
   })(req, res, next);
 });
+router.get('/logoout', (req, res) => {
+  req.logout();
+  res.json({ user: '' });
+});
 
 router.get('/auth-check', async (req, res) => {
   const {
@@ -58,85 +62,54 @@ router.get('/auth-check', async (req, res) => {
   }
 });
 
-// Edit test
-router.post('/edittest', async (req, res) => {
-  let googleFormLink = req.body.googleFormsLink;
-  if (googleFormLink.includes('https://docs.google.com/forms/d/e/')) {
-    googleFormLink = googleFormLink.replace(
-      'https://docs.google.com/forms/d/e/',
-      '',
-    );
-  }
-  if (googleFormLink.includes('/viewform?usp=sf_link')) {
-    googleFormLink = googleFormLink.replace('/viewform?usp=sf_link', '');
-  }
-  await Test.findOneAndUpdate(
-    { googleFormsLink: req.body.id },
-    {
-      title: req.body.title,
-      googleFormsLink: googleFormLink,
-    },
-  );
-
-  res.json({ status: 'done' });
-});
 // Add Phase
-router.post('/addphase', async (req, res) => {
+router.post('/phase', async (req, res) => {
   // Все топики для конкретной группы
   const topics = await Topic.find({ groupName: req.body.group });
-  console.log('ooooooooooooooooooooooooooooooooooooooooooo', topics.length);
   // Максимальное кол-во фаз !
-  let Phase = 0;
-  let Week = 0;
+  let phase = 0;
+  let week = 0;
   if (topics.length !== 0) {
     for (let i = 0; i < topics.length; i++) {
-      Phase = Math.max(Phase, topics[i].phase);
-      Week = Math.max(Week, topics[i].week);
+      phase = Math.max(phase, topics[i].phase);
+      week = Math.max(week, topics[i].week);
     }
   } else {
-    Phase = 1;
+    phase = 1;
   }
   if (topics.length !== 0) {
-    Phase += 1;
+    phase += 1;
   }
   const { group } = req.body;
   const newTopic = new Topic({
-    topicName: 'Заполни меня!!!',
-    description: 'стили',
-    video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     groupName: group,
-    phase: Phase.toString(),
-    week: 1,
-    day: 1,
-    githubLink:
-      'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
-    comments: [],
+    phase: phase.toString(),
   });
   await newTopic.save();
 
-  const updatedTopics = await Topic.find({ groupName: req.body.group });
+  const updatedTopics = await Topic.find({ groupName: group });
 
   const result = [];
-  for (let p = 1; p < Phase + 1; p++) {
-    const phase = [];
-    for (let w = 1; w < Week + 1; w++) {
+  for (let currPhase = 1; currPhase < phase + 1; currPhase++) {
+    const phaseList = [];
+    for (let currWeek = 1; currWeek < week + 1; currWeek++) {
       const week = updatedTopics
-        .filter((el) => el.phase === `${p}`)
-        .filter((el) => el.week === `${w}`)
+        .filter((el) => el.phase === `${currPhase}`)
+        .filter((el) => el.week === `${currWeek}`)
         .sort((el) => (el.day ? -1 : 1));
       if (week.length === 0) {
         continue;
       } else {
-        phase.push(week);
+        phaseList.push(week);
       }
     }
-    result.push(result);
+    result.push(phaseList);
   }
 
   res.json({ group: req.body.group });
 });
 
-router.post('/reg', async (req, res, next) => {
+router.post('/registration', async (req, res, next) => {
   const { nickname, email, password } = req.body;
   const curUser = await User.find({ email: req.body.email });
   if (curUser.length === 0) {
@@ -145,12 +118,9 @@ router.post('/reg', async (req, res, next) => {
       nickname,
       email,
       password: hash,
-      // без группы
-      group: '5d9f1b73e7e77e0fa391d58d',
-      groupName: 'Без группы',
     });
     return passport.authenticate('local', async (err, user) => {
-      const thisUser = await User.findOne({ email: req.body.email });
+      const currentUser = await User.findOne({ email: req.body.email });
       if (err) {
         return res.json({ message: err, loading: true });
       }
@@ -158,14 +128,16 @@ router.post('/reg', async (req, res, next) => {
         if (err) {
           return res.json({ message: err, loading: true });
         }
-        console.log(thisUser);
+        const {
+ nickname, email, group, groupName 
+} = currentUser;
         return res.json({
-          user: thisUser.nickname,
-          email: thisUser.email,
+          nickname,
+          email,
           status: 'user',
           photo: '',
-          group: thisUser.group,
-          groupName: thisUser.groupName,
+          group,
+          groupName,
         });
       });
     })(req, res, next);
@@ -174,53 +146,30 @@ router.post('/reg', async (req, res, next) => {
 });
 
 // Get NEws from BD
-router.get('/getnews', async (req, res) => {
+router.get('/news', async (req, res) => {
   const news = await News.findOne();
 
   res.json({ news: news.name });
 });
-// Get TOpics from BD for users exact group!
-
-// GET ALl Groups for lections page
-router.get('/getgroups', (req, res) => {
-  res.send({ status: 'hi' });
-});
 
 // Add day
-router.post('/addday', async (req, res) => {
+router.post('/day', async (req, res) => {
   const phase = req.body.phase + 1;
   const { group } = req.body;
   const { week } = req.body;
   const day = req.body.day + 1;
   const newTopic = new Topic({
-    topicName: 'Заполни меня!!!',
-    description: 'стили',
-    video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     groupName: group,
     phase: phase.toString(),
     week,
     day,
-    githubLink:
-      'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
-    comments: [],
   });
   await newTopic.save();
   res.json({ group });
 });
 
-router.post('/addtest', async (req, res) => {
-  const newTest = new Test({
-    title: 'Заполни меня',
-    googleFormsLink: process.env.GFORMSLINK,
-    groupName: req.body.group,
-    visible: false,
-  });
-  await newTest.save();
-  res.json({ group: req.body.group });
-});
-
 // Add week
-router.post('/addweek', async (req, res) => {
+router.post('/week', async (req, res) => {
   const Phase = req.body.phase + 1;
   const topics = await Topic.find({ phase: Phase, groupName: req.body.group });
   // let Phase = 0;
@@ -235,16 +184,9 @@ router.post('/addweek', async (req, res) => {
   Week += 1;
 
   const newTopic = new Topic({
-    topicName: 'Заполни меня!!!',
-    description: 'стили',
-    video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
     groupName: req.body.group,
     phase: Phase.toString(),
     week: Week,
-    day: 1,
-    githubLink:
-      'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
-    comments: [],
   });
   await newTopic.save();
   res.json({ group: req.body.group });
@@ -308,10 +250,6 @@ router.get('/getDayData', async (req, res, next) => {
   res.json(mainPageTopic[0]);
 });
 
-router.get('/logoout', (req, res) => {
-  req.logout();
-  res.json({ user: '' });
-});
 router.post('/get-users', async (req, res) => {
   const groupNames = [];
   let selectedGroupItems = [];
@@ -372,43 +310,6 @@ router.post('/upload-avatar', async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
-});
-
-router.get('/get-tests', async (req, res) => {
-  const tests = await Test.find();
-  res.json(tests);
-});
-
-router.post('/get-tests', async (req, res) => {
-  const groupNames = [];
-  let selectedGroupTests = [];
-  if (req.body.groupName) {
-    selectedGroupTests = await Test.find({ groupName: req.body.groupName });
-  }
-  if (!req.body.groupName || req.body.groupName === 'Все пользователи') {
-    selectedGroupTests = await Test.find();
-  }
-  if (req.body.groupName === '') {
-    selectedGroupTests = await Test.find({ groupName: '' });
-  }
-  const groupList = await Group.find();
-  for (let i = 0; i < groupList.length; i++) {
-    const obj = {
-      key: `${i + 1}`,
-      value: `${i + 1}`,
-      text: groupList[i].name,
-    };
-    groupNames.push(obj);
-    if (i === groupList.length - 1) {
-      const allUser = {
-        key: `${i + 2}`,
-        value: `${i + 2}`,
-        text: 'Все пользователи',
-      };
-      groupNames.push(allUser);
-    }
-  }
-  res.json({ groupNames, selectedGroupTests });
 });
 
 router.post('/update-profile', async (req, res) => {
