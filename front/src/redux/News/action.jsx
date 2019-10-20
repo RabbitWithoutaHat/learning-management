@@ -30,7 +30,7 @@ export const requestError = () => {
 export const getNewsData = () => async dispatch => {
   try {
     dispatch(requestNews());
-    const resp = await fetch('/getnews');
+    const resp = await fetch('/news');
     const data = await resp.json();
     dispatch(addNews(data.news));
   } catch (err) {

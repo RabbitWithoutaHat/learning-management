@@ -20,16 +20,15 @@ export const requestError = () => {
   };
 };
 // thunk!
-export const getTopicsData = selectedGroup => async dispatch => {
+export const getTopicsData = group => async dispatch => {
   try {
     dispatch(requestTopics());
-    let resp = await fetch('/gettopics', {
-      method: 'POST',
+    let resp = await fetch(`/topics/${group}`, {
+      method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ selectedGroup }),
     });
     const data = await resp.json();
     dispatch(addTopics(data));
@@ -39,8 +38,8 @@ export const getTopicsData = selectedGroup => async dispatch => {
 };
 export const editTopic = data => async dispatch => {
   try {
-    await fetch('/edittopic', {
-      method: 'POST',
+    await fetch(`/topics/${data.id}`, {
+      method: 'PUT',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -53,7 +52,7 @@ export const editTopic = data => async dispatch => {
 };
 export const addPhase = group => async dispatch => {
   try {
-    await fetch('/addphase', {
+    await fetch('/phase', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -67,7 +66,7 @@ export const addPhase = group => async dispatch => {
 };
 export const addDay = data => async dispatch => {
   try {
-    await fetch('/addday', {
+    await fetch('/day', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -81,7 +80,7 @@ export const addDay = data => async dispatch => {
 };
 export const addWeek = data => async dispatch => {
   try {
-    await fetch('/addweek', {
+    await fetch('/week', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

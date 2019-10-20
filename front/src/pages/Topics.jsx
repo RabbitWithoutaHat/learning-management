@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PhaseBar from '../components/PhaseBar/PhaseBar';
 
-export default class Lections extends Component {
+export default class Topics extends Component {
   render() {
     return (
       <div className="lections">

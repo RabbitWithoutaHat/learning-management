@@ -13,7 +13,7 @@ import {
 
 const initialState = {
   user: {
-    login: '',
+    nickname: '',
     status: false,
     message: '',
     loginMessage: '',
@@ -37,7 +37,7 @@ export default function(state = initialState, action) {
         ...state,
         user: {
           ...state.user,
-          login: action.login,
+          nickname: action.nickname,
           status: true,
           adminstatus: action.status,
           photo: action.photo,
@@ -50,25 +50,25 @@ export default function(state = initialState, action) {
     case ADD_MSG: {
       return {
         ...state,
-        user: { message: action.message,loading:action.loading },
+        user: { message: action.message, loading: action.loading },
       };
     }
     case ADD_LOGMSG: {
       return {
         ...state,
-        user: { loginMessage: action.loginMessage,loading:action.loading },
+        user: { loginMessage: action.loginMessage, loading: action.loading },
       };
     }
     case ADD_LOAD_STATUS: {
       return {
         ...state,
-        user: {loading:action.loading },
+        user: { loading: action.loading },
       };
     }
     case DEL_USER: {
       return {
         ...state,
-        user: { login: '', status: false, loading: true },
+        user: { nickname: '', status: false, loading: true },
       };
     }
     case AVATAR_TO_STATE: {
@@ -89,7 +89,7 @@ export default function(state = initialState, action) {
         user: {
           ...state.user,
           email: action.email,
-          login: action.login,
+          nickname: action.nickname,
           phone: action.phone,
           group: action.group,
           groupName: action.groupName,

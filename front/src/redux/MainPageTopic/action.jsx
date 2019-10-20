@@ -20,7 +20,7 @@ export const requestError = () => {
 export const getTopicData = () => async dispatch => {
   try {
     dispatch(requestTopic());
-    const resp = await fetch('/getDayData');
+    const resp = await fetch('/last-topic');
     const data = await resp.json();
     dispatch(addTopic(data));
   } catch (err) {

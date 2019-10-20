@@ -13,10 +13,10 @@ import {
 } from './types';
 import axios from 'axios';
 
-export const addUser = (login, email, status, photo, group, groupName) => {
+export const addUser = (nickname, email, status, photo, group, groupName) => {
   return {
     type: ADD_USER,
-    login: login,
+    nickname: nickname,
     email: email,
     status: status,
     photo: photo,
@@ -59,7 +59,7 @@ const requestProfileSuccessAC = data => {
   return {
     type: UPDATE_PROFILE,
     email: data.email,
-    login: data.login,
+    nickname: data.nickname,
     phone: data.phone,
     photo: data.photo,
     group: data.group,
@@ -91,15 +91,15 @@ const requestSelectedUsers = data => {
 };
 
 //thunk
-const getSelectedUsers = selectedGroup => async dispatch => {
+const getSelectedUsers = group => async dispatch => {
   try {
-    const resp = await axios.post('/get-users', { groupName: selectedGroup });
+    const resp = await axios.get(`/users/${group}`);
     dispatch(requestSelectedUsers(resp.data));
-  } catch (error) { }
+  } catch (error) {}
 };
 const addRegUser = data => async dispatch => {
   try {
-    let resp = await fetch('/reg', {
+    let resp = await fetch('/registration', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -108,18 +108,17 @@ const addRegUser = data => async dispatch => {
       body: JSON.stringify(data),
     });
     let user = await resp.json();
-    if (user.user) {
+    if (user.nickname) {
       dispatch(addLoadStatus(true));
-      dispatch(addUser(user.user, user.email, user.status,
-        user.photo, user.group, user.groupName));
+      dispatch(addUser(user.nickname, user.email, user.status, user.photo, user.group, user.groupName));
     } else {
       dispatch(addLogMsg(user.message, user.loading));
     }
-  } catch (error) { }
+  } catch (error) {}
 };
 const addAuthUser = data => async dispatch => {
   try {
-    let resp = await fetch('/log', {
+    let resp = await fetch('/login', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -128,24 +127,23 @@ const addAuthUser = data => async dispatch => {
       body: JSON.stringify(data),
     });
     let user = await resp.json();
-    if (user.user) {
+    if (user.nickname) {
       dispatch(addLoadStatus(true));
-      dispatch(addUser(user.user, user.email, user.status,
-        user.photo, user.group, user.groupName));
+      dispatch(addUser(user.nickname, user.email, user.status, user.photo, user.group, user.groupName));
     } else {
       dispatch(addLogMsg(user.message, user.loading));
     }
-  } catch (error) { }
+  } catch (error) {}
 };
 
 const updateProfile = data => async dispatch => {
   try {
-    const resp = await axios.post(
-      '/update-profile',
+    const resp = await axios.put(
+      '/profile',
       {
         email: data.data.email,
         password: data.data.password,
-        nickname: data.data.login,
+        nickname: data.data.nickname,
         phone: data.data.phone,
       },
       { withCredentials: true },
@@ -161,7 +159,7 @@ const updateAvatar = photo => async dispatch => {
   try {
     const data = new FormData();
     data.append('photo', photo);
-    const resp = await axios.post('/upload-avatar', data, { withCredentials: true });
+    const resp = await axios.put('/avatar', data, { withCredentials: true });
 
     dispatch(requestAvatarSuccessAC(resp.data.data));
   } catch (error) {
@@ -169,21 +167,12 @@ const updateAvatar = photo => async dispatch => {
   }
 };
 
-const getAllUsers = () => async dispatch => {
-  try {
-    const resp = await fetch('/get-users');
-    const data = await resp.json();
-    dispatch(requestUsers(data));
-  } catch (error) {
-    dispatch(requestErrorAC());
-  }
-};
 const authcheck = () => async dispatch => {
   try {
-    let resp = await fetch('/authcheck');
+    let resp = await fetch('/auth-check');
     let user = await resp.json();
-    if (user.user) {
-      dispatch(addUser(user.user, user.email, user.status, user.photo, user.group, user.groupName));
+    if (user.nickname) {
+      dispatch(addUser(user.nickname, user.email, user.status, user.photo, user.group, user.groupName));
     } else {
       dispatch(delUser());
     }
@@ -191,5 +180,13 @@ const authcheck = () => async dispatch => {
     dispatch(requestErrorAC());
   }
 };
+const logout = () => async dispatch => {
+  try {
+    await fetch('/logout');
+    dispatch(delUser());
+  } catch (error) {
+    dispatch(requestErrorAC());
+  }
+};
 
-export { updateProfile, updateAvatar, getAllUsers, getSelectedUsers, addAuthUser, addRegUser, authcheck };
+export { updateProfile, updateAvatar, getSelectedUsers, addAuthUser, addRegUser, authcheck, logout };

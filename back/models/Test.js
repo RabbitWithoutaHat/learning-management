@@ -4,6 +4,7 @@ const { Schema, model } = mongoose;
 
 const TestSchema = new Schema({
   title: {
+    default: 'Заполни меня',
     type: String,
     required: true,
   },

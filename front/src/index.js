@@ -8,9 +8,10 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import reducerUser from './redux/Users/reducer';
 import reducerNews from './redux/News/reducer';
-import reducerTopics from './redux/Lections/reducer';
+import reducerTopics from './redux/Topics/reducer';
 import reducerMainPageTOpic from './redux/MainPageTopic/reducer';
 import reducerTests from './redux/Tests/reducer';
+import reducerGroups from './redux/Groups/reducer';
 
 // thunk!
 import { applyMiddleware, compose } from 'redux';
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   Topics: reducerTopics,
   MainPage: reducerMainPageTOpic,
   Test: reducerTests,
+  Group: reducerGroups,
 });
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

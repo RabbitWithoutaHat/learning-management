@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getTopicsData, addPhase, addDay, addWeek } from '../../redux/Lections/actions';
+import { getTopicsData, addPhase, addDay, addWeek } from '../../redux/Topics/actions';
 import { List, Button, Select } from 'semantic-ui-react';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -33,6 +33,7 @@ class PhaseBar extends Component {
   };
   getSelecetedGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
+
     this.setState({ selectedGroupName: selectedGroup });
     this.setState({ groupNotSelectedStatus: false });
     await this.props.getTopics(selectedGroup);
@@ -136,7 +137,7 @@ class PhaseBar extends Component {
                       <div className="daysList">
                         {week.map((day, i) => (
                           <List.Item className="topicListItem" key={`day`}>
-                            <Link params={{ desc: day.description }} to={`/lections/${day._id}`}>
+                            <Link params={{ desc: day.description }} to={`/topics/${day._id}`}>
                               {day.topicName}
                             </Link>
                           </List.Item>
@@ -178,7 +179,7 @@ const mapStateToProps = state => {
     topics: state.Topics.topics,
     groupNames: state.Topics.groupNames,
     selectedGroupName: state.Topics.selectedGroupName,
-    userName: state.User.user.login,
+    userName: state.User.user.nickname,
     admin: state.User.user.adminstatus,
   };
 };

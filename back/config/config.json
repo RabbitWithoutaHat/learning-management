@@ -1,7 +1,6 @@
 {
   "development": {
-     "db": "mongodb+srv://elbrus_test_user:OkocO0ijasE4HXY3@cluster0-zsqfy.mongodb.net/elbrus?retryWrites=true&w=majority"
-     
+    "db": "mongodb+srv://elbrus_test_user:OkocO0ijasE4HXY3@cluster0-zsqfy.mongodb.net/elbrus?retryWrites=true&w=majority"
   },
   "test": {
     "db": "mongodb://localhost/elbrus-test"

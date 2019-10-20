@@ -1,0 +1,1 @@
+export const CHANGE_LOAD_STATUS = 'CHANGE_LOAD_STATUS';

@@ -6,6 +6,7 @@ const TopicSchema = new Schema({
   topicName: {
     type: String,
     required: true,
+    default: 'Заполни меня!',
   },
   description: {
     type: String,
@@ -13,6 +14,7 @@ const TopicSchema = new Schema({
   video: {
     type: String,
     required: true,
+    default: 'https://www.youtube.com/watch?v=p32zBaP2GsY',
   },
   group: {
     type: Schema.Types.ObjectId,
@@ -37,11 +39,12 @@ const TopicSchema = new Schema({
   week: {
     type: String,
     required: false,
-    default: false,
+    default: 1,
   },
   day: {
     type: String,
     required: true,
+    default: 1,
   },
   creationDate: {
     type: Date,
@@ -51,6 +54,8 @@ const TopicSchema = new Schema({
   githubLink: {
     type: String,
     required: false,
+    default:
+      'https://github.com/Elbrus-Bootcamp/phase-1/blob/master/week-1/2-tuesday.md',
   },
   comments: [
     {
