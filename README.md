@@ -47,5 +47,5 @@
 ## Авторы
 
 - [Олег Матюнин](https://github.com/Oleg-Mat)
-- [Фёкла Волобуева](https://github.com/RabbitWithoutaHat/)
+- [Александра Волобуева](https://github.com/RabbitWithoutaHat/)
 - [Шамиль Гаджиев](https://github.com/shimunic)
