@@ -10,21 +10,15 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:group', async (req, res) => {
-  console.log('grouptet!!', req.params.group);
-
   const groupNames = [];
   let selectedGroupTests = [];
-  if (req.params.group) {
-    selectedGroupTests = await Test.find({ groupName: req.params.group });
-  }
   if (
     req.params.group === 'undefined'
     || req.params.group === 'Все пользователи'
   ) {
     selectedGroupTests = await Test.find();
-  }
-  if (req.params.group === '') {
-    selectedGroupTests = await Test.find({ groupName: '' });
+  } else {
+    selectedGroupTests = await Test.find({ groupName: req.params.group });
   }
   const groupList = await Group.find();
   for (let i = 0; i < groupList.length; i++) {

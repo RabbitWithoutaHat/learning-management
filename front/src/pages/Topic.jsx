@@ -71,7 +71,7 @@ class Topic extends Component {
     this.setState({ modalOpen: false, changeData: false });
     this.setState({ changeData: false });
   };
-  get = async e => {
+  onClick = async e => {
     e.preventDefault();
     this.setState({ changeData: true });
     this.func();
@@ -140,7 +140,7 @@ class Topic extends Component {
                           <input type="text" name="fileLink" onChange={this.fileLink} />
                         </Form.Field>
                         <div className="form-field userSendForm">
-                          <Button basic color="violet" type="button" className="Button" onClick={this.get}>
+                          <Button basic color="violet" type="button" className="Button" onClick={this.onClick}>
                             Отправить
                           </Button>
                         </div>

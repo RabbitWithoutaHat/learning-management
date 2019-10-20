@@ -5,16 +5,14 @@ const config = require('../config/config.json')[
   process.env.NODE_ENV || 'development'
 ];
 
-// const basename = path.basename(__filename);
-// console.log(process.env.NODE_ENV);
-
 mongoose
   .connect(config.db, {
     useUnifiedTopology: true,
-    useNewUrlParser: true,
+    bindIpAll: true,
+    // useNewUrlParser: true,
   })
   .then(() => console.log('DB Connected!'))
-  .catch((err) => {
+  .catch(err => {
     console.log(err);
   });
 

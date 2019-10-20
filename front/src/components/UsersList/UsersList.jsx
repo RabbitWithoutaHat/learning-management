@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getSelectedUsers } from '../../redux/Users/actions';
+import { addNewGroup, changeGroup } from '../../redux/Groups/actions';
 import { Image, List, Header, Select, Button, Modal, Form } from 'semantic-ui-react';
 import { Checkbox } from 'semantic-ui-react';
 
@@ -87,16 +88,9 @@ class UsersList extends Component {
       currentgroup: this.state.selectedGroupName,
       newGroup: this.state.selectedGroupNameModalChangeGroup,
     };
-    let resp = await fetch('/changegroup', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    let dataresp = await resp.json();
-    if (dataresp.status) {
+
+    await this.props.changeGroup(data);
+    if (this.props.loadStatus) {
       this.setState({ modalOpenChangeGroup: false, changeData: false });
       this.setState({ changeData: true });
     }
@@ -106,21 +100,13 @@ class UsersList extends Component {
       groups: this.state.chosedUsers,
       newGroup: this.state.newGroupName,
     };
-    let resp = await fetch('/addnewgroup', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    let dataresp = await resp.json();
-    if (dataresp.status) {
+    await this.props.addNewGroup(data);
+    if (this.props.loadStatus) {
       this.setState({ modalOpenAddGroup: false, changeData: false });
       this.setState({ changeData: false });
     }
   };
-  async componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.changeData && !this.state.changeData) {
       this.props.getSelectedUsers();
     }
@@ -273,11 +259,14 @@ const mapStateToProps = state => {
     selectedGroupItems: state.User.selectedGroupItems,
     selectedGroupList: state.User.selectedGroupList,
     admin: state.User.user.adminstatus,
+    loadStatus: state.Group.loadStatus,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    addNewGroup: data => dispatch(addNewGroup(data)),
+    changeGroup: data => dispatch(changeGroup(data)),
     getSelectedUsers: selectedGroup => dispatch(getSelectedUsers(selectedGroup)),
   };
 };

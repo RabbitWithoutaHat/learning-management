@@ -51,8 +51,6 @@ const addTest = data => async dispatch => {
   }
 };
 const editTest = data => async dispatch => {
-  console.log(data);
-
   try {
     await fetch(`/tests/${data.id}`, {
       method: 'PUT',

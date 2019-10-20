@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index');
 const googleRouter = require('./routes/google');
 const topicsRouter = require('./routes/topics');
 const testsRouter = require('./routes/tests');
+const groupRouter = require('./routes/group');
 
 const app = express();
 const port = 5002;
@@ -34,6 +35,7 @@ app.use('/', indexRouter);
 app.use('/auth/google', googleRouter);
 app.use('/topics', topicsRouter);
 app.use('/tests', testsRouter);
+app.use('/group', groupRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

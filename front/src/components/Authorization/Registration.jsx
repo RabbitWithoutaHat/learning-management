@@ -20,7 +20,7 @@ class Registration extends Component {
   nickname = e => {
     this.setState({ nickname: e.target.value });
   };
-  get = async e => {
+  onSubmit = async e => {
     e.preventDefault();
     let data = {
       nickname: this.state.nickname,
@@ -33,12 +33,11 @@ class Registration extends Component {
       this.setState({ nickname: '', email: '', password: '' });
       this.props.history.push('/');
     }
-
   };
   render() {
     return (
       <>
-        <Form className="regForm" onSubmit={this.get}>
+        <Form className="regForm" onSubmit={this.onSubmit}>
           <h3>Registration</h3>
           <Form.Field>
             <label htmlFor="nickname">nickname</label>
@@ -77,7 +76,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addRegUser: (data) => dispatch(addRegUser(data)),
+    addRegUser: data => dispatch(addRegUser(data)),
   };
 }
 

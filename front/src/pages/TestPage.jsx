@@ -22,14 +22,12 @@ class TestPage extends Component {
       googleFormsLink: this.state.googleFormsLink,
       id: this.props.match.params.id,
     };
-    console.log(data);
-
     this.props.editTest(data);
     this.setState({ modalOpen: false, changeData: false });
     this.setState({ changeData: false });
   };
 
-  get = async e => {
+  onSubmit = async e => {
     e.preventDefault();
     this.setState({ changeData: true });
     this.func();
@@ -95,7 +93,7 @@ class TestPage extends Component {
                       </Form.Field>
 
                       <div className="form-field">
-                        <Button type="button" className="Button" onClick={this.get}>
+                        <Button type="button" className="Button" onClick={this.onSubmit}>
                           Отправить
                         </Button>{' '}
                       </div>

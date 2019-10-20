@@ -45,8 +45,6 @@ router.get('/auth-check', async (req, res) => {
  nickname, email, status, photo, group, groupName 
 } = req.user;
   if (req.isAuthenticated()) {
-    console.log(req.user.nickname);
-
     res.json({
       nickname,
       email,
@@ -60,6 +58,42 @@ router.get('/auth-check', async (req, res) => {
       message: 'You are not authenticated, please log-in or register',
     });
   }
+});
+
+router.post('/registration', async (req, res, next) => {
+  const { nickname, email, password } = req.body;
+  const curUser = await User.find({ email: req.body.email });
+  if (curUser.length === 0) {
+    const hash = await bcrypt.hash(password, 10);
+    await User.create({
+      nickname,
+      email,
+      password: hash,
+    });
+    return passport.authenticate('local', async (err, user) => {
+      const currentUser = await User.findOne({ email: req.body.email });
+      if (err) {
+        return res.json({ message: err, loading: true });
+      }
+      req.logIn(user, (err) => {
+        if (err) {
+          return res.json({ message: err, loading: true });
+        }
+        const {
+ nickname, email, group, groupName 
+} = currentUser;
+        return res.json({
+          nickname,
+          email,
+          status: 'user',
+          photo: '',
+          group,
+          groupName,
+        });
+      });
+    })(req, res, next);
+  }
+  return res.json({ message: 'This email is already used', loading: true });
 });
 
 // Add Phase
@@ -109,49 +143,6 @@ router.post('/phase', async (req, res) => {
   res.json({ group: req.body.group });
 });
 
-router.post('/registration', async (req, res, next) => {
-  const { nickname, email, password } = req.body;
-  const curUser = await User.find({ email: req.body.email });
-  if (curUser.length === 0) {
-    const hash = await bcrypt.hash(password, 10);
-    await User.create({
-      nickname,
-      email,
-      password: hash,
-    });
-    return passport.authenticate('local', async (err, user) => {
-      const currentUser = await User.findOne({ email: req.body.email });
-      if (err) {
-        return res.json({ message: err, loading: true });
-      }
-      req.logIn(user, (err) => {
-        if (err) {
-          return res.json({ message: err, loading: true });
-        }
-        const {
- nickname, email, group, groupName 
-} = currentUser;
-        return res.json({
-          nickname,
-          email,
-          status: 'user',
-          photo: '',
-          group,
-          groupName,
-        });
-      });
-    })(req, res, next);
-  }
-  return res.json({ message: 'This email is already used', loading: true });
-});
-
-// Get NEws from BD
-router.get('/news', async (req, res) => {
-  const news = await News.findOne();
-
-  res.json({ news: news.name });
-});
-
 // Add day
 router.post('/day', async (req, res) => {
   const phase = req.body.phase + 1;
@@ -170,9 +161,8 @@ router.post('/day', async (req, res) => {
 
 // Add week
 router.post('/week', async (req, res) => {
-  const Phase = req.body.phase + 1;
-  const topics = await Topic.find({ phase: Phase, groupName: req.body.group });
-  // let Phase = 0;
+  const phase = req.body.phase + 1;
+  const topics = await Topic.find({ phase, groupName: req.body.group });
   let Week = 0;
   if (topics.length !== 0) {
     for (let i = 0; i < topics.length; i++) {
@@ -185,54 +175,20 @@ router.post('/week', async (req, res) => {
 
   const newTopic = new Topic({
     groupName: req.body.group,
-    phase: Phase.toString(),
+    phase: phase.toString(),
     week: Week,
   });
   await newTopic.save();
   res.json({ group: req.body.group });
 });
 
-router.post('/changegroup', async (req, res, next) => {
-  const { groups } = req.body;
-  const newgroup = req.body.newGroup;
-
-  // добавить логику изменения админа на обычного пользователя!!
-  const groupId = await Group.findOne({ name: newgroup });
-  for (let i = 0; i < groups.length; i++) {
-    if (newgroup === 'admin') {
-      await User.findOneAndUpdate(
-        { _id: groups[i] },
-        { groupName: newgroup, group: groupId._id, status: 'admin' },
-      );
-    } else {
-      await User.findOneAndUpdate(
-        { _id: groups[i] },
-        { groupName: newgroup, group: groupId._id },
-      );
-    }
-  }
-  res.json({ status: 'done' });
+// Get NEws from BD
+router.get('/news', async (req, res) => {
+  const news = await News.findOne();
+  res.json({ news: news.name });
 });
 
-router.post('/addnewgroup', async (req, res, next) => {
-  const { groups } = req.body;
-  const newgroup = req.body.newGroup;
-
-  const group = new Group({
-    name: newgroup,
-  });
-  await group.save();
-  const groupId = await Group.findOne({ name: newgroup });
-  for (let i = 0; i < groups.length; i++) {
-    await User.findOneAndUpdate(
-      { _id: groups[i] },
-      { groupName: newgroup, group: groupId._id },
-    );
-  }
-  res.json({ status: 'done' });
-});
-
-router.get('/getDayData', async (req, res, next) => {
+router.get('/last-topic', async (req, res, next) => {
   await User.findOneAndUpdate(
     { nickname: req.user.nickname },
     { group: req.user.group },
@@ -250,17 +206,16 @@ router.get('/getDayData', async (req, res, next) => {
   res.json(mainPageTopic[0]);
 });
 
-router.post('/get-users', async (req, res) => {
+router.get('/users/:group', async (req, res) => {
   const groupNames = [];
   let selectedGroupItems = [];
-  if (req.body.groupName) {
-    selectedGroupItems = await User.find({ groupName: req.body.groupName });
-  }
-  if (!req.body.groupName || req.body.groupName === 'Все пользователи') {
+  if (
+    req.params.group === 'undefined'
+    || req.params.group === 'Все пользователи'
+  ) {
     selectedGroupItems = await User.find();
-  }
-  if (req.body.groupName === '') {
-    selectedGroupItems = await User.find({ groupName: '' });
+  } else {
+    selectedGroupItems = await User.find({ groupName: req.params.group });
   }
   const groupList = await Group.find();
   for (let i = 0; i < groupList.length; i++) {
@@ -279,10 +234,11 @@ router.post('/get-users', async (req, res) => {
       groupNames.push(allUser);
     }
   }
+
   res.json({ groupNames, selectedGroupItems });
 });
 
-router.post('/upload-avatar', async (req, res) => {
+router.put('/avatar', async (req, res) => {
   const id = req.user._id;
   await User.updateOne({ _id: id }, { $set: { photo: req.files.photo.name } });
 
@@ -312,28 +268,19 @@ router.post('/upload-avatar', async (req, res) => {
   }
 });
 
-router.post('/update-profile', async (req, res) => {
+router.put('/profile', async (req, res) => {
   let {
  email, password, nickname, phone, photo 
 } = req.body;
 
   const { id } = req.user;
-
+  photo = photo || req.user.photo;
+  email = email || req.user.email;
+  nickname = nickname || req.user.nickname;
+  phone = phone || req.user.phone;
   let hash = req.user.password;
   if (password) {
     hash = await bcrypt.hash(password, 10);
-  }
-  if (!photo) {
-    photo = req.user.photo;
-  }
-  if (!email) {
-    email = req.user.email;
-  }
-  if (!nickname) {
-    nickname = req.user.nickname;
-  }
-  if (!phone) {
-    phone = req.user.phone;
   }
   await User.updateOne(
     { _id: id },
@@ -347,7 +294,6 @@ router.post('/update-profile', async (req, res) => {
     },
   );
   const newData = await User.findOne({ _id: id });
-
   res.json({
     email: newData.email,
     nickname: newData.nickname,

@@ -13,7 +13,7 @@ class News extends Component {
     this.setState({ visible: false });
   };
   render() {
-    if (this.state.visible) {
+    if (this.props.event.summary) {
       return (
         <Message
           floating
@@ -23,14 +23,14 @@ class News extends Component {
           color="blue"
         />
       );
+    } else {
+      return <span></span>;
     }
-    return <span></span>;
   }
 }
 
 const mapStateToProps = state => {
   return {
-    news: state.News.news,
     event: state.News.event,
   };
 };

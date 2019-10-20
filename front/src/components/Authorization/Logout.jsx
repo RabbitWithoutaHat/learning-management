@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { delUser } from '../../redux/Users/actions';
+import { logout } from '../../redux/Users/actions';
 import { connect } from 'react-redux';
 class Logout extends Component {
   async componentDidMount() {
-    await fetch('/logoout');
-    this.props.del();
+    await this.props.del();
     this.props.history.push('/login');
   }
   render() {
@@ -20,7 +19,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    del: () => dispatch(delUser()),
+    del: () => dispatch(logout()),
   };
 }
 export default connect(
