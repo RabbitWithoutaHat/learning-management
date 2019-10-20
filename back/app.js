@@ -20,6 +20,7 @@ newToken();
 setInterval(newToken, 1000 * 60 * 40);
 
 passport.use(
+  // ПРЯЧЬТЕ КЛЮЧИ!!! почитайте про dotenv.
   new GoogleStrategy(
     {
       clientID:

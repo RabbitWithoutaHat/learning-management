@@ -1,6 +1,9 @@
+// ЖЕСТЬ! ОЧЕНЬ МНОГО КОДА В ОДНОМ ФАЙЛЕ! 
+// ТАКОЕ НАДО РАЗНОСИТЬ ПО РОУТАМ,
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+// НЕКОТОРЫЕ ИМПОРТЫ НЕ ИСПОЛЬЗУЮТСЯ, УДАЛИТЕ ИХ.
 const fileUpload = require('express-fileupload');
 const User = require('../models/User');
 const Group = require('../models/Group');
@@ -18,7 +21,9 @@ const router = express.Router();
 
 addMiddlewares(router);
 
+// Что такое лог? Логи пишет?
 router.post('/log', async (req, res, next) => {
+  // Какой еще userr?
   const userr = await User.findOne({ email: req.body.email });
   passport.authenticate('local', (err, user) => {
     if (err) {
@@ -33,6 +38,7 @@ router.post('/log', async (req, res, next) => {
         user: user.nickname,
         email: user.email,
         status: userr.status,
+        // userData
         photo: userdata.photo,
         group: userdata.group,
         groupName: userdata.groupName,
@@ -57,9 +63,11 @@ router.get(
   },
 );
 
+// не пишите несколько слоов в одно в названии роута
 router.get('/authcheck', async (req, res) => {
   if (req.isAuthenticated()) {
     res.json({
+      // Деструктурируйте, страшно выглядит
       user: req.user.nickname,
       email: req.user.email,
       status: req.user.status,
@@ -74,12 +82,15 @@ router.get('/authcheck', async (req, res) => {
   }
 });
 // Edit exactly Topic
+// Если есть операции над topic значит надо писать по типу /topics/edit для get запросов
+// И просто /topics для создания (post), /topics/id для put, delete.
 router.post('/edittopic', async (req, res) => {
   console.log(req.body);
 
   const topic = await Topic.findOneAndUpdate(
     { _id: req.body.id },
     {
+      // req.body слишком много раз
       githubLink: req.body.githubLink,
       video: req.body.youtubeLink,
       fileLink: req.body.fileLink,
@@ -112,11 +123,14 @@ router.post('/edittest', async (req, res) => {
   res.json({ status: 'done' });
 });
 // Add Phase
+// POST на /phase/ и все
 router.post('/addphase', async (req, res) => {
   // Все топики для конкретной группы
   const topics = await Topic.find({ groupName: req.body.group });
+  // Что за консоль лог?)
   console.log('ooooooooooooooooooooooooooooooooooooooooooo', topics.length);
   // Максимальное кол-во фаз !
+  // это классы? с большой буквы?
   let Phase = 0;
   let Week = 0;
   if (topics.length !== 0) {
@@ -132,6 +146,7 @@ router.post('/addphase', async (req, res) => {
   }
   const { group } = req.body;
   const newTopic = new Topic({
+    // значения по умолчанию можно задавать прям в настройка схемы монгуса
     topicName: 'Заполни меня!!!',
     description: 'стили',
     video: 'https://www.youtube.com/watch?v=O2ulyJuvU3Q',
@@ -148,10 +163,12 @@ router.post('/addphase', async (req, res) => {
   const updatedTopics = await Topic.find({ groupName: req.body.group });
 
   const result = [];
+  // очень страшные именования p и w. Хочется читабельнее
   for (let p = 1; p < Phase + 1; p++) {
     const phase = [];
     for (let w = 1; w < Week + 1; w++) {
       const week = updatedTopics
+      //  `${p}`, `${w}` - бессмыслица
         .filter((el) => el.phase === `${p}`)
         .filter((el) => el.week === `${w}`)
         .sort((el) => (el.day ? -1 : 1));
@@ -167,20 +184,24 @@ router.post('/addphase', async (req, res) => {
   res.json({ group: req.body.group });
 });
 
+// reg? регенерация, регистр, регулярные выражения? что это?
 router.post('/reg', async (req, res, next) => {
   const { nickname, email, password } = req.body;
   const curUser = await User.find({ email: req.body.email });
   if (curUser.length === 0) {
+    // 10 это не просто цифра. Это параметр шифрования, который надо вынести в конфиг и испортировать.
     const hash = await bcrypt.hash(password, 10);
     await User.create({
       nickname,
       email,
       password: hash,
       // без группы
+      // Что за хардкод?
       group: '5d9f1b73e7e77e0fa391d58d',
       groupName: 'Без группы',
     });
     return passport.authenticate('local', async (err, user) => {
+      //this user?
       const thisUser = await User.findOne({ email: req.body.email });
       if (err) {
         return res.json({ message: err, loading: true });
@@ -205,6 +226,7 @@ router.post('/reg', async (req, res, next) => {
 });
 
 // Get NEws from BD
+// /news
 router.get('/getnews', async (req, res) => {
   const news = await News.findOne();
 
@@ -219,6 +241,7 @@ router.post('/gettopics', async (req, res) => {
   if (req.body.selectedGroup) {
     selectedGroupName = req.body.selectedGroup;
   } else {
+    // что за [1]?
     selectedGroupName = allGroups[1].name;
   }
   // Массив из имён всех групп
@@ -238,11 +261,13 @@ router.post('/gettopics', async (req, res) => {
   // если нет групп вообще
   if (allGroups.length === 0) {
     const arr = [];
+    // arr, arr?
     res.json({ arr, arr });
   }
   // Для админа составим топики последней группы,а для пользователя его группы
   let topics = [];
   if (req.user.status === 'admin') {
+    // уберите логи
     console.log('admin');
     topics = await Topic.find({ groupName: selectedGroupName });
   } else {
@@ -314,8 +339,12 @@ router.post('/addday', async (req, res) => {
   res.json({ group });
 });
 
+// `POST /tests/`
 router.post('/addtest', async (req, res) => {
   const newTest = new Test({
+    // Значения по умолчанию вынести в схему.
+    // Ссылку на гугл форму так оставлять нельзя - это хардкод.
+    // Если очень надо - вынести в какую-нибудь константу, а лучше в dotenv.
     title: 'Заполни меня',
     googleFormsLink: '1FAIpQLSeiNk3uwPxYZvsA8WS16lNOeJQEf5MTdkKpu63yrAlIuZ3rEw',
     groupName: req.body.group,
@@ -364,6 +393,7 @@ router.post('/changegroup', async (req, res, next) => {
   const groupId = await Group.findOne({ name: newgroup });
   for (let i = 0; i < groups.length; i++) {
     if (newgroup === 'admin') {
+      // eslint тут ругается сильно!
       await User.findOneAndUpdate(
         { _id: groups[i] },
         { groupName: newgroup, group: groupId._id, status: 'admin' },
@@ -524,6 +554,7 @@ router.post('/update-profile', async (req, res) => {
   const { id } = req.user;
 
   let hash = req.user.password;
+  // Эти проверки явно можно оптимизировать
   if (password) {
     hash = await bcrypt.hash(password, 10);
   }

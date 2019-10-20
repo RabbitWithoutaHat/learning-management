@@ -2,6 +2,7 @@ const axios = require('axios');
 const Token = require('../models/Token');
 // 'ya29.ImCbB9Ycc01Sny138ZgIjahuwiAZxT0kqSmaJ2XsjrelAo0Ete2ALiHGx7KN2KK8e2EC9jer-4BtOfMd2wMMGrSD0kz36I4kMw7zPmn6q5hC68ljhelvF_4Vsx5SgS_kecU'
 
+// Ключи прятать, консоль логи и ненужные комментарии убирать
 const refreshToken = async () => {
   const res = await axios.post('https://oauth2.googleapis.com/token', {
     refresh_token: '1/PUkT3kek9HCypLvj6KoudvrOBaNw7bwHZ3bffqVK34A',

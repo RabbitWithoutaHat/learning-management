@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+// Если не используете - то не импортируйте.
 import { addMsg, addUser } from '../../redux/Users/actions';
 import { Button, Form } from 'semantic-ui-react';
 import { delUser, addRegUser } from '../../redux/Users/actions';
@@ -20,6 +21,7 @@ class Registration extends Component {
   nickname = e => {
     this.setState({ nickname: e.target.value });
   };
+  // Любите писать методы get. Честно говоря не особо понятно что они делают.
   get = async e => {
     e.preventDefault();
     let data = {

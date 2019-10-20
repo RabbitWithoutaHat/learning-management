@@ -31,7 +31,7 @@ class PhaseBar extends Component {
       await this.props.getTopics(group);
     }
   };
-  getSelecetedGroup = async (event, { value }) => {
+  getSelecetedGroup = async (event) => {
     let selectedGroup = event.target.textContent;
     this.setState({ selectedGroupName: selectedGroup });
     this.setState({ groupNotSelectedStatus: false });
@@ -46,7 +46,12 @@ class PhaseBar extends Component {
       const plus = document.querySelector('.plus');
       let numberOfDays = 0;
       let numberOfWeek = 0;
+      // Что то странное происходит с этим plus.className.
+      // Вы взяли элемент на странице по его классу, а теперь сравниваете его класс с классом 
+      // текущего элемента. Точно так надо делать?
       if (e.target.className === plus.className) {
+        // Это годится как временное решение, Но в прод такое нельзя, 
+        // слишком длинное обращение по родственникам
         numberOfDays = e.target.parentNode.parentNode.firstChild.childElementCount;
         numberOfWeek = e.target.parentNode.id;
       } else {
@@ -72,6 +77,7 @@ class PhaseBar extends Component {
       this.func();
     }
   };
+  // function called func. Perfect.
   func = async () => {
     let data = {
       phase: this.state.tabIndex,
@@ -82,6 +88,10 @@ class PhaseBar extends Component {
   };
   render() {
     return (
+      // Достаточно большой компонент. Сложно читать, 
+      // можно ли как-то разнести по файлам/компонентам? 
+      // Тут похоже есть кусок для админа. 
+      // Это точно можно разделить.
       <>
         {this.props.admin === 'admin' && this.props.groupNames ? (
           <>

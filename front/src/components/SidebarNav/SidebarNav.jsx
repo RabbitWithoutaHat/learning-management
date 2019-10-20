@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Menu, Sidebar, Dimmer, Loader } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
+// Неиспользуемые методы
 import { addUser, delUser, authcheck } from '../../redux/Users/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -25,6 +26,7 @@ class SidebarNav extends Component {
         const time = moment(e.start.dateTime)
           .locale('ru')
           .format('LT');
+        // Такие штуки можно выносить в функции, либо хотя бы переменные с понятными названиями.
         const dateStr = `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`;
         eventsObj[dateStr] = `${time} - ${e.summary}`;
       } else {
@@ -51,6 +53,8 @@ class SidebarNav extends Component {
             <Sidebar as={Menu} icon="labeled" inverted vertical visible width="wide">
               {this.props.user ? (
                 <>
+                {/* Можно было бы написать функцию обертку для Link. 
+                Чтобы не писать кажды раз Menu.Item и Icon. */}
                   <Link to="/">
                     <Menu.Item>
                       <Icon name="play" />
@@ -128,6 +132,7 @@ class SidebarNav extends Component {
 
 function mapStateToProps(state) {
   return {
+    // А вот тут уже можно деструктурировать, чтобы было читабельно
     userWithGroup: state.User.user.groupName,
     admin: state.User.user.adminstatus,
     user: state.User.user.login,

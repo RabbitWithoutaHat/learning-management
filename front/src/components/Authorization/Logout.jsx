@@ -8,6 +8,7 @@ class Logout extends Component {
     this.props.history.push('/login');
   }
   render() {
+    // Эм. Компонент, который рисует... пустой div?
     return <div></div>;
   }
 }

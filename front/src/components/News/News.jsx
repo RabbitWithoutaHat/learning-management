@@ -24,12 +24,15 @@ class News extends Component {
         />
       );
     }
+    // Эти span действительно нужны?
     return <span></span>;
   }
 }
 
 const mapStateToProps = state => {
   return {
+    // News.news еще не совсем критично, но уже напрягает. 
+    // Почитайте best practices по неймингу в редаксе.
     news: state.News.news,
     event: state.News.event,
   };
