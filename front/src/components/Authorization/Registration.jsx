@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addMsg, addUser } from '../../redux/Users/actions';
 import { Button, Form } from 'semantic-ui-react';
-import { delUser, addRegUser } from '../../redux/Users/actions';
+import { addRegUser } from '../../redux/Users/actions';
 
 class Registration extends Component {
   state = {

@@ -1,5 +1,4 @@
 import { CHANGE_LOAD_STATUS } from './types';
-import axios from 'axios';
 
 export const changeLoadStatus = () => {
   return {
@@ -10,7 +9,7 @@ export const changeLoadStatus = () => {
 //thunk
 const addNewGroup = data => async dispatch => {
   try {
-    const resp = await fetch('/group', {
+    await fetch('/group', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

@@ -12,10 +12,10 @@ class UsersList extends Component {
     willingToRelocate: true,
     modalOpenAddGroup: false,
     modalOpenChangeGroup: false,
-    chosedUsers: [],
+    selectUsers: [],
     newGroupName: '',
     changeData: true,
-    selectedGroupNameModalChangeGroup: '',
+    selectedGroupNameModal: '',
     selectedGroupName: '',
     groupNotSelectedStatus: false,
     checkedStatus: true,
@@ -26,30 +26,30 @@ class UsersList extends Component {
   newGroupName = e => {
     this.setState({ newGroupName: e.target.value });
   };
-  getCheckedusers = async () => {
+  getCheckedUsers = async () => {
     const element = document.querySelectorAll('.checked');
     const usersId = [];
     for (let i = 0; i < element.length; i++) {
       usersId.push(element[i].parentNode.id);
     }
-    await this.setState({ chosedUsers: usersId });
+    await this.setState({ selectUsers: usersId });
   };
-  openAdd = e => {
+  handleOpenAddGroup = e => {
     if (this.state.selectedGroupName === '') {
       this.setState({ groupNotSelectedStatus: true });
     } else {
       this.setState({ groupNotSelectedStatus: false });
       this.setState({ modalOpenAddGroup: true });
-      this.getCheckedusers();
+      this.getCheckedUsers();
     }
   };
-  openChange = e => {
+  handleOpenChangeGroup = e => {
     if (this.state.selectedGroupName === '') {
       this.setState({ groupNotSelectedStatus: true });
     } else {
       this.setState({ groupNotSelectedStatus: false });
       this.setState({ modalOpenChangeGroup: true });
-      this.getCheckedusers();
+      this.getCheckedUsers();
     }
   };
   handleCloseAddGroup = e => {
@@ -59,9 +59,9 @@ class UsersList extends Component {
   handleCloseChangeGroup = e => {
     this.setState({ modalOpenChangeGroup: false });
   };
-  getSelecetedGroupModalChangeGroup = async (event, { value }) => {
+  getSelecetedGroupModal = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
-    this.setState({ selectedGroupNameModalChangeGroup: selectedGroup });
+    this.setState({ selectedGroupNameModal: selectedGroup });
   };
   getSelecetedGroup = async (event, { value }) => {
     let selectedGroup = event.target.textContent;
@@ -84,9 +84,9 @@ class UsersList extends Component {
 
   changeGroup = async () => {
     let data = {
-      groups: this.state.chosedUsers,
+      groups: this.state.selectUsers,
       currentgroup: this.state.selectedGroupName,
-      newGroup: this.state.selectedGroupNameModalChangeGroup,
+      newGroup: this.state.selectedGroupNameModal,
     };
 
     await this.props.changeGroup(data);
@@ -97,7 +97,7 @@ class UsersList extends Component {
   };
   addGroup = async () => {
     let data = {
-      groups: this.state.chosedUsers,
+      groups: this.state.selectUsers,
       newGroup: this.state.newGroupName,
     };
     await this.props.addNewGroup(data);
@@ -120,7 +120,12 @@ class UsersList extends Component {
               <>
                 <Modal
                   trigger={
-                    <Button basic color="violet" className="select userslistButton" onClick={this.openChange}>
+                    <Button
+                      basic
+                      color="violet"
+                      className="select userslistButton"
+                      onClick={this.handleOpenChangeGroup}
+                    >
                       Изменить группу
                     </Button>
                   }
@@ -139,7 +144,7 @@ class UsersList extends Component {
                               className="select "
                               placeholder="Все пользователи"
                               options={this.props.selectedGroupList}
-                              onChange={this.getSelecetedGroupModalChangeGroup}
+                              onChange={this.getSelecetedGroupModal}
                             />
                           </Form.Field>
                           <div className="form-field userSendForm">
@@ -183,7 +188,7 @@ class UsersList extends Component {
               <>
                 <Modal
                   trigger={
-                    <Button className="userslistButton select" basic color="violet" onClick={this.openAdd}>
+                    <Button className="userslistButton select" basic color="violet" onClick={this.handleOpenAddGroup}>
                       Добавить группу
                     </Button>
                   }
@@ -227,16 +232,11 @@ class UsersList extends Component {
         <List className="ui massive relaxed animated list usersList">
           {this.props.selectedGroupItems ? (
             this.props.selectedGroupItems.map((e, i) => (
-              <List.Item id={`${e._id}`} key={`${i}user`} className="item itemUser">
+              <List.Item id={e._id} key={`${i}user`} className="item itemUser">
                 <Checkbox defaultChecked={true} onChange={this.toggleCheckBox} />
                 <List.Content className="content">
                   <Header as="a">
-                    {e.photo ? (
-                      <Image className="ui avatar image" src={`/images/${e.photo}`} />
-                    ) : (
-                      <Image className="ui avatar image" src={`/images/elb.svg`} />
-                    )}
-
+                    <Image className="ui avatar image" src={e.photo ? `/images/${e.photo}` : `/images/elb.svg`} />
                     <Header.Content>
                       {e.nickname}
                       <Header.Subheader>{e.groupName}</Header.Subheader>
