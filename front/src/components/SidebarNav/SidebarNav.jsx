@@ -21,7 +21,7 @@ class SidebarNav extends Component {
     const eventsObj = {};
     const nowDate = this.state.date;
     const dateStr = moment(nowDate).format('YYYY-MM-DD');
-    this.props.events.map(e => ret {
+    this.props.events.map(e => {
       if (e.start.dateTime) {
         const newDate = new Date(Date.parse(e.start.dateTime));
         const time = moment(e.start.dateTime)
