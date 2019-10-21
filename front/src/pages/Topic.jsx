@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getTopicsData, editTopic } from '../redux/Topics/actions';
 import { Button, Header, Modal, Form } from 'semantic-ui-react';
@@ -60,7 +59,7 @@ class Topic extends Component {
   handleClose = e => {
     this.setState({ modalOpen: false });
   };
-  func = async () => {
+  updateTopic = async () => {
     let data = {
       youtubeLink: this.state.youtubeLink,
       githubLink: this.state.githubLink,
@@ -74,12 +73,12 @@ class Topic extends Component {
   onClick = async e => {
     e.preventDefault();
     this.setState({ changeData: true });
-    this.func();
+    this.updateTopic();
   };
 
   async componentDidUpdate(prevProps, prevState) {
     if (prevState.changeData && !this.state.changeData) {
-      await this.func();
+      await this.updateTopic();
       await this.props.getTopics(this.props.selectedGroup);
       const topic = this.props.allTopics.find(el => el._id === this.props.match.params.id);
       this.setState({

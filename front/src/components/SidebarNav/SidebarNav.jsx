@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Menu, Sidebar, Dimmer, Loader } from 'semantic-ui-react';
 import Calendar from 'react-calendar';
-import { addUser, delUser, authcheck } from '../../redux/Users/actions';
+import { authcheck } from '../../redux/Users/actions';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getCalendar } from '../../redux/News/action';
@@ -15,7 +15,9 @@ class SidebarNav extends Component {
   };
   onChange = async date => {
     await this.setState({ date });
-
+    await this.showSelectEvent();
+  };
+  showSelectEvent() {
     const eventsObj = {};
     const nowDate = this.state.date;
     const dateStr = moment(nowDate).format('YYYY-MM-DD');
@@ -38,7 +40,7 @@ class SidebarNav extends Component {
       }
     }
     this.setState({ eventMessage: event.summary });
-  };
+  }
   async componentDidMount() {
     this.props.getCalendar();
     await this.props.authcheck();

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { getAllTests, getSelectedTests, editTest } from '../redux/Tests/actions';
 
 import { Button, Modal, Form } from 'semantic-ui-react';
-import { editTopic } from '../redux/Topics/actions';
 
 class TestPage extends Component {
   state = {
@@ -16,7 +15,7 @@ class TestPage extends Component {
     await this.setState({ test: test });
   }
 
-  func = async () => {
+  updateTest = async () => {
     let data = {
       title: this.state.title,
       googleFormsLink: this.state.googleFormsLink,
@@ -30,12 +29,12 @@ class TestPage extends Component {
   onSubmit = async e => {
     e.preventDefault();
     this.setState({ changeData: true });
-    this.func();
+    this.updateTest();
   };
 
   async componentDidUpdate(prevProps, prevState) {
     if (prevState.changeData && !this.state.changeData) {
-      await this.func();
+      await this.updateTest();
       await this.props.getSelectedTests(this.props.selectedGroup);
       const test = this.props.tests.find(el => el.googleFormsLink === this.props.match.params.id);
       this.setState({

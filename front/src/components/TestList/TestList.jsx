@@ -26,11 +26,11 @@ class TestList extends Component {
     if (this.state.selectedGroupName === '') {
       this.setState({ groupNotSelectedStatus: true });
     } else {
-      this.func();
+      this.updateList();
     }
   };
 
-  func = async () => {
+  updateList = async () => {
     let data = {
       group: this.state.selectedGroupName,
     };

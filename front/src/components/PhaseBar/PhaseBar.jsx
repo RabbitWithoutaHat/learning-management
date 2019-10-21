@@ -47,13 +47,8 @@ class PhaseBar extends Component {
       const plus = document.querySelector('.plus');
       let numberOfDays = 0;
       let numberOfWeek = 0;
-      if (e.target.className === plus.className) {
-        numberOfDays = e.target.parentNode.parentNode.firstChild.childElementCount;
-        numberOfWeek = e.target.parentNode.id;
-      } else {
-        numberOfDays = e.target.parentNode.firstChild.childElementCount;
-        numberOfWeek = e.target.id;
-      }
+      e.target.dataset.day ? (numberOfDays = e.target.dataset.day) : (numberOfDays = e.target.parentNode.dataset.day);
+      e.target.parentNode.id ? (numberOfWeek = e.target.parentNode.id) : (numberOfWeek = e.target.id);
       let data = {
         phase: this.state.tabIndex,
         group: this.state.selectedGroupName,
@@ -70,10 +65,10 @@ class PhaseBar extends Component {
     if (this.state.selectedGroupName === '') {
       this.setState({ groupNotSelectedStatus: true });
     } else {
-      this.func();
+      this.updatePhase();
     }
   };
-  func = async () => {
+  updatePhase = async () => {
     let data = {
       phase: this.state.tabIndex,
       group: this.state.selectedGroupName,
@@ -146,6 +141,7 @@ class PhaseBar extends Component {
                       <Button
                         className="addDayButton"
                         id={`${week[0].week}`}
+                        data-day={`${week.length}`}
                         basic
                         color="violet"
                         icon="plus"

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form } from 'semantic-ui-react';
-import { addLogMsg, addUser } from '../../redux/Users/actions';
 import { addAuthUser } from '../../redux/Users/actions';
 
 class Login extends Component {
